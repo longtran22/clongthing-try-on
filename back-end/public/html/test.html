@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login</title>
+    <style>
+        /* Style cho nút đăng nhập */
+        .fb-login-button {
+            margin-top: 20px;
+            text-align: center;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Đăng nhập bằng Facebook</h1>
+
+    <!-- Nút Facebook Login -->
+    <div id="fb-root"></div>
+    <div class="fb-login-button" data-width="" data-size="large" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"></div>
+
+    <!-- Facebook SDK -->
+    <script>
+        // Tải SDK của Facebook
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : 'YOUR_APP_ID',  // Thay thế YOUR_APP_ID bằng App ID của bạn
+                cookie     : true,           // Bật cookie để theo dõi phiên người dùng
+                xfbml      : true,           // Phân tích các nút trên trang
+                version    : 'v16.0'         // Sử dụng phiên bản Facebook API
+            });
+
+            FB.AppEvents.logPageView();   // Ghi lại lượt xem trang
+        };
+
+        // Load SDK của Facebook
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <script>
+        // Hàm xử lý sau khi người dùng đăng nhập thành công
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+            });
+        }
+
+        // Xử lý trạng thái đăng nhập
+        function statusChangeCallback(response) {
+            if (response.status === 'connected') {
+                console.log('Logged in successfully!', response);
+                FB.api('/me', { fields: 'name, email' }, function(userData) {
+                    console.log('User data:', userData);
+                });
+            } else {
+                console.log('User is not logged in or did not authorize the app.');
+            }
+        }
+    </script>
+</body>
+</html>
