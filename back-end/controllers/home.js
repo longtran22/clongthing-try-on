@@ -237,7 +237,7 @@ const generateCustomerReport = async (req,res) => {
       })
       // Phân loại khách hàng
       const loyalCustomers = customers.filter(customer => 
-          customer.rate >= 2 && parseFloat(customer.money.replace(/\./g,'')) >= 50000
+          customer.rate >= 2 && parseFloat(customer.money.replace(/\./g,'')) >= 80
       ).length;
 
       const newCustomers = customers.filter(customer => 
@@ -320,7 +320,7 @@ const generatedailyCustomer=async (req,res)=>{
   const generate_top_product=async(req,res)=>{
     const {user}=req.body
     const products = await Products.find({
-      owner: user.id_owner, 
+      // owner: user.id_owner, 
     })
     res.json( getTopRatedProducts(products))
   }
@@ -340,13 +340,13 @@ const generatedailyCustomer=async (req,res)=>{
     try {
       // Truy vấn sự kiện từ ba database khác nhau
       const eventsA = await Roles.find({
-        owner: user.id_owner,
+        // owner: user.id_owner,
       });
       const eventsB = await History.find({
-        owner: user.id_owner,
+        // owner: user.id_owner,
       });
       const eventsC = await supplierCHistory.find({
-        owner: user.id_owner,
+        // owner: user.id_owner,
       });
   
       // Hợp nhất các sự kiện từ ba collection

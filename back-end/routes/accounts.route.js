@@ -9,5 +9,6 @@ router.post('/send_again',authorize.authorize("create_user"),account.sendAgain);
 router.get('/show',account.showUser);
 router.delete('/delete/:id', account.deleteUser);
 router.put('/edit/:id', account.editUser);
+router.get('/find-by-email', account.getUserByEmail);
 
 module.exports = router;

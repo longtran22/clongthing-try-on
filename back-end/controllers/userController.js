@@ -283,10 +283,30 @@ const editUser = async (req, res) => {
     }
 };
 
+
+const getUserByEmail = async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Không tìm thấy người dùng!" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Lỗi khi tìm user theo email:", error);
+    res.status(500).json({ message: "Lỗi server!" });
+  }
+};
+
+
 module.exports = {
     createUser,
     showUser,
     deleteUser,
     editUser,
-    sendAgain
+    sendAgain,
+    getUserByEmail
 };

@@ -4,6 +4,7 @@ const OrderDetailHistory = require("../modules/OrderDetailHistory");
 const LoggingOrder = require("../modules/loggingOrder");
 const Products = require("../modules/products");
 const Suppliers = require("../modules/supplier");
+const User=require("../modules/user")
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -146,7 +147,101 @@ const template = (listOrder) => {
 //     res.status(500).send({ message: "An error occurred during the transaction", error });
 //   }
 // };
+// const saveOrderHistory = async (req, res) => {
+//   try {
+//     const listOrder = Object.values(req.body.dataForm);
+//     const ownerId = new mongoose.Types.ObjectId(req.body.user.ownerId);
+//     const tax = req.body.tax;
+//     const userId = req.body.user.id;
+//     const userName = req.body.user.name;
+//     const userEmail = req.body.user.email;
+//     const allOrderPromises = [];
+//     const allOrderDetailHistories = [];
+//     const allLoggingOrders = [];
+//     const productUpdates = [];
+//     const emailPromises = [];
+
+//     for (const suppOrders of listOrder) {
+//       // emailPromises.push(
+//       //   sendEmail(userEmail, "nhập hàng", template(suppOrders))
+//       // );
+
+//       const generalStatus = suppOrders.some((item) => item.status === "pending")
+//         ? "pending"
+//         : "deliveried";
+//       const amount = suppOrders
+//         .reduce((acc, curr) => acc + Math.floor(Number(curr.price) * Number(curr.quantity)*(tax/100+1)), 0)
+//         .toString();
+//       const order = new OrderHistory({
+//         supplierId: suppOrders[0].supplierId,
+//         generalStatus,
+//         amount,
+//         ownerId,
+//         tax,
+//       });
+
+//       const savedOrder = await order.save();
+
+//       const orderDetails = suppOrders.map((item) => ({
+//         orderId: savedOrder._id,
+//         productId: new mongoose.Types.ObjectId(item.productId),
+//         price: item.price,
+//         quantity: item.quantity,
+//         status: item.status,
+//         ownerId,
+//       }));
+//       allOrderDetailHistories.push(...orderDetails);
+
+//       const loggingOrders = orderDetails.map((detail) => ({
+//         orderId: savedOrder._id,
+//         status: detail.status === "deliveried" ? "deliveried" : "create",
+//         userId,
+//         userName,
+//         details: "create a new item",
+//         ownerId,
+//         tax,
+//       }));
+//       allLoggingOrders.push(...loggingOrders);
+
+//       productUpdates.push(
+//         ...suppOrders
+//           .filter((item) => item.status === "deliveried")
+//           .map((item) => ({
+//             updateOne: {
+//               filter: { _id: item.productId },
+//               update: { $inc: { stock_in_Warehouse: Number(item.quantity) } },
+//             },
+//           }))
+//       );
+//     }
+
+//     if (allOrderDetailHistories.length > 0) {
+//       allOrderPromises.push(
+//         OrderDetailHistory.insertMany(allOrderDetailHistories)
+//       );
+//     }
+
+//     if (allLoggingOrders.length > 0) {
+//       allOrderPromises.push(
+//         LoggingOrder.insertMany(allLoggingOrders)
+//       );
+//     }
+
+//     if (productUpdates.length > 0) {
+//       allOrderPromises.push(Products.bulkWrite(productUpdates));
+//     }
+
+//     await Promise.all([...allOrderPromises, ...emailPromises]);
+
+//     res.status(200).send({ message: "Order history saved successfully!" });
+//   } catch (error) {
+//     console.error("Error during saving:", error);
+//     res.status(500).send({ message: "An error occurred", error });
+//   }
+// };
 const saveOrderHistory = async (req, res) => {
+  const session = await mongoose.startSession(); 
+  session.startTransaction();
   try {
     const listOrder = Object.values(req.body.dataForm);
     const ownerId = new mongoose.Types.ObjectId(req.body.user.ownerId);
@@ -161,18 +256,20 @@ const saveOrderHistory = async (req, res) => {
     const emailPromises = [];
 
     for (const suppOrders of listOrder) {
-      // emailPromises.push(
-      //   sendEmail(userEmail, "nhập hàng", template(suppOrders))
-      // );
-
       const generalStatus = suppOrders.some((item) => item.status === "pending")
         ? "pending"
         : "deliveried";
       const amount = suppOrders
         .reduce((acc, curr) => acc + Math.floor(Number(curr.price) * Number(curr.quantity)*(tax/100+1)), 0)
         .toString();
+
+      // Xử lý trường hợp không có supplierId
+      const supplierId = suppOrders[0]?.supplierId 
+        ? new mongoose.Types.ObjectId(suppOrders[0].supplierId)
+        : null;
+
       const order = new OrderHistory({
-        supplierId: suppOrders[0].supplierId,
+        supplierId, // Có thể là null
         generalStatus,
         amount,
         ownerId,
@@ -180,7 +277,7 @@ const saveOrderHistory = async (req, res) => {
       });
 
       const savedOrder = await order.save();
-
+      console.log(order);
       const orderDetails = suppOrders.map((item) => ({
         orderId: savedOrder._id,
         productId: new mongoose.Types.ObjectId(item.productId),
@@ -191,8 +288,11 @@ const saveOrderHistory = async (req, res) => {
       }));
       allOrderDetailHistories.push(...orderDetails);
 
+
+      //lỗi quyền tạo oderoder
       const loggingOrders = orderDetails.map((detail) => ({
         orderId: savedOrder._id,
+        //orderDetailId: detail._id,
         status: detail.status === "deliveried" ? "deliveried" : "create",
         userId,
         userName,
@@ -216,13 +316,13 @@ const saveOrderHistory = async (req, res) => {
 
     if (allOrderDetailHistories.length > 0) {
       allOrderPromises.push(
-        OrderDetailHistory.insertMany(allOrderDetailHistories)
+        OrderDetailHistory.insertMany(allOrderDetailHistories, { session })
       );
     }
 
     if (allLoggingOrders.length > 0) {
       allOrderPromises.push(
-        LoggingOrder.insertMany(allLoggingOrders)
+        LoggingOrder.insertMany(allLoggingOrders, { session })
       );
     }
 
@@ -232,6 +332,15 @@ const saveOrderHistory = async (req, res) => {
 
     await Promise.all([...allOrderPromises, ...emailPromises]);
 
+    // Commit transaction
+    await session.commitTransaction();
+    session.endSession();
+
+      // ... phần còn lại giữ nguyên
+    
+
+    // ... phần còn lại giữ nguyên
+    
     res.status(200).send({ message: "Order history saved successfully!" });
   } catch (error) {
     console.error("Error during saving:", error);
@@ -239,11 +348,81 @@ const saveOrderHistory = async (req, res) => {
   }
 };
 
-
+// const getOrder = async (req, res) => {
+//   try {
+//     const { search, ownerId } = req.query;
+//     let matchConditions = {};
+//     if (search) {
+//       if (mongoose.Types.ObjectId.isValid(search)) {
+//         matchConditions._id = new mongoose.Types.ObjectId(search);
+//       } else if (isNaN(Date.parse(search))) {
+//         matchConditions["supplier.name"] = { $regex: search, $options: "i" };
+//       } else {
+//         const parsedDate = new Date(search);
+//         if (isNaN(parsedDate)) {
+//           return res.status(400).json({ error: "Invalid date format" });
+//         }
+//         // Tìm tất cả các đơn hàng trong ngày cụ thể (từ 00:00 đến 23:59:59)
+//         matchConditions.createdAt = {
+//           $gte: parsedDate,
+//           $lt: new Date(parsedDate.getTime() + 24 * 60 * 60 * 1000),
+//         };
+//       }
+//     }
+//     console.log(matchConditions);
+//     const result = await OrderHistory.aggregate([
+//       {
+//         $lookup: {
+//           from: "Suppliers",
+//           localField: "supplierId",
+//           foreignField: "_id",
+//           as: "supplier",
+//         },
+//       },
+//       {
+//         $match: {
+//           ...matchConditions,
+//           generalStatus: "pending",
+//           ownerId: new mongoose.Types.ObjectId(ownerId),
+//         },
+//       },
+//       {
+//         $unwind: {
+//           path: "$supplier",
+//           preserveNullAndEmptyArrays: true,
+//         },
+//       },
+//       {
+//         $project: {
+//           tax:1,
+//           supplierId: 1,
+//           generalStatus: 1,
+//           amount: 1,
+//           updatedAt: 1,
+//           ownerId: 1,
+//           nameSupplier: "$supplier.name",
+//           emailSupplier: "$supplier.email",
+//           supplierId: "$supplier._id",
+//         },
+//       },
+//     ]);
+//     // Trả về kết quả
+//     return res.status(200).json(result);
+//   } catch (error) {
+//     console.error("Error in aggregate query:", error);
+//     return res.status(500).json({ message: "Server error" });
+//   }
+// };
 const getOrder = async (req, res) => {
   try {
     const { search, ownerId } = req.query;
+
     let matchConditions = {};
+    let email = "";
+
+    const user = await User.findById(ownerId);
+    if (user) email = user.email;
+
     if (search) {
       if (mongoose.Types.ObjectId.isValid(search)) {
         matchConditions._id = new mongoose.Types.ObjectId(search);
@@ -254,18 +433,17 @@ const getOrder = async (req, res) => {
         if (isNaN(parsedDate)) {
           return res.status(400).json({ error: "Invalid date format" });
         }
-        // Tìm tất cả các đơn hàng trong ngày cụ thể (từ 00:00 đến 23:59:59)
         matchConditions.createdAt = {
           $gte: parsedDate,
           $lt: new Date(parsedDate.getTime() + 24 * 60 * 60 * 1000),
         };
       }
     }
-    console.log(matchConditions);
+    
     const result = await OrderHistory.aggregate([
       {
         $lookup: {
-          from: "Suppliers",
+          from: "suppliers", // chú ý viết thường
           localField: "supplierId",
           foreignField: "_id",
           as: "supplier",
@@ -286,24 +464,112 @@ const getOrder = async (req, res) => {
       },
       {
         $project: {
-          tax:1,
+          tax: 1,
           supplierId: 1,
           generalStatus: 1,
           amount: 1,
           updatedAt: 1,
+          ownerId: 1,
+          email: email,
           nameSupplier: "$supplier.name",
           emailSupplier: "$supplier.email",
           supplierId: "$supplier._id",
         },
       },
     ]);
-    // Trả về kết quả
+
     return res.status(200).json(result);
   } catch (error) {
     console.error("Error in aggregate query:", error);
     return res.status(500).json({ message: "Server error" });
   }
 };
+const getAllOrders = async (req, res) => {
+  try {
+    const { search } = req.query;
+    let matchConditions = {};
+
+    if (search) {
+      if (mongoose.Types.ObjectId.isValid(search)) {
+        matchConditions._id = new mongoose.Types.ObjectId(search);
+      } else if (isNaN(Date.parse(search))) {
+        matchConditions["supplier.name"] = { $regex: search, $options: "i" };
+      } else {
+        const parsedDate = new Date(search);
+        if (isNaN(parsedDate)) {
+          return res.status(400).json({ error: "Invalid date format" });
+        }
+        matchConditions.createdAt = {
+          $gte: parsedDate,
+          $lt: new Date(parsedDate.getTime() + 24 * 60 * 60 * 1000),
+        };
+      }
+    }
+
+    const result = await OrderHistory.aggregate([
+      {
+        $addFields: {
+          ownerIdObj: { $toObjectId: "$ownerId" }, // 🛠️ convert String => ObjectId trước
+        },
+      },
+      {
+        $lookup: {
+          from: "suppliers",
+          localField: "supplierId",
+          foreignField: "_id",
+          as: "supplier",
+        },
+      },
+      {
+        $unwind: {
+          path: "$supplier",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "users", // đúng tên collection users
+          localField: "ownerIdObj", // lookup bằng objectId đã convert
+          foreignField: "_id",
+          as: "owner",
+        },
+      },
+      {
+        $unwind: {
+          path: "$owner",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $match: {
+          ...matchConditions,
+          generalStatus: "pending",
+        },
+      },
+      {
+        $project: {
+          tax: 1,
+          supplierId: 1,
+          generalStatus: 1,
+          amount: 1,
+          updatedAt: 1,
+          ownerId: 1,
+          email: "$owner.email", // ✅ lấy ra email
+          nameSupplier: "$supplier.name",
+          emailSupplier: "$supplier.email",
+        },
+      },
+    ]);
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error in getAllOrders:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+
 const updateOrderHistory = async (req, res) => {
   const newOrder = req.body;
   try {
@@ -551,6 +817,7 @@ const getProductTop100 = async (req, res) => {
 module.exports = {
   saveOrderHistory,
   getOrder,
+  getAllOrders,
   updateOrderHistory,
   getSupplierByOrderId,
   getProductTop100,

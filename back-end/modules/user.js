@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     GoogleID: { type: String, default: null },
     role: {
         type: String,
-        default: "Admin",
+        default: "User",
     },
     id_owner: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' }, // Bỏ required
     resetCode: String,

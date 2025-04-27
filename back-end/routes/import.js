@@ -12,8 +12,9 @@ router.get('/loggingOrder/listOrder',loggingOrder.getLogging)
 router.get('/orderDetail/listorder', orderDetailHistory.listOrderDetail);
 router.post('/orderDetail/updateDetail',Author.authorize("edit_order"),orderDetailHistory.updateDetail);
 
-router.post('/orderHistory/save',Author.authorize("create_order"), orderHistory.saveOrderHistory);
+router.post('/orderHistory/save', orderHistory.saveOrderHistory);
 router.get('/orderHistory/getOrder', orderHistory.getOrder);
+router.get('/orderHistory/getAllOrder', orderHistory.getAllOrders);
 router.put('/orderHistory/updateOrderhistory',Author.authorize("edit_order"),orderHistory.updateOrderHistory);
 router.get('/orderHistory/supplierName',orderHistory.getSupplierByOrderId);
 router.get('/orderHistory/lastProductTop100',orderHistory.getProductTop100);

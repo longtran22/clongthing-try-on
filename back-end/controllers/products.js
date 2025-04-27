@@ -400,14 +400,71 @@ const getProductsBySupplier = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   };
+  // const getProductsByProductName = async (req, res) => {
+  //   const { query,ownerId } = req.query;
+  //   const objectProductId = query;
+  //   console.log(query,ownerId)
+  //   // Kiểm tra xem productId có tồn tại trong query params không
+  //   if (!objectProductId) {
+  //     return res.status(400).json({ error: "Product ID is required" });
+  //   }
+  //   try {
+  //     const products = await Products.aggregate([
+  //       {
+  //         $lookup: {
+  //           from: "Suppliers",
+  //           localField: "supplier",
+  //           foreignField: "_id",
+  //           as: "supplierDetails",
+  //         },
+  //       },
+  //       {
+  //         $unwind: {
+  //           path: "$supplierDetails",
+  //           preserveNullAndEmptyArrays: true,
+  //         },
+  //       },
+  //       {
+  //         $match: {
+  //           name: {
+  //             $regex: objectProductId, 
+  //             $options: "i", 
+  //           },
+  //           "supplierDetails.owner": new mongoose.Types.ObjectId(ownerId) 
+  //         },
+  //       },
+  //       {
+  //         $project: {
+  //           name: 1,
+  //           description: 1,
+  //           image: 1,
+  //           purchasePrice: 1,
+  //           "supplierDetails._id": 1,
+  //           "supplierDetails.name": 1,
+  //           "supplierDetails.email": 1,
+  //         },
+  //       },
+  //     ]);
+  //     if (products.length === 0) {
+  //       return res
+  //         .status(404)
+  //         .json({ message: "No products found for this supplier" });
+  //     }
+  //     // Trả về danh sách sản phẩm nếu tìm thấy
+  //     res.status(200).json(products);
+  //   } catch (error) {
+  //     console.error("Error fetching products by supplier:", error);
+  //     res.status(500).json({ error: "Internal server error" });
+  //   }
+  // };
   const getProductsByProductName = async (req, res) => {
-    const { query,ownerId } = req.query;
+    const { query } = req.query; // Bỏ ownerId vì không cần dùng nữa
     const objectProductId = query;
-    console.log(query,ownerId)
-    // Kiểm tra xem productId có tồn tại trong query params không
+    
     if (!objectProductId) {
       return res.status(400).json({ error: "Product ID is required" });
     }
+  
     try {
       const products = await Products.aggregate([
         {
@@ -421,7 +478,7 @@ const getProductsBySupplier = async (req, res) => {
         {
           $unwind: {
             path: "$supplierDetails",
-            preserveNullAndEmptyArrays: true,
+            preserveNullAndEmptyArrays: true, // Giữ lại cả sản phẩm không có supplier
           },
         },
         {
@@ -430,7 +487,7 @@ const getProductsBySupplier = async (req, res) => {
               $regex: objectProductId, 
               $options: "i", 
             },
-            "supplierDetails.owner": new mongoose.Types.ObjectId(ownerId) 
+            // ĐÃ BỎ điều kiện match với ownerId
           },
         },
         {
@@ -445,15 +502,14 @@ const getProductsBySupplier = async (req, res) => {
           },
         },
       ]);
+  
       if (products.length === 0) {
-        return res
-          .status(404)
-          .json({ message: "No products found for this supplier" });
+        return res.status(404).json({ message: "No products found" });
       }
-      // Trả về danh sách sản phẩm nếu tìm thấy
+  
       res.status(200).json(products);
     } catch (error) {
-      console.error("Error fetching products by supplier:", error);
+      console.error("Error fetching products:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   };
