@@ -8,10 +8,10 @@ const Author=require("../controllers/middlewareUserController.js")
 const router = express.Router();
 
 router.get('/loggingOrder/listOrder',loggingOrder.getLogging)
-
+router.get('/loggingOrder/listAllOrder',loggingOrder.getAllLogging)
 router.get('/orderDetail/listorder', orderDetailHistory.listOrderDetail);
-router.post('/orderDetail/updateDetail',Author.authorize("edit_order"),orderDetailHistory.updateDetail);
-
+router.post('/orderDetail/updateDetail',orderDetailHistory.updateDetail);
+router.delete('/orderHistory/deleteOrderhistory/:id',orderHistory.deleteOrderhistory);
 router.post('/orderHistory/save', orderHistory.saveOrderHistory);
 router.get('/orderHistory/getOrder', orderHistory.getOrder);
 router.get('/orderHistory/getAllOrder', orderHistory.getAllOrders);

@@ -1,4 +1,4 @@
-const Role = require('../modules/roles'); // Model kết nối với collection roles
+
 
 const authorize = (permission) => {
     return async (req, res, next) => {

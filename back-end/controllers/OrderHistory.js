@@ -239,45 +239,154 @@ const template = (listOrder) => {
 //     res.status(500).send({ message: "An error occurred", error });
 //   }
 // };
+// const saveOrderHistory = async (req, res) => {
+//   const session = await mongoose.startSession(); 
+//   session.startTransaction();
+//   try {
+//     const listOrder = Object.values(req.body.dataForm);
+//     const ownerId = new mongoose.Types.ObjectId(req.body.user.ownerId);
+//     const tax = req.body.tax;
+//     const userId = req.body.user.id;
+//     const userName = req.body.user.name;
+//     const userEmail = req.body.user.email;
+//     const allOrderPromises = [];
+//     const allOrderDetailHistories = [];
+//     const allLoggingOrders = [];
+//     const productUpdates = [];
+//     const emailPromises = [];
+
+//     for (const suppOrders of listOrder) {
+//       const generalStatus = suppOrders.some((item) => item.status === "pending")
+//         ? "pending"
+//         : "deliveried";
+//       const amount = suppOrders
+//         .reduce((acc, curr) => acc + Math.floor(Number(curr.price) * Number(curr.quantity)*(tax/100+1)), 0)
+//         .toString();
+
+//       // Xử lý trường hợp không có supplierId
+//       const supplierId = suppOrders[0]?.supplierId 
+//         ? new mongoose.Types.ObjectId(suppOrders[0].supplierId)
+//         : null;
+
+//       const order = new OrderHistory({
+//         supplierId, // Có thể là null
+//         generalStatus,
+//         amount,
+//         ownerId,
+//         tax,
+//       });
+
+//       const savedOrder = await order.save();
+//       console.log(order);
+//       const orderDetails = suppOrders.map((item) => ({
+//         orderId: savedOrder._id,
+//         productId: new mongoose.Types.ObjectId(item.productId),
+//         price: item.price,
+//         quantity: item.quantity,
+//         status: item.status,
+//         ownerId,
+//       }));
+//       allOrderDetailHistories.push(...orderDetails);
+
+
+//       //lỗi quyền tạo oderoder
+//       const loggingOrders = orderDetails.map((detail) => ({
+//         orderId: savedOrder._id,
+//         //orderDetailId: detail._id,
+//         status: detail.status === "deliveried" ? "deliveried" : "create",
+//         userId,
+//         userName,
+//         details: "create a new item",
+//         ownerId,
+//         tax,
+//       }));
+//       allLoggingOrders.push(...loggingOrders);
+
+//       productUpdates.push(
+//         ...suppOrders
+//           .filter((item) => item.status === "deliveried")
+//           .map((item) => ({
+//             updateOne: {
+//               filter: { _id: item.productId },
+//               update: { $inc: { stock_in_Warehouse: Number(item.quantity) } },
+//             },
+//           }))
+//       );
+//     }
+
+//     if (allOrderDetailHistories.length > 0) {
+//       allOrderPromises.push(
+//         OrderDetailHistory.insertMany(allOrderDetailHistories, { session })
+//       );
+//     }
+
+//     if (allLoggingOrders.length > 0) {
+//       allOrderPromises.push(
+//         LoggingOrder.insertMany(allLoggingOrders, { session })
+//       );
+//     }
+
+//     if (productUpdates.length > 0) {
+//       allOrderPromises.push(Products.bulkWrite(productUpdates));
+//     }
+
+//     await Promise.all([...allOrderPromises, ...emailPromises]);
+
+//     // Commit transaction
+//     await session.commitTransaction();
+//     session.endSession();
+
+//       // ... phần còn lại giữ nguyên
+    
+
+//     // ... phần còn lại giữ nguyên
+    
+//     res.status(200).send({ message: "Order history saved successfully!" });
+//   } catch (error) {
+//     console.error("Error during saving:", error);
+//     res.status(500).send({ message: "An error occurred", error });
+//   }
+// };
 const saveOrderHistory = async (req, res) => {
-  const session = await mongoose.startSession(); 
-  session.startTransaction();
+  const session = await mongoose.startSession();
+
   try {
+    session.startTransaction();
+
     const listOrder = Object.values(req.body.dataForm);
     const ownerId = new mongoose.Types.ObjectId(req.body.user.ownerId);
     const tax = req.body.tax;
     const userId = req.body.user.id;
     const userName = req.body.user.name;
     const userEmail = req.body.user.email;
-    const allOrderPromises = [];
+
     const allOrderDetailHistories = [];
     const allLoggingOrders = [];
     const productUpdates = [];
-    const emailPromises = [];
 
     for (const suppOrders of listOrder) {
       const generalStatus = suppOrders.some((item) => item.status === "pending")
         ? "pending"
         : "deliveried";
+
       const amount = suppOrders
-        .reduce((acc, curr) => acc + Math.floor(Number(curr.price) * Number(curr.quantity)*(tax/100+1)), 0)
+        .reduce((acc, curr) => acc + Math.floor(Number(curr.price) * Number(curr.quantity) * (tax / 100 + 1)), 0)
         .toString();
 
-      // Xử lý trường hợp không có supplierId
-      const supplierId = suppOrders[0]?.supplierId 
+      const supplierId = suppOrders[0]?.supplierId
         ? new mongoose.Types.ObjectId(suppOrders[0].supplierId)
         : null;
 
       const order = new OrderHistory({
-        supplierId, // Có thể là null
+        supplierId,
         generalStatus,
         amount,
         ownerId,
         tax,
       });
 
-      const savedOrder = await order.save();
-      console.log(order);
+      const savedOrder = await order.save({ session });
+
       const orderDetails = suppOrders.map((item) => ({
         orderId: savedOrder._id,
         productId: new mongoose.Types.ObjectId(item.productId),
@@ -286,13 +395,11 @@ const saveOrderHistory = async (req, res) => {
         status: item.status,
         ownerId,
       }));
+
       allOrderDetailHistories.push(...orderDetails);
 
-
-      //lỗi quyền tạo oderoder
       const loggingOrders = orderDetails.map((detail) => ({
         orderId: savedOrder._id,
-        //orderDetailId: detail._id,
         status: detail.status === "deliveried" ? "deliveried" : "create",
         userId,
         userName,
@@ -300,6 +407,7 @@ const saveOrderHistory = async (req, res) => {
         ownerId,
         tax,
       }));
+
       allLoggingOrders.push(...loggingOrders);
 
       productUpdates.push(
@@ -307,7 +415,7 @@ const saveOrderHistory = async (req, res) => {
           .filter((item) => item.status === "deliveried")
           .map((item) => ({
             updateOne: {
-              filter: { _id: item.productId },
+              filter: { _id: new mongoose.Types.ObjectId(item.productId) },
               update: { $inc: { stock_in_Warehouse: Number(item.quantity) } },
             },
           }))
@@ -315,38 +423,29 @@ const saveOrderHistory = async (req, res) => {
     }
 
     if (allOrderDetailHistories.length > 0) {
-      allOrderPromises.push(
-        OrderDetailHistory.insertMany(allOrderDetailHistories, { session })
-      );
+      await OrderDetailHistory.insertMany(allOrderDetailHistories, { session });
     }
 
     if (allLoggingOrders.length > 0) {
-      allOrderPromises.push(
-        LoggingOrder.insertMany(allLoggingOrders, { session })
-      );
+      await LoggingOrder.insertMany(allLoggingOrders, { session });
     }
 
     if (productUpdates.length > 0) {
-      allOrderPromises.push(Products.bulkWrite(productUpdates));
+      await Products.bulkWrite(productUpdates, { session });
     }
 
-    await Promise.all([...allOrderPromises, ...emailPromises]);
-
-    // Commit transaction
     await session.commitTransaction();
-    session.endSession();
-
-      // ... phần còn lại giữ nguyên
-    
-
-    // ... phần còn lại giữ nguyên
-    
     res.status(200).send({ message: "Order history saved successfully!" });
+
   } catch (error) {
+    await session.abortTransaction();
     console.error("Error during saving:", error);
     res.status(500).send({ message: "An error occurred", error });
+  } finally {
+    session.endSession();
   }
 };
+
 
 // const getOrder = async (req, res) => {
 //   try {
@@ -452,7 +551,7 @@ const getOrder = async (req, res) => {
       {
         $match: {
           ...matchConditions,
-          generalStatus: "pending",
+          // generalStatus: "pending",
           ownerId: new mongoose.Types.ObjectId(ownerId),
         },
       },
@@ -543,7 +642,7 @@ const getAllOrders = async (req, res) => {
       {
         $match: {
           ...matchConditions,
-          generalStatus: "pending",
+          // generalStatus: "pending",
         },
       },
       {
@@ -812,6 +911,76 @@ const getProductTop100 = async (req, res) => {
     return res.status(500).json({ error: "An error occurred" });
   }
 };
+// const deleteOrderhistory = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const deletedOrder = await OrderHistory.findByIdAndDelete(id);
+
+//     if (!deletedOrder) {
+//       return res.status(404).json({ message: 'Order not found' });
+//     }
+
+//     res.status(200).json({ message: 'Order deleted successfully', deletedOrder });
+//   } catch (error) {
+//     console.error('Error deleting order:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// }
+
+const deleteOrderhistory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const orderH = await OrderHistory.findById(id);
+    if (!orderH) {
+      return res.status(404).json({ message: "Order history not found" });
+    }
+
+    // Tìm tất cả OrderDetailHistory có trạng thái "pending"
+    const listOrderChange = await OrderDetailHistory.find({
+      orderId: id,
+      status: "pending",
+    });
+
+    const promises = listOrderChange.map(async (orderChange) => {
+      try {
+        // Update từng đơn chi tiết
+        orderChange.status = "canceled";
+        orderChange.updatedAt = new Date();
+        await orderChange.save();
+
+        // Log lại hành động xóa
+        const newLogging = new LoggingOrder({
+          orderId: id,
+          orderDetailId: orderChange._id,
+          status: "delete",
+          userId: req.user._id,
+          userName: req.user.name,
+          ownerId: orderH.ownerId,
+          details: "Order canceled due to order history deletion",
+          tax: orderH.tax,
+        });
+        await newLogging.save();
+      } catch (error) {
+        console.error(`Error canceling order detail ${orderChange._id}:`, error);
+      }
+    });
+
+    await Promise.all(promises);
+
+    // Sau khi cập nhật chi tiết xong, xóa luôn đơn gốc
+    await OrderHistory.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Order history deleted successfully" });
+
+  } catch (error) {
+    console.error("Error deleting OrderHistory:", error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
+  }
+};
+
+
 
 
 module.exports = {
@@ -821,4 +990,5 @@ module.exports = {
   updateOrderHistory,
   getSupplierByOrderId,
   getProductTop100,
+  deleteOrderhistory,
 };

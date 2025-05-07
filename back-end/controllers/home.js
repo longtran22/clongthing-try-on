@@ -17,8 +17,8 @@ const total_revenue = async (req, res) => {
     const todayString = today.toISOString().substring(0, 10);
     const yesterdayString = yesterday.toISOString().substring(0, 10);
     // Fetch tất cả các hóa đơn
-    const bills = await Bills.find({owner:user.id_owner});
-
+    // const bills = await Bills.find({owner:user.id_owner});
+    const bills = await Bills.find({});
     // Tính tổng doanh thu cho hôm nay và hôm qua
     let totalRevenueToday = 0;
     let totalRevenueYesterday = 0;
@@ -90,7 +90,8 @@ const today_income = async (req, res) => {
       const yesterdayString = yesterday.toISOString().substring(0, 10);
       
       // Fetch tất cả các hóa đơn
-      const bills = await Bills.find({ owner: user.id_owner }).populate('items.productID');
+      // const bills = await Bills.find({ owner: user.id_owner }).populate('items.productID');
+      const bills = await Bills.find({  }).populate('items.productID');
       // Tính tổng doanh thu cho hôm nay và hôm qua
       let totalRevenueToday = 0;
       let totalRevenueYesterday = 0;
@@ -165,7 +166,8 @@ const new_customer = async (req, res) => {
       const yesterdayString = yesterday.toISOString().substring(0, 10);
       
       // Fetch tất cả các hóa đơn
-      const customers = await Customer.find({ owner: user.id_owner });
+      // const customers = await Customer.find({ owner: user.id_owner });
+      const customers = await Customer.find({ });
       let customerToday = 0;
       let customerYesterday = 0;
 
@@ -229,7 +231,7 @@ const generateCustomerReport = async (req,res) => {
 
       // Tìm khách hàng có giao dịch trong tháng i
       const customers = await Customer.find({
-        owner: user.id_owner, 
+        // owner: user.id_owner, 
           $or: [
               { "firstPurchaseDate": { $gte: startDate, $lt: endDate } },
               { "lastPurchaseDate": { $gte: startDate, $lt: endDate } }
@@ -277,7 +279,7 @@ const x = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.g
 const y = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i + 1));
 date.push(`ngày ${x.getDate()}-Tháng ${x.getMonth() + 1}`)
 const money_in_date = await Bills.find({
-  owner: user.id_owner, 
+  // owner: user.id_owner, 
  orderDate: { $gte: x, $lt: y } ,
 })
 money_in_date.forEach((bill)=>{money=money+parseInt(bill.totalAmount.replace(/\./g, ''))})
@@ -300,7 +302,7 @@ const generatedailyCustomer=async (req,res)=>{
   
     labels.push(`ngày ${x.getUTCDate()}-Tháng ${x.getUTCMonth() + 1}`);
     const customer_in_date = await Customer.find({
-      owner: user.id_owner,
+      // owner: user.id_owner,
       createdAt: { $gte: x, $lt: y },
     });
   
@@ -324,17 +326,33 @@ const generatedailyCustomer=async (req,res)=>{
     })
     res.json( getTopRatedProducts(products))
   }
-  const total_pending=async(req,res)=>{
-    const {user}=req.body;
-      const total1=await orderDetail.find({ownerId:user.id_owner,generalStatus:"pending"});
-      const total2=await orderDetail.find({ownerId:user.id_owner});
-      let i=(total1.length/total2.length)*100
-      res.json({
-      total:total1.length,
-      percent:i.toFixed(2)+ "%"
-      });
+  // const total_pending=async(req,res)=>{
+  //   const {user}=req.body;
+  //     const total1=await orderDetail.find({ownerId:user.id_owner,generalStatus:"pending"});
+  //     const total2=await orderDetail.find({ownerId:user.id_owner});
+  //     let i=(total1.length/total2.length)*100
+  //     res.json({
+  //     total:total1.length,
+  //     percent:i.toFixed(2)+ "%"
+  //     });
   
-  }
+  // }
+  const total_pending = async (req, res) => {
+    try {
+      const total1 = await orderDetail.find({ generalStatus: "pending" }); // bỏ lọc ownerId
+      const total2 = await orderDetail.find(); // lấy tất cả
+  
+      let percent = (total1.length / (total2.length || 1)) * 100; // tránh chia 0
+      res.json({
+        total: total1.length,
+        percent: percent.toFixed(2) + "%"
+      });
+    } catch (err) {
+      console.error("Error in total_pending:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
+  
   const recent_activity = async (req, res) => {
     const { user } = req.body;
     try {
