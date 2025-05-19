@@ -23,9 +23,10 @@ Thumbs.db
 # React / Frontend
 frontend/node_modules/
 frontend/.env
-frontend/build/
+# frontend/build/
 
 # Backend
+
 backend/node_modules/
 backend/.env
 
