@@ -44,7 +44,9 @@ const handleSubmit = async (e) => {
   }
 
   formData.append('garment_image_url', productImage);
-  formData.append('clothing_type', 'tops'); // bạn có thể cho người dùng chọn loại: tops/bottoms/dresses
+  // formData.append('clothing_type', 'tops'); // bạn có thể cho người dùng chọn loại: tops/bottoms/dresses
+  formData.append('clothing_type', clothing_type || 'tops');
+
 
   setLoading(true);
   setResultImage(null);
@@ -61,6 +63,7 @@ const handleSubmit = async (e) => {
     }
 
     const data = await response.json();
+    console.log("formData:", formData.clothing_type );
     console.log("result URL:", data.resultImageUrl);
 
     // Set URL ảnh trả về vào state để hiển thị

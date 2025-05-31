@@ -18,14 +18,14 @@
   .modal {
     display:block;
     background: white;
-    margin-top: 100px;
+    margin-top: 25px;
     padding: 20px;
     border-radius: 8px;
     max-width: 1200px;
     width: 100%;
     position: relative;
     min-height: 60vh;
-    max-height: 80vh;
+    max-height: 88vh;
     overflow: hidden; /* Ẩn thanh cuộn của modal */
   }
   

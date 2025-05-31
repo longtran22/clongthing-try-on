@@ -69,14 +69,23 @@ header {
     text-align: center;
     font-size: 1.2rem;
 }
- .login{z-index: 2;
+ /* .login{z-index: 2;
     position: absolute;
     font-family: Arial, sans-serif;
     display: block;
     left: 50%; 
     top: 50%;
     transform: translate(-50%,-50%);
+} */
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Luôn chiếm toàn bộ chiều cao khung nhìn */
+    font-family: Arial, sans-serif;
 }
+
+
 .login-modal {
 
     background-color: #1a1a1b;

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { AuthContext } from "../../components/introduce/AuthContext";
 import { useAuth } from "../../components/introduce/useAuth";
 import { notify } from "../../components/Notification/notification";
+import axios from 'axios';
 
 const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder}) => {
   const [products, setProducts] = useState([]);
@@ -78,7 +79,8 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
         ...product,
         note: "",
       }));
-
+      console.log("data orderdetial", data);
+      console.log("updatedData orderdetial", updatedData);
       setProducts(updatedData);
       setFilter(updatedData.map((_, index) => index));
     } catch (error) {
@@ -205,6 +207,31 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
       return updatedProducts;
     });
   };
+
+const handlePayment = async () => {
+  try {
+    const amount = Math.floor(amountBill() * 1.1)/100; // +10% VAT chia cho 100 để vnpay nhân 100;
+    const vnp_Amount = (amount * 100).toString();  // VNPay expects amount * 100
+    const orderId = products[0]?.orderId;          // Lấy orderId từ sản phẩm đầu
+
+    const res = await axios.post("http://localhost:5000/payment/vnpay", {
+      amount: vnp_Amount,
+      orderId,
+    });
+
+    if (res.data && res.data.paymentUrl) {
+      window.location.href = res.data.paymentUrl;
+    } else {
+      alert("Không tạo được URL thanh toán");
+    }
+    console.log("payment data",res.data);
+  } catch (err) {
+    console.error("Lỗi khi tạo URL thanh toán:", err);
+    alert("Thanh toán thất bại");
+  }
+};
+
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="Modal-title">Order #{idOrder}</div>
@@ -240,7 +267,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
         >
           Danh sách đơn hàng
         </div>
-        <div>Sản phẩm đến từ nhà cung cấp: {supplierName.supplierName}</div>
+        {/* <div>Sản phẩm đến từ nhà cung cấp: {supplierName.supplierName}</div> */}
         <div style={{ margin: "5px 0 16px 232px" }}>
           {supplierName.supplierEmail}
         </div>
@@ -254,8 +281,9 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
                 <th>Last Update</th>
                 <th>Trạng thái</th>
                 <th>Số lượng</th>
+                <th>Kích cỡ</th>
                 <th>Thành tiền</th>
-                {view&&(<th>Note</th>)}
+                {/* {view&&(<th>Note</th>)} */}
               </tr>
             </thead>
             <tbody>
@@ -388,13 +416,16 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
                           </div>
                         </div>
                       </td>
-                      <td style={{ textAlign: "right" }}>
+                      <td style={{ textAlign: "center" }}>
+                        <div>{product.size}</div>
+                      </td>
+                      <td style={{ textAlign: "left" }}>
                         {(product.price.replace(/\./g, "") * product.quantity)
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}{" "}
                         VND
                       </td>
-                      {view&&(
+                      {/* {view&&(
                         <td>
                         <input
                           type="text"
@@ -402,7 +433,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
                           onChange={(event) => handleChangeNote(event, index)} // Use onChange instead of onchange
                           placeholder="Nhập ghi chú"
                         />
-                      </td>)}
+                      </td>)} */}
                     </tr>
                   )
               )}
@@ -426,7 +457,17 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
           </div>
         </div>
         <div className="complete-order">
-          {view&&(<button onClick={() => handleSubmit()}>Complete</button>)}
+          {view&&(
+            <>
+            <button onClick={() => handleSubmit()} >Complete</button>
+            <button onClick={handlePayment}
+                    style={{ backgroundColor: "red" }}
+                    >
+                Thanh toán
+            
+              </button>
+            </>
+            )}
         </div>
       </div>
     </Modal>

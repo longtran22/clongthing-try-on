@@ -172,7 +172,8 @@ function Import() {
           // ownerId: user.id_owner,
         },
       });
-      
+      // console.log("advise data",response);
+      // console.log("hreflink",hrefLink);
       
       // const sugg = response.data.map((s) => s.name);
       // setDataTop((prev) => {
@@ -196,13 +197,14 @@ function Import() {
       image: product.image,
       purchasePrice: product.purchasePrice,
       price:product.price,
+      sizes:product.sizes,
       supplier: product.supplierDetails ? {
         _id: product.supplierDetails._id,
         name: product.supplierDetails.name,
         email: product.supplierDetails.email
       } : null
     }));
-
+    console.log("normalizedProducts",normalizedProducts);
     setDataTop((prev) => {
       const existingIds = new Set(prev.map((item) => item._id));
       const newData = normalizedProducts.filter((item) => !existingIds.has(item._id));
@@ -501,6 +503,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       quantity: 1,
       status: "pending",
       email: true,
+      sizes:item.sizes, //bổ sung size
       isChecked: true,
       emailName: item.supplierDetails.email,
       productId: item._id,
@@ -675,6 +678,9 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       },
       { user: {}, dataForm: {} }
     );
+     console.log("tt produtc",listProductWereAdded );
+    //  groupBySupplier.size=listProductWereAdded.selectedSize;
+
     groupBySupplier.user = {
       id: user._id,
       name: user.name,
@@ -684,18 +690,42 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       role:user.role
     };
     groupBySupplier.tax = myTax
+   
     const url = "http://localhost:5000/import/orderHistory/save";
     
    
     try {
       startLoading();
-      const response = await fetch(url, {
-        method: "POST", // Phương thức POST
-        headers: {
-          "Content-Type": "application/json", // Xác định kiểu dữ liệu là JSON
+      // const response = await fetch(url, {
+      //   method: "POST", // Phương thức POST
+      //   headers: {
+      //     "Content-Type": "application/json", // Xác định kiểu dữ liệu là JSON
+      //   },
+      //   body: JSON.stringify(groupBySupplier), // Chuyển đổi dữ liệu thành chuỗi JSON
+      // });
+      // Tạo bản sao mới của groupBySupplier, chỉnh sửa dataForm["Không xác định"]
+      const payload = {
+        ...groupBySupplier,
+        dataForm: {
+          ...groupBySupplier.dataForm,
+          "Không xác định": groupBySupplier.dataForm["Không xác định"].map(item => ({
+            ...item,
+            size: item.selectedSize,  // thêm trường size = selectedSize
+          })),
         },
-        body: JSON.stringify(groupBySupplier), // Chuyển đổi dữ liệu thành chuỗi JSON
+      };
+
+      // Gửi payload lên server
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
+
+      console.log("dataorder", payload);
+
       console.log("dataordeer",groupBySupplier);
       stopLoading();
       if (response.ok) {
@@ -719,6 +749,17 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       console.error("Lỗi kết nối:", error);
     }
   };
+const handleSizeChange = (index, size) => {
+  setListProductWereAdded((prev) => {
+    const updatedList = [...prev];
+    updatedList[index] = {
+      ...updatedList[index],
+      selectedSize: size, // chỉ lưu 1 size được chọn
+    };
+    return updatedList;
+  });
+};
+
   
   return (
     <>
@@ -735,7 +776,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
                 <th>Số Lượng</th> 
                 <th>Thành Tiền</th>
                 <th>Trạng thái</th>
-                <th>Xóa</th>
+                <th>Kích cỡ</th>
                 <th>Mail</th>
               </tr>
             </thead>
@@ -838,14 +879,30 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
                       )}
                     </div>
                   </td>
-                  <td>
+                  {/* <td>
                     <input
                       type="checkbox"
                       checked={product.isChecked}
                       onChange={() => handleRemove(index)} // Call handler on change
                       id={`checkbox-${index}`}
                     />
-                  </td>
+                  </td> */}
+<td>
+  {product.sizes && product.sizes.map((size) => (
+    <label key={size} style={{ marginRight: '10px' }}>
+      <input
+        type="radio"
+        name={`size-${index}`} // Đặt cùng name để chỉ chọn được 1 cái
+        value={size}
+        checked={product.selectedSize === size}
+        onChange={() => handleSizeChange(index, size)}
+        id={`radio-${index}-${size}`}
+      />
+      {size}
+    </label>
+  ))}
+</td>
+
                   <td>
                     <input
                       type="checkbox"
@@ -860,7 +917,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
         </div>
         <div className="order-tax">
           TAX :{" "}
-          <input 
+          {/* <input 
           type = "text"
           style={{borderRadius:"8px",maxWidth:"60px", border:"1px solid #333",    fontSize:"16px",
             color:"#333",
@@ -870,9 +927,10 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
           value={myTax}
           name= "tax"
           onChange={(e)=>{if (/^\d*$/.test(e.target.value)){setMyTax(e.target.value)}}}
-          />
+          /> */}
+
           <span style={{ fontSize: 16, fontWeight: 300 }}>
-                {"   "}%
+                {"   "}10%
           </span>{" "}
         </div>
         <div className="order-tax">
