@@ -7,6 +7,8 @@ const orderDetailHistorySchema = new mongoose.Schema({
     quantity:{type: String},
     status:{type: String},
     ownerId:{type: mongoose.Schema.Types.ObjectId},
+    //thêm trường size
+    size: { type: String },
 },{ 
     timestamps: true,
 });

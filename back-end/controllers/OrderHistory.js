@@ -394,6 +394,7 @@ const saveOrderHistory = async (req, res) => {
         quantity: item.quantity,
         status: item.status,
         ownerId,
+        size: item.size, // thêm dòng này
       }));
 
       allOrderDetailHistories.push(...orderDetails);

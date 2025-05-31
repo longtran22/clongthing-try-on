@@ -497,6 +497,7 @@ const getProductsBySupplier = async (req, res) => {
             image: 1,
             purchasePrice: 1,
             price: 1,
+            sizes:1,
             "supplierDetails._id": 1,
             "supplierDetails.name": 1,
             "supplierDetails.email": 1,

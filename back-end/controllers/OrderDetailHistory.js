@@ -30,6 +30,7 @@ const listOrderDetail = async (req, res) => {
           productId: 1,
           status: 1,
           quantity: 1,
+          size: 1, // Thêm dòng này
           updatedAt: 1,
           name: "$product.name",
           image: "$product.image",

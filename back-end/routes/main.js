@@ -5,7 +5,7 @@ const roles=require('./roles.route')
 const accounts = require('./accounts.route') 
 const sell=require('./sell.js')
 const home=require('./home.js')
-
+const payment=require('./paymentRoutes.js')
 const profile=require('./profile.js')
 
 const Import = require("./import.js");
@@ -19,7 +19,7 @@ function routes(app){
     app.use('/products',products)
     app.use('/sell',sell)
     app.use('/home',home)
- 
+    app.use('/payment',payment);
     app.use('/profile',profile)
 
     app.use("/import", Import);

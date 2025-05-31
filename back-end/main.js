@@ -28,43 +28,43 @@ app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 mongodb()
-app.post('/tryon', upload.single('model_image'), async (req, res) => {
-    try {
-      const modelImagePath = req.file.path;
-      const garmentImageUrl = req.body.garment_image_url;
+// app.post('/tryon', upload.single('model_image'), async (req, res) => {
+//     try {
+//       const modelImagePath = req.file.path;
+//       const garmentImageUrl = req.body.garment_image_url;
   
-      // Upload ảnh người dùng lên Cloudinary
-      const result = await cloudinary.uploader.upload(modelImagePath, {
-        folder: 'tryon',
-      });
+//       // Upload ảnh người dùng lên Cloudinary
+//       const result = await cloudinary.uploader.upload(modelImagePath, {
+//         folder: 'tryon',
+//       });
   
-      const modelImageUrl = result.secure_url;
+//       const modelImageUrl = result.secure_url;
   
-      // Gọi API Fashn
-      const response = await axios.post(
-        'https://api.fashn.ai/v1/run',
-        {
-          model_image: modelImageUrl,
-          garment_image: garmentImageUrl,
-          category: "tops"
-        },
-        {
-          headers: {
-            Authorization: 'Bearer YOUR_API_KEY',
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+//       // Gọi API Fashn
+//       const response = await axios.post(
+//         'https://api.fashn.ai/v1/run',
+//         {
+//           model_image: modelImageUrl,
+//           garment_image: garmentImageUrl,
+//           category: "tops"
+//         },
+//         {
+//           headers: {
+//             Authorization: 'Bearer YOUR_API_KEY',
+//             'Content-Type': 'application/json'
+//           }
+//         }
+//       );
   
-      // Trả kết quả cho frontend
-      res.json({ resultImageUrl: response.data.image_url });
-      fs.unlinkSync(modelImagePath); // xóa ảnh tạm
+//       // Trả kết quả cho frontend
+//       res.json({ resultImageUrl: response.data.image_url });
+//       fs.unlinkSync(modelImagePath); // xóa ảnh tạm
   
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).json({ error: 'Try-on failed' });
-    }
-  });
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).json({ error: 'Try-on failed' });
+//     }
+//   });
   
 // app.post('/tryon', upload.fields([
 //     { name: 'avatar_image', maxCount: 1 },
@@ -97,6 +97,80 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
 //       res.status(500).json({ error: 'Try-on failed' });
 //     }
 //   });
+
+app.post('/tryon', upload.single('model_image'), async (req, res) => {
+  try {
+    const garmentImageUrl = req.body.garment_image_url;
+    const clothingType = req.body.clothing_type || 'tops';
+    const { TRYON_EMAIL, TRYON_PASSWORD } = process.env;
+
+    if (!garmentImageUrl) {
+      return res.status(400).json({ error: "Thiếu ảnh quần áo (URL)" });
+    }
+
+    let modelImageUrl;
+
+    if (req.file) {
+      // Trường hợp upload file ảnh người
+      const modelImagePath = req.file.path;
+
+      const result = await cloudinary.uploader.upload(modelImagePath, {
+        folder: 'tryon',
+      });
+      modelImageUrl = result.secure_url;
+
+      fs.unlinkSync(modelImagePath); // xoá file tạm
+    } else if (req.body.model_image_url) {
+      // Trường hợp gửi URL ảnh người
+      modelImageUrl = req.body.model_image_url;
+    } else {
+      return res.status(400).json({ error: "Thiếu ảnh người dùng (file hoặc URL)" });
+    }
+
+    // Gửi request lấy ID thử đồ
+      console.log("model",modelImageUrl);
+        console.log("clothing:",clothingType);
+    // const submitRes = await axios.post(
+    //   'https://thenewblack.ai/api/1.1/wf/vto',
+    //   new URLSearchParams({
+    //       email: TRYON_EMAIL,
+    //     password: TRYON_PASSWORD,
+    //     model_photo: modelImageUrl,
+    //     clothing_photo: garmentImageUrl,
+    //     clothing_type: clothingType,
+       
+    //   }),
+    //   { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    // );
+
+    // const tryonId = submitRes.data;
+    // console.log("Try-on ID:", tryonId);
+
+    // Đợi 35s cho hệ thống xử lý
+    await new Promise((resolve) => setTimeout(resolve, 35000));
+
+    // Gọi API lấy kết quả
+    const resultRes = await axios.post(
+      'https://thenewblack.ai/api/1.1/wf/results',
+      new URLSearchParams({
+        email: TRYON_EMAIL,
+        password: TRYON_PASSWORD,
+        id: "1747218542513x241774812169348380",
+        //  id: tryonId ,
+      }),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
+
+    const resultImageUrl = resultRes.data;
+    console.log("result",resultImageUrl);
+    res.json({ resultImageUrl });
+
+  } catch (error) {
+    console.error("Try-on error:", error?.response?.data || error.message);
+    res.status(500).json({ error: 'Virtual try-on failed' });
+  }
+});
+
 routes(app)
 const server =app.listen(5000, () => {
     console.log('Server đang chạy tại http://localhost:5000');
