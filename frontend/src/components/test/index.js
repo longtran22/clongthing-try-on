@@ -21,6 +21,8 @@ const OrderManagement = forwardRef(({ onCreateOrder, onHistory,openModalDetail,s
   const { user = {}, loading } = useAuth();
   const [sortField, setSortField] = useState('');
   const [sortDirection, setSortDirection] = useState('asc');
+  // thêm usestate để lọc đươn hàng theo id
+  const [filteredOrders, setFilteredOrders] = useState([]);
 
 
   const handleSort = (field) => {
@@ -33,7 +35,9 @@ const OrderManagement = forwardRef(({ onCreateOrder, onHistory,openModalDetail,s
   };
   
 
-  const sortedOrders = [...orders].sort((a, b) => {
+  // const sortedOrders = [...orders].sort((a, b) => {
+    // dùng filteredOrders thay vì orders
+    const sortedOrders = [...filteredOrders].sort((a, b) => {
     let aVal = a[sortField];
     let bVal = b[sortField];
   
@@ -136,6 +140,9 @@ console.log('API response order:', data);
       // });
       const regurlizationData = Array.isArray(data) ? data.map(item => createorder(item)) : [];
 setOrders(regurlizationData);
+
+setFilteredOrders(regurlizationData); // ban đầu hiển thị toàn bộ dùng tương đương set order
+
     } catch (error) {
       console.error('Error:', error);
     }
@@ -209,9 +216,11 @@ setOrders(regurlizationData);
     debouncedFetchSuggestions(searchTerm.trim());
   }, [loading, loadOrder, user]);
   
-  useEffect(() => {
-    debouncedFetchSuggestions(searchTerm.trim());
-  }, [searchTerm]);  
+
+  //không tìm theo api backend nữa
+  // useEffect(() => {
+  //   debouncedFetchSuggestions(searchTerm.trim());
+  // }, [searchTerm]);  
 
   const handleSaveClick = async () => {
     try {
@@ -281,9 +290,26 @@ setOrders(regurlizationData);
     setEditedOrder(prevOrder => ({ ...prevOrder, [name]: value }));
   };
 
+  // const handleSearch = (e) => {
+  //   setSearchTerm(e.target.value);
+  // };
+
+  // hàm tím kiểm đơn hàng theo id
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+  const keyword = e.target.value;
+  setSearchTerm(keyword);
+
+  if (!keyword) {
+    // nếu xóa hết ô search thì hiển thị lại toàn bộ
+    setFilteredOrders(orders);
+  } else {
+    const filtered = orders.filter(order =>
+      order.id.toLowerCase() === keyword.toLowerCase()
+    );
+    setFilteredOrders(filtered);
+  }
+};
+
   const transfer = (date) => {
     const date2 = new Date(date);
     if (isNaN(date2)) {

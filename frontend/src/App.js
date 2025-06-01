@@ -5,7 +5,7 @@ import LayoutDefault from './layouts/LayoutDefault';
 import LayoutUser from './layouts/LayoutUser';
 import Home from './pages/Home';
 import ManageProduct from './pages/ManageProduct';
-
+import Profile from './pages/Profile/index.js';
 import Import from './pages/Import';
 
 import Main from './components/introduce/Main_intro.js';
@@ -37,7 +37,7 @@ function App() {
           }
         >
           <Route index element={<Home />} />
-   
+          <Route path='profile' element={<Profile/>}/>
           <Route path="manage-product" element={<ManageProduct />} />
           <Route path="import" element={<Import />} />
           
@@ -54,6 +54,7 @@ function App() {
         >
           <Route index element={<Shop />} />
           {/* <Route path="try-on" element={<TryOn />} /> */}
+          <Route path='profile' element={<Profile/>}/>
           
            <Route path="import" element={<Import />} />
         </Route>

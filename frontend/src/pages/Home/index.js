@@ -1399,11 +1399,14 @@ const handleAddAdmin = async (e) => {
                     {userList.map((order) => (
                       <React.Fragment key={order._id}>
                         <div className="d-flex">
-                          {/* <div className="avatar avatar-online">
-                            <span className="avatar-title rounded-circle border border-white bg-info">
-                              {(order.ownerId || "?").slice(-2).toUpperCase()}
-                            </span>
-                          </div> */}
+                          {/* Avatar */}
+                            <div style={{ width: 50, height: 50, borderRadius: "50%", overflow: "hidden", marginRight: "1rem", backgroundColor: "#ccc", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", fontSize: "1.2rem" }}>
+                              {order.avatar ? (
+                                <img src={order.avatar} alt="avatar" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                              ) : (
+                                (order.name || "?").slice(-2).toUpperCase()
+                              )}
+                            </div>
                           <div className="flex-1 ms-3 pt-1">
                             <h6 className="text-uppercase fw-bold mb-1">
                               Email: {order.email}
@@ -1421,6 +1424,8 @@ const handleAddAdmin = async (e) => {
                           </div>
                           <div className="float-end pt-1">
                             <small className="text-muted">
+                              Ngày tạo
+                              <br/>
                               {new Date(order.createdAt).toLocaleString("vi-VN")}
                             </small>
                           </div>
