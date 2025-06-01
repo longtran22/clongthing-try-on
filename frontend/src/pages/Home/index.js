@@ -52,7 +52,8 @@ const [act,setAct]=useState([])
     { name: "Nov", "Khách hàng trung thành": 780, "khách hàng mới": 420, "Khách hàng quay lại": 890 },
     { name: "Dec", "Khách hàng trung thành": 900, "khách hàng mới": 450, "Khách hàng quay lại": 980 },
   ];
-
+  const [vnpayList, setVnpayList] = useState([]);
+  const [userList, setUserList] = useState([]);
   // if (!user) {
   //   return <div>Không có người dùng nào đăng nhập.</div>;
   // }
@@ -77,12 +78,48 @@ const [act,setAct]=useState([])
   
           const data = await response.json();
           console.log("Revenue:", data);
-          setTotalrevenue(data);
+          // setTotalrevenue(data);
         } catch (error) {
           console.error("Error fetching revenue:", error);
         }
       };
-  
+      const get_vnpay_list = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/payment/getAllvnpay');
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        console.log("VNPAY List:", data.totalAmount);
+        setVnpayList(data.payments.reverse()); // 2. Gán dữ liệu vào state
+        setTotalrevenue(prev => ({
+          percentChange: "80%",
+          state: "",
+          totalRevenueToday: new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+          }).format(data.totalAmount)
+        }));
+      
+
+
+      } catch (error) {
+        console.error("Error fetching VNPAY list:", error);
+      }
+      };
+            const get_user_list = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/accounts/show');
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        console.log("user:", data);
+        setUserList(data.reverse()); // 2. Gán dữ liệu vào state
+        console.log("userList:", userList);
+      
+
+
+      } catch (error) {
+        console.error("Error fetching VNPAY list:", error);
+      }
+      };
       const get_income = async () => {
         try {
           const response = await fetch('http://localhost:5000/home/today_income', {
@@ -217,7 +254,17 @@ const [act,setAct]=useState([])
       }
       }
 
-      await Promise.all([get_revenue(), get_income(),get_customer(),get_report_customer(),get_top_product(),get_pending(),get_activity()]);
+      await Promise.all([
+        get_revenue(), 
+        get_income(),
+        get_customer(),
+        get_report_customer(),
+        get_top_product(),
+        get_pending(),
+        get_activity(),
+        get_vnpay_list(),
+        get_user_list(),
+      ]);
     };
   
     fetchData();
@@ -616,107 +663,38 @@ const handleAddAdmin = async (e) => {
           </div>
         </div>
         <div class="row">
-          <div class="col-md-8">
-          <div class="card">
-              <div class="card-header">
-                <div class="card-title">Sản Phẩm</div>
+          <div className="col-md-8">
+            <div className="card">
+              <div className="card-header">
+                <div className="card-title">Sản Phẩm</div>
               </div>
-              <div class="card-body pb-0">
-              {topproduct.map((a,b)=>{
-              if(b>=1){
-                return (<><div class="separator-dashed"></div>
-                  <div class="d-flex">
-                    <div class="avatar">
-                      <img
-                        src={a.image?a.image.secure_url:"https://www.shutterstock.com/shutterstock/photos/600304136/display_1500/stock-vector-full-basket-of-food-grocery-shopping-special-offer-vector-line-icon-design-600304136.jpg"}
-                        alt="..."
-                        class="avatar-img rounded-circle"
-                      />
+              <div className="card-body pb-0">
+                <div style={{ maxHeight: '540px', overflowY: 'auto' }}>
+                  {topproduct.slice(0, 9).map((a, b) => (
+                    <div key={b}>
+                      {b > 0 && <div className="separator-dashed"></div>}
+                      <div className="d-flex">
+                        <div className="avatar">
+                          <img
+                            src={a.image ? a.image.secure_url : "https://www.shutterstock.com/shutterstock/photos/600304136/display_1500/stock-vector-full-basket-of-food-grocery-shopping-special-offer-vector-line-icon-design-600304136.jpg"}
+                            alt="..."
+                            className="avatar-img rounded-circle"
+                          />
+                        </div>
+                        <div className="flex-1 pt-1 ms-2">
+                          <h6 className="fw-bold mb-1">{a.name}</h6>
+                        </div>
+                        <div className="d-flex ms-auto align-items-center">
+                          <h4 className="text-info fw-bold">{a.rate}</h4>
+                        </div>
+                      </div>
                     </div>
-                    <div class="flex-1 pt-1 ms-2">
-                      <h6 class="fw-bold mb-1">{a.name}</h6>
-                      {/* <small class="text-muted">The Best Donuts</small> */}
-                    </div>
-                    <div class="d-flex ms-auto align-items-center">
-                      <h4 class="text-info fw-bold">{a.rate}</h4>
-                    </div>
-                  </div></>)
-              }
-              return (
-                <div class="d-flex ">
-                  <div class="avatar">
-                    <img
-                      src={a.image.secure_url}
-                      alt="..."
-                      class="avatar-img rounded-circle"
-                    />
-                  </div>
-                  <div class="flex-1 pt-1 ms-2">
-                    <h6 class="fw-bold mb-1">{a.name}</h6>
-                    {/* <small class="text-muted">Cascading Style Sheets</small> */}
-                  </div>
-                  <div class="d-flex ms-auto align-items-center">
-                    <h4 class="text-info fw-bold">{a.rate}</h4>
-                  </div>
+                  ))}
                 </div>
-              )
-              })}
-                {/* <div class="d-flex ">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/logoproduct.svg"
-                      alt="..."
-                      class="avatar-img rounded-circle"
-                    />
-                  </div>
-                  <div class="flex-1 pt-1 ms-2">
-                    <h6 class="fw-bold mb-1">CSS</h6>
-                    <small class="text-muted">Cascading Style Sheets</small>
-                  </div>
-                  <div class="d-flex ms-auto align-items-center">
-                    <h4 class="text-info fw-bold">+$17</h4>
-                  </div>
-                </div>
-                <div class="separator-dashed"></div>
-                <div class="d-flex">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/logoproduct.svg"
-                      alt="..."
-                      class="avatar-img rounded-circle"
-                    />
-                  </div>
-                  <div class="flex-1 pt-1 ms-2">
-                    <h6 class="fw-bold mb-1">J.CO Donuts</h6>
-                    <small class="text-muted">The Best Donuts</small>
-                  </div>
-                  <div class="d-flex ms-auto align-items-center">
-                    <h4 class="text-info fw-bold">+$300</h4>
-                  </div>
-                </div>
-                <div class="separator-dashed"></div>
-                <div class="d-flex">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/logoproduct3.svg"
-                      alt="..."
-                      class="avatar-img rounded-circle"
-                    />
-                  </div>
-                  <div class="flex-1 pt-1 ms-2">
-                    <h6 class="fw-bold mb-1">Ready Pro</h6>
-                    <small class="text-muted">
-                      Bootstrap 5 Admin Dashboard
-                    </small>
-                  </div>
-                  <div class="d-flex ms-auto align-items-center">
-                    <h4 class="text-info fw-bold">+$350</h4>
-                  </div>
-                </div> */}
-                <div class="separator-dashed"></div>
-                <div class="pull-in">
+                <div className="separator-dashed"></div>
+                {/* <div className="pull-in">
                   <canvas id="topProductsChart"></canvas>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -831,7 +809,7 @@ const handleAddAdmin = async (e) => {
           </div>
         </div>
         <div class="row" style={{marginTop:"10px"}}>
-          <div class="col-md-6">
+          {/* <div class="col-md-6">
                   <div class="card">
               <div class="card-header">
                 <div class="card-head-row">
@@ -983,7 +961,85 @@ const handleAddAdmin = async (e) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
+          {/* <div className="col-md-6">
+                <div class="card">
+              <div class="card-header">
+                <div class="card-head-row">
+            <div className="card mt-4">
+  <div className="card-header">
+
+     <div class="card-title">Giao dịch VNPAY gần đây</div>
+  </div>
+  <div className="card-body">
+    <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>Số tiền</th>
+            <th>Thông tin đơn hàng</th>
+            <th>Ngân hàng</th>
+            <th>Ngày tạo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {vnpayList.slice(0, 7).map((txn, index) => (
+            <tr key={index}>
+              <td>{txn.amount}</td>
+              <td>{txn.orderInfo}</td>
+              <td>{txn.bankCode}</td>
+              <td>{new Date(txn.createdAt).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+</div>
+
+          </div> */}
+           <div className="col-md-6">
+                <div className="card">
+                  <div className="card-header">
+                    <div className="card-head-row">
+                      <div className="card-title">Thông tin thanh toán</div>
+                    </div>
+                  </div>
+                  <div className="card-body" style={{ maxHeight: "400px", overflowY: "auto" }}>
+                    {vnpayList.map((order) => (
+                      <React.Fragment key={order._id}>
+                        <div className="d-flex">
+                          {/* <div className="avatar avatar-online">
+                            <span className="avatar-title rounded-circle border border-white bg-info">
+                              {(order.ownerId || "?").slice(-2).toUpperCase()}
+                            </span>
+                          </div> */}
+                          <div className="flex-1 ms-3 pt-1">
+                            <h6 className="text-uppercase fw-bold mb-1">
+                              {order.orderInfo}
+                              {/* <span className={`${getStatusColor(order.generalStatus)} ps-3`}>
+                                {order.generalStatus}
+                              </span> */}
+                            </h6>
+                            <span className="text-muted">
+                              Tổng tiền: {parseInt(order.amount).toLocaleString("vi-VN")}đ — Thuế: 10 %
+                            </span>
+                          </div>
+                          <div className="float-end pt-1">
+                            <small className="text-muted">
+                              {new Date(order.createdAt).toLocaleString("vi-VN")}
+                            </small>
+                          </div>
+                        </div>
+                        <div className="separator-dashed"></div>
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+              </div>
           {/* <div class="col-md-6">
             <div class="card">
               <div class="card-header">
@@ -1138,6 +1194,245 @@ const handleAddAdmin = async (e) => {
             </div>
           </div> */}
           <OrderInfoCard />
+        </div>
+          <div class="row" style={{marginTop:"10px"}}>
+          {/* <div class="col-md-6">
+                  <div class="card">
+              <div class="card-header">
+                <div class="card-head-row">
+                  <div class="card-title">Thông tin</div>
+                  <div class="card-tools">
+                    <ul
+                      class="nav nav-pills nav-secondary nav-pills-no-bd nav-sm"
+                      id="pills-tab"
+                      role="tablist"
+                    >
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="pills-today"
+                          data-bs-toggle="pill"
+                          href="#pills-today"
+                          role="tab"
+                          aria-selected="true"
+                        >
+                          Today
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link active"
+                          id="pills-week"
+                          data-bs-toggle="pill"
+                          href="#pills-week"
+                          role="tab"
+                          aria-selected="false"
+                        >
+                          Week
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a
+                          class="nav-link"
+                          id="pills-month"
+                          data-bs-toggle="pill"
+                          href="#pills-month"
+                          role="tab"
+                          aria-selected="false"
+                        >
+                          Month
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="d-flex">
+                  <div class="avatar avatar-online">
+                    <span class="avatar-title rounded-circle border border-white bg-info">
+                      J
+                    </span>
+                  </div>
+                  <div class="flex-1 ms-3 pt-1">
+                    <h6 class="text-uppercase fw-bold mb-1">
+                      Joko Subianto
+                      <span class="text-warning ps-3">pending</span>
+                    </h6>
+                    <span class="text-muted">
+                      I am facing some trouble with my viewport. When i start my
+                    </span>
+                  </div>
+                  <div class="float-end pt-1">
+                    <small class="text-muted">8:40 PM</small>
+                  </div>
+                </div>
+                <div class="separator-dashed"></div>
+                <div class="d-flex">
+                  <div class="avatar avatar-offline">
+                    <span class="avatar-title rounded-circle border border-white bg-secondary">
+                      P
+                    </span>
+                  </div>
+                  <div class="flex-1 ms-3 pt-1">
+                    <h6 class="text-uppercase fw-bold mb-1">
+                      Prabowo Widodo
+                      <span class="text-success ps-3">open</span>
+                    </h6>
+                    <span class="text-muted">
+                      I have some query regarding the license issue.
+                    </span>
+                  </div>
+                  <div class="float-end pt-1">
+                    <small class="text-muted">1 Day Ago</small>
+                  </div>
+                </div>
+                <div class="separator-dashed"></div>
+                <div class="d-flex">
+                  <div class="avatar avatar-away">
+                    <span class="avatar-title rounded-circle border border-white bg-danger">
+                      L
+                    </span>
+                  </div>
+                  <div class="flex-1 ms-3 pt-1">
+                    <h6 class="text-uppercase fw-bold mb-1">
+                      Lee Chong Wei
+                      <span class="text-muted ps-3">closed</span>
+                    </h6>
+                    <span class="text-muted">
+                      Is there any update plan for RTL version near future?
+                    </span>
+                  </div>
+                  <div class="float-end pt-1">
+                    <small class="text-muted">2 Days Ago</small>
+                  </div>
+                </div>
+                <div class="separator-dashed"></div>
+                <div class="d-flex">
+                  <div class="avatar avatar-offline">
+                    <span class="avatar-title rounded-circle border border-white bg-secondary">
+                      P
+                    </span>
+                  </div>
+                  <div class="flex-1 ms-3 pt-1">
+                    <h6 class="text-uppercase fw-bold mb-1">
+                      Peter Parker
+                      <span class="text-success ps-3">open</span>
+                    </h6>
+                    <span class="text-muted">
+                      I have some query regarding the license issue.
+                    </span>
+                  </div>
+                  <div class="float-end pt-1">
+                    <small class="text-muted">2 Day Ago</small>
+                  </div>
+                </div>
+                <div class="separator-dashed"></div>
+                <div class="d-flex">
+                  <div class="avatar avatar-away">
+                    <span class="avatar-title rounded-circle border border-white bg-danger">
+                      L
+                    </span>
+                  </div>
+                  <div class="flex-1 ms-3 pt-1">
+                    <h6 class="text-uppercase fw-bold mb-1">
+                      Logan Paul <span class="text-muted ps-3">closed</span>
+                    </h6>
+                    <span class="text-muted">
+                      Is there any update plan for RTL version near future?
+                    </span>
+                  </div>
+                  <div class="float-end pt-1">
+                    <small class="text-muted">2 Days Ago</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> */}
+          {/* <div className="col-md-6">
+                <div class="card">
+              <div class="card-header">
+                <div class="card-head-row">
+            <div className="card mt-4">
+  <div className="card-header">
+
+     <div class="card-title">Giao dịch VNPAY gần đây</div>
+  </div>
+  <div className="card-body">
+    <div style={{ maxHeight: "300px", overflowY: "auto" }}>
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>Số tiền</th>
+            <th>Thông tin đơn hàng</th>
+            <th>Ngân hàng</th>
+            <th>Ngày tạo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {vnpayList.slice(0, 7).map((txn, index) => (
+            <tr key={index}>
+              <td>{txn.amount}</td>
+              <td>{txn.orderInfo}</td>
+              <td>{txn.bankCode}</td>
+              <td>{new Date(txn.createdAt).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
+</div>
+
+          </div> */}
+           {/* <div className="col-md-6"> */}
+                <div className="card-body">
+                  <div className="card-header">
+                    <div className="card-head-row">
+                      <div className="card-title">Thông tin người dùng</div>
+                    </div>
+                  </div>
+                  <div className="card-body" style={{ maxHeight: "400px", overflowY: "auto" }}>
+                    {userList.map((order) => (
+                      <React.Fragment key={order._id}>
+                        <div className="d-flex">
+                          {/* <div className="avatar avatar-online">
+                            <span className="avatar-title rounded-circle border border-white bg-info">
+                              {(order.ownerId || "?").slice(-2).toUpperCase()}
+                            </span>
+                          </div> */}
+                          <div className="flex-1 ms-3 pt-1">
+                            <h6 className="text-uppercase fw-bold mb-1">
+                              Email: {order.email}
+                              {/* <span className={`${getStatusColor(order.generalStatus)} ps-3`}>
+                                {order.generalStatus}
+                              </span> */}
+                            </h6>
+                            <span className="text-muted">
+                              Tên : {order.name} — Vai trò: {order.role}
+                            </span>
+                            <br /> 
+                            <span className="text-muted">
+                              ID : {order._id} 
+                            </span>
+                          </div>
+                          <div className="float-end pt-1">
+                            <small className="text-muted">
+                              {new Date(order.createdAt).toLocaleString("vi-VN")}
+                            </small>
+                          </div>
+                        </div>
+                        <div className="separator-dashed"></div>
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </div>
+              {/* </div> */}
+     
+          
         </div>
       </div>
     </div>

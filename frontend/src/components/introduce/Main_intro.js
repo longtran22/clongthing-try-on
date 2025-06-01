@@ -147,7 +147,7 @@ const bannerImages = [
           sku:product.sku,
           unit:product.unit,
           location:product.location,
-
+          sizes:product.sizes, 
           try_on_available:product.try_on_available,
           stock_in_Warehouse:product.stock_in_Warehouse,
           stock_in_shelf:product.stock_in_shelf,

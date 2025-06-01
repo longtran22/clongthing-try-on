@@ -887,21 +887,21 @@ const handleSizeChange = (index, size) => {
                       id={`checkbox-${index}`}
                     />
                   </td> */}
-<td>
-  {product.sizes && product.sizes.map((size) => (
-    <label key={size} style={{ marginRight: '10px' }}>
-      <input
-        type="radio"
-        name={`size-${index}`} // Đặt cùng name để chỉ chọn được 1 cái
-        value={size}
-        checked={product.selectedSize === size}
-        onChange={() => handleSizeChange(index, size)}
-        id={`radio-${index}-${size}`}
-      />
-      {size}
-    </label>
-  ))}
-</td>
+                  <td>
+                    {product.sizes && product.sizes.map((size) => (
+                      <label key={size} style={{ marginRight: '10px' }}>
+                        <input
+                          type="radio"
+                          name={`size-${index}`} // Đặt cùng name để chỉ chọn được 1 cái
+                          value={size}
+                          checked={product.selectedSize === size}
+                          onChange={() => handleSizeChange(index, size)}
+                          id={`radio-${index}-${size}`}
+                        />
+                        {size}
+                      </label>
+                    ))}
+                  </td>
 
                   <td>
                     <input
@@ -944,7 +944,7 @@ const handleSizeChange = (index, size) => {
           </span>
         </div>
         <div className="complete-order">
-          <button onClick={() => handleSubmit()}>Complete</button>
+          <button onClick={() => handleSubmit()}>Xác nhận</button>
         </div>
       </div>
     </>

@@ -74,7 +74,9 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
         `http://localhost:5000/import/orderDetail/listorder?idOrder=${idOrder}`
       );
       const data = await response.json();
-
+      // const responseuser = await fetch(
+      //   `http://localhost:5000/accounts/show=${data}`
+      // );
       const updatedData = data.map((product) => ({
         ...product,
         note: "",
@@ -234,16 +236,17 @@ const handlePayment = async () => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="Modal-title">Order #{idOrder}</div>
+      <div className="Modal-title">Mã đơn hàng #{idOrder}</div>
       <div className="divide"></div>
       <div className="header-order">
         <div className="search-container">
           <div className="supplier2">
             <div style={{ alignItems: "flex-start", padding: "12px" }}>
-              Code order or Date :
+              Tìm
             </div>
             <div>
               <input
+                paddingLeft="20px"
                 type="text"
                 className="order-mgmt-search"
                 placeholder="Search for..."
@@ -459,7 +462,7 @@ const handlePayment = async () => {
         <div className="complete-order">
           {view&&(
             <>
-            <button onClick={() => handleSubmit()} >Complete</button>
+            <button onClick={() => handleSubmit()} >Xác nhận</button>
             <button onClick={handlePayment}
                     style={{ backgroundColor: "red" }}
                     >

@@ -96,13 +96,13 @@ const handleSearchChange = (e) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="Modal-title">Order history</div>
+      <div className="Modal-title">Lịch sử thao tác</div>
       <div className="divide"></div>
       <div className="header-order">
         <div className="search-container">
           <div className="supplier2">
             <div style={{ alignItems: "flex-start", padding: "12px" }}>
-              Code order or Date :
+             Tìm kiếm
             </div>
             <div>
               <input
@@ -127,13 +127,13 @@ const handleSearchChange = (e) => {
           <thead>
             <tr>
               <th>STT</th>
-              <th>UserName</th>
-              <th>Order Code</th>
+              <th>Tên khách hàng</th>
+              <th>Mã đơn hàng</th>
               <th>Tên Sản Phẩm</th>
-              <th>CreatedAt</th>
-              <th>Last Update</th>
-              <th>Status</th>
-              <th>Detail</th>
+              <th>Ngày tạo</th>
+              <th>Cập nhật</th>
+              <th>Trạng thái</th>
+              <th>Chi tiết</th>
             </tr>
           </thead>
           <tbody>

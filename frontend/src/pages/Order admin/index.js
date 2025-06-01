@@ -879,7 +879,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
           </span>
         </div>
         <div className="complete-order">
-          <button onClick={() => handleSubmit()}>Complete</button>
+          <button onClick={() => handleSubmit()}>Xác nhận</button>
         </div>
       </div>
     </>

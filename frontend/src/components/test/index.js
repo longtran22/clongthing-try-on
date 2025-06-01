@@ -55,10 +55,10 @@ const OrderManagement = forwardRef(({ onCreateOrder, onHistory,openModalDetail,s
   
 
   const createorder = (order) => {
-    console.log(order);
+    // console.log(order);
     let emails="";
     if (user.role === "Admin") {
-      emails=order._id;
+      emails=order.ownerEmail;
     } else {
      emails=order.email
     }
@@ -126,8 +126,8 @@ const OrderManagement = forwardRef(({ onCreateOrder, onHistory,openModalDetail,s
 
       const data = await response.json();
       // const data = await response.json();
-console.log('API response:', data);
-      console.log(data,"new data")
+console.log('API response order:', data);
+      // console.log(data,"new data")
       // const regurlizationData = data.map(item => createorder(item));
       // setOrders((prev)=>{
       //   const newData = [...regurlizationData]
@@ -363,9 +363,9 @@ setOrders(regurlizationData);
                     </div>
                   ) : (
                     <div>
-                      {/* {order.client} <br /> */}
+                      Đơn : {order.id} <br /> 
                       {/* <small>{order.email}</small>  */}
-                      {order.email}
+                      Email: {order.email}
                     </div>
                   )}
                 </td>

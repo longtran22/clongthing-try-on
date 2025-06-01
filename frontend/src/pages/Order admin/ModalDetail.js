@@ -419,7 +419,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
           </div>
         </div>
         <div className="complete-order">
-          {view&&(<button onClick={() => handleSubmit()}>Complete</button>)}
+          {view&&(<button onClick={() => handleSubmit()}>Xác nhận</button>)}
         </div>
       </div>
     </Modal>
