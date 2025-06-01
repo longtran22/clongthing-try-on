@@ -506,7 +506,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
                 </div>
                 {g && (
                   <div className="form-group">
-                    <label htmlFor="image">Image (22 cách để nhập ảnh)</label>
+                    <label htmlFor="image">Image (2 cách để nhập ảnh)</label>
                     <p style={{ marginBottom: "3px" }}>1. tải ảnh lên từ máy</p>
                     <input
                       type="file"
@@ -521,7 +521,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
                       type="text"
                       id="image"
                       name="image"
-                      value={editData.image}
+                      value={editData.image.secure_url}
                       onChange={handleChange_link}
                     />
                     {/* <p style={{ marginBottom: "3px", marginTop: "3px" }}>
