@@ -127,7 +127,7 @@
 }
 
 .order-mgmt-status.deliveried {
-  background-color: #28a745;
+  background-color:rgb(80, 139, 248);
   color: white;
 }
 
@@ -138,6 +138,11 @@
 
 .order-mgmt-status.pending {
   background-color: #ffc107;
+  color: black;
+}
+
+.order-mgmt-status.complete {
+  background-color:rgb(77, 255, 7);
   color: black;
 }
 

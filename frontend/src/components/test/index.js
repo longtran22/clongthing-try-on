@@ -391,7 +391,7 @@ setOrders(regurlizationData);
                     >
                       <option value="Pending">Pending</option>
                       <option value="deliveried">Deliveried</option>
-                       <option value="Pending">Accomplish</option>
+                       <option value="Complete">Complete</option>
                       <option value="Canceled">Canceled</option>
                     </select>
                   ) : (

@@ -8,7 +8,8 @@ import Notification from "./noti.js"
 function Header({size}) {
   return(<>
   
-    <div className="header" style={{width:`${size}%`,marginLeft:`${100-size}%`}}>
+    {/* <div className="header" style={{width:`${size}%`,marginLeft:`${100-size}%`}}> */}
+    <div className="header" style={{width:`100%`,marginLeft:`0%`}}>
       <div className="search-box">
       {/* <FaSearch className="search-icon"  />
       <i class="fas fa-search"></i>

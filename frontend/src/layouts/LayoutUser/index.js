@@ -18,10 +18,11 @@ setRing2(true);
 }
   return(
     <>
-      <Header size={size}/>
+     
       <main>
         <Sidebar change={change}/>
-        <div style={{width:`${size}%`,marginLeft:`${100-size}%`,marginTop:"82px"}}>
+        <div style={{width:`${size}%`,marginLeft:`${100-size}%`,marginTop:"0px"}}>
+           <Header size={size}/>
 <Outlet className="main__content"/>
 
         </div>

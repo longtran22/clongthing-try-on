@@ -190,7 +190,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
     });
   };
   return (
-    <div className="product-detail-overlay">
+   <div className="product-detail-overlay">
       <div className="product-detail-container">
         <span className="close-button" onClick={onClose}>
           &times;
@@ -238,6 +238,9 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
                 ["Số lượng kho", products.stock_in_Warehouse],
                 ["Đơn vị", products.unit],
                 ["Giá nhập", `$${products.purchasePrice}`],
+                ["Kích cỡ", Array.isArray(products.sizes) ? products.sizes.join(", ") : ""],
+                ["Màu sắc", Array.isArray(products.colors) ? products.colors.join(", ") : ""],
+                ["Chất liệu", products.material || ""],
                 ["Ghi chú", products.notes],
                 ["Link ảnh", products.image?.secure_url || ""]
               ].map(([label, value]) => (
@@ -354,7 +357,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
                     </option>
                   ))}
                 </select>
-    </div>
+              </div>
               <div className="form-group">
                 <label htmlFor="purchaseDate">Ngày nhập</label>
                 <input
@@ -397,6 +400,84 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
                   onChange={handleNChange}
                 />
               </div>
+              
+              {/* New Size and Color Section */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="sizes">Kích cỡ (cách nhau bằng dấu phẩy)</label>
+                  <input
+                    type="text"
+                    id="sizes"
+                    name="sizes"
+                    value={Array.isArray(editData.sizes) ? editData.sizes.join(", ") : ""}  
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const sizesArray = value.split(',').map(size => size.trim()).filter(size => size !== '');
+                      setEditData(prev => ({
+                        ...prev,
+                        sizes: sizesArray
+                      }));
+                    }}
+                    placeholder="S, M, L, X, XL, XXL"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="colors">Màu sắc (cách nhau bằng dấu phẩy)</label>
+                  <input
+                    type="text"
+                    id="colors"
+                    name="colors"
+                    value={Array.isArray(editData.colors) ? editData.colors.join(", ") : ""}  
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const colorsArray = value.split(',').map(color => color.trim()).filter(color => color !== '');
+                      setEditData(prev => ({
+                        ...prev,
+                        colors: colorsArray
+                      }));
+                    }}
+                    placeholder="Đỏ, Xanh, Đen"
+                  />
+                </div>
+              </div>
+             
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="material">Chất liệu</label>
+                  <input 
+                    type="text" 
+                    id="material" 
+                    name="material" 
+                    value={editData.material || ""} 
+                    onChange={handleNChange} 
+                  />
+                </div>
+                {/* Stock quantity for each size */}
+                {editData.sizes && editData.sizes.map((size, index) => (
+                  <div key={index} className="form-group">
+                    <label>Số lượng {size}</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={editData.stock && editData.stock[size] ? editData.stock[size].quantity || "" : ""}
+                      onChange={(e) => {
+                        const quantity = e.target.value;
+                        setEditData(prev => ({
+                          ...prev,
+                          stock: {
+                            ...prev.stock,
+                            [size]: {
+                              ...(prev.stock && prev.stock[size] ? prev.stock[size] : {}),
+                              quantity: quantity
+                            }
+                          }
+                        }));
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+              
               <div className="form-group">
                 <label htmlFor="notes">Notes</label>
                 <textarea
