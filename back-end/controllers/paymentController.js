@@ -1,6 +1,33 @@
 const vnpay = require('../modules/config/vnpay.js'); // module cấu hình VNPay
 const Payment = require('../modules/Payment.js');    // model Payment (MongoDB)
 
+// const getAllPayments = async (req, res) => {
+//   try {
+//     const payments = await Payment.find().sort({ createdAt: -1 }); // sắp xếp theo thời gian mới nhất
+//     res.json(payments);
+//   } catch (error) {
+//     console.error('Lỗi khi lấy danh sách thanh toán:', error);
+//     res.status(500).json({ error: 'Lỗi server khi lấy danh sách thanh toán' });
+//   }
+// };
+const getAllPayments = async (req, res) => {
+  try {
+    const payments = await Payment.find().sort({ createdAt: -1 });
+
+    // Tính tổng amount
+    const totalAmount = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0);
+
+    res.json({
+      payments,
+      totalAmount
+    });
+  } catch (error) {
+    console.error('Lỗi khi lấy danh sách thanh toán:', error);
+    res.status(500).json({ error: 'Lỗi server khi lấy danh sách thanh toán' });
+  }
+};
+
+
 const createVNPayPayment = async (req, res) => {
   try {
     const { amount, orderId } = req.body; // lấy từ client gửi lên
@@ -12,7 +39,8 @@ const createVNPayPayment = async (req, res) => {
 
   
 
-    const returnUrl = 'http://localhost:3000/payment-success'; // frontend URL trả về
+    // const returnUrl = 'http://localhost:3000/payment-success'; // frontend URL trả về
+    const returnUrl = 'http://localhost:3000/shop/import';
     const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     // Tạo URL thanh toán VNPay
@@ -81,4 +109,7 @@ const createVNPayPayment = async (req, res) => {
   }
 };
 
-module.exports = { createVNPayPayment };
+module.exports = { 
+  createVNPayPayment,
+   getAllPayments
+};

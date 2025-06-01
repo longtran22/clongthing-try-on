@@ -130,6 +130,8 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
     // Gửi request lấy ID thử đồ
       console.log("model",modelImageUrl);
         console.log("clothing:",clothingType);
+        console.log("garmentImageUrl:",garmentImageUrl);
+        //  console.log("clothingType:",clothingType);
     // const submitRes = await axios.post(
     //   'https://thenewblack.ai/api/1.1/wf/vto',
     //   new URLSearchParams({
@@ -155,7 +157,7 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
       new URLSearchParams({
         email: TRYON_EMAIL,
         password: TRYON_PASSWORD,
-        id: "1747218542513x241774812169348380",
+        id: '1748747648046x391320756246291700',
         //  id: tryonId ,
       }),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }

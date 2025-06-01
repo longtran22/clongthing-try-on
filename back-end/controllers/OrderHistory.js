@@ -584,6 +584,90 @@ const getOrder = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+// const getAllOrders = async (req, res) => {
+//   try {
+//     const { search } = req.query;
+//     let matchConditions = {};
+
+//     if (search) {
+//       if (mongoose.Types.ObjectId.isValid(search)) {
+//         matchConditions._id = new mongoose.Types.ObjectId(search);
+//       } else if (isNaN(Date.parse(search))) {
+//         matchConditions["supplier.name"] = { $regex: search, $options: "i" };
+//       } else {
+//         const parsedDate = new Date(search);
+//         if (isNaN(parsedDate)) {
+//           return res.status(400).json({ error: "Invalid date format" });
+//         }
+//         matchConditions.createdAt = {
+//           $gte: parsedDate,
+//           $lt: new Date(parsedDate.getTime() + 24 * 60 * 60 * 1000),
+//         };
+//       }
+//     }
+
+//     const result = await OrderHistory.aggregate([
+//       {
+//         $addFields: {
+//           ownerIdObj: { $toObjectId: "$ownerId" }, // 🛠️ convert String => ObjectId trước
+//         },
+//       },
+//       {
+//         $lookup: {
+//           from: "suppliers",
+//           localField: "supplierId",
+//           foreignField: "_id",
+//           as: "supplier",
+//         },
+//       },
+//       {
+//         $unwind: {
+//           path: "$supplier",
+//           preserveNullAndEmptyArrays: true,
+//         },
+//       },
+//       {
+//         $lookup: {
+//           from: "users", // đúng tên collection users
+//           localField: "ownerIdObj", // lookup bằng objectId đã convert
+//           foreignField: "_id",
+//           as: "owner",
+//         },
+//       },
+//       {
+//         $unwind: {
+//           path: "$owner",
+//           preserveNullAndEmptyArrays: true,
+//         },
+//       },
+//       {
+//         $match: {
+//           ...matchConditions,
+//           // generalStatus: "pending",
+//         },
+//       },
+//       {
+//         $project: {
+//           tax: 1,
+//           supplierId: 1,
+//           generalStatus: 1,
+//           amount: 1,
+//           updatedAt: 1,
+//           ownerId: 1,
+//           email: "$owner.email", // ✅ lấy ra email
+//           nameSupplier: "$supplier.name",
+//           emailSupplier: "$supplier.email",
+//         },
+//       },
+//     ]);
+
+//     return res.status(200).json(result);
+//   } catch (error) {
+//     console.error("Error in getAllOrders:", error);
+//     return res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 const getAllOrders = async (req, res) => {
   try {
     const { search } = req.query;
@@ -608,11 +692,6 @@ const getAllOrders = async (req, res) => {
 
     const result = await OrderHistory.aggregate([
       {
-        $addFields: {
-          ownerIdObj: { $toObjectId: "$ownerId" }, // 🛠️ convert String => ObjectId trước
-        },
-      },
-      {
         $lookup: {
           from: "suppliers",
           localField: "supplierId",
@@ -628,9 +707,17 @@ const getAllOrders = async (req, res) => {
       },
       {
         $lookup: {
-          from: "users", // đúng tên collection users
-          localField: "ownerIdObj", // lookup bằng objectId đã convert
-          foreignField: "_id",
+          from: "users",
+          let: { ownerId: "$ownerId" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ["$_id", { $toObjectId: "$ownerId" }]
+                }
+              }
+            }
+          ],
           as: "owner",
         },
       },
@@ -652,14 +739,28 @@ const getAllOrders = async (req, res) => {
           supplierId: 1,
           generalStatus: 1,
           amount: 1,
+          createdAt: 1,
           updatedAt: 1,
           ownerId: 1,
-          email: "$owner.email", // ✅ lấy ra email
           nameSupplier: "$supplier.name",
           emailSupplier: "$supplier.email",
         },
       },
     ]);
+
+    // Lấy email cho từng ownerId
+    const ownerIds = [...new Set(result.map(r => r.ownerId).filter(Boolean))];
+    const users = await User.find({ _id: { $in: ownerIds } });
+    const userMap = users.reduce((acc, user) => {
+      acc[user._id.toString()] = user;
+      return acc;
+    }, {});
+
+    // Thêm ownerEmail vào mỗi order
+    result.forEach(order => {
+      const user = userMap[order.ownerId];
+      order.ownerEmail = user ? user.email : null;
+    });
 
     return res.status(200).json(result);
   } catch (error) {
@@ -667,8 +768,6 @@ const getAllOrders = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
-
 
 const updateOrderHistory = async (req, res) => {
   const newOrder = req.body;

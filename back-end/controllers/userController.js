@@ -190,29 +190,53 @@ const sendAgain =  async (req, res) => {
 };
 
 
+// const showUser = async (req, res) => {
+//     const userId = req.query.userId;
+//     if (!userId) {
+//         return res.status(400).json({
+//             message: 'Thiếu userId trong yêu cầu!'
+//         });
+//     }
+
+//     try {
+//         // Tìm tất cả người dùng có `id_owner` khớp với giá trị được truyền vào
+//         const users = await User.find({
+//             id_owner: userId
+//         });
+
+
+//         // Nếu không tìm thấy người dùng nào
+//         if (users.length === 0) {
+//             return res.status(404).json({
+//                 message: 'Không tìm thấy người dùng nào với id_owner này!'
+//             });
+//         }
+
+//         // Trả về danh sách người dùng nếu tìm thấy
+//         res.status(200).json(users);
+//     } catch (error) {
+//         console.error('Error fetching users:', error);
+//         res.status(500).json({
+//             message: 'Có lỗi xảy ra. Vui lòng thử lại!'
+//         });
+//     }
+// };
+
 const showUser = async (req, res) => {
     const userId = req.query.userId;
-    if (!userId) {
-        return res.status(400).json({
-            message: 'Thiếu userId trong yêu cầu!'
-        });
-    }
 
     try {
-        // Tìm tất cả người dùng có `id_owner` khớp với giá trị được truyền vào
-        const users = await User.find({
-            id_owner: userId
-        });
+        const filter = userId ? { id_owner: userId } : {};
+        const users = await User.find(filter);
 
-
-        // Nếu không tìm thấy người dùng nào
         if (users.length === 0) {
             return res.status(404).json({
-                message: 'Không tìm thấy người dùng nào với id_owner này!'
+                message: userId
+                    ? 'Không tìm thấy người dùng nào với id_owner này!'
+                    : 'Không có người dùng nào!'
             });
         }
 
-        // Trả về danh sách người dùng nếu tìm thấy
         res.status(200).json(users);
     } catch (error) {
         console.error('Error fetching users:', error);
