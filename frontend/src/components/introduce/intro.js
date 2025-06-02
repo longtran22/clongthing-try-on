@@ -239,6 +239,7 @@ setIsforgot(true);
         console.error('Lỗi:', error);
       });
   }
+  
   return (<> 
   {isreset&&<Change_password off={()=>{setIsreset(false)}} email={isreset}/>} 
   {isforgot&&<Forgot_password off={()=>{setIsforgot(false)}} turnon={(email)=>{setIsreset(email)}}/>} 
