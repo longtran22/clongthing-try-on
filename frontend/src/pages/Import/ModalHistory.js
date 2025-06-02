@@ -20,19 +20,40 @@ const ModalHistory = forwardRef(({ isOpen, onClose,openModalDetail,setIdOrder,ap
       const sugg = response.data;
 
   
+      // setListOrder((prev) => {
+      //   if (page > 1) {
+      //     // Nếu page > 1, tức là đang nhấn "Load More", nối thêm dữ liệu mới
+      //     return {
+      //       ...prev,
+      //       logs: [...prev.logs, ...sugg.logs],
+      //       totalCount: sugg.totalCount,
+      //     };
+      //   } else {
+      //     // Nếu page = 1 (tìm kiếm mới), thay thế toàn bộ dữ liệu
+      //     return sugg;
+      //   }
+      // });
+
+      // // đảo thứ tự ở đây
+
       setListOrder((prev) => {
+        const reversedLogs = [...sugg.logs].reverse(); // đảo thứ tự logs mới
         if (page > 1) {
-          // Nếu page > 1, tức là đang nhấn "Load More", nối thêm dữ liệu mới
+          // Nếu page > 1, nối thêm dữ liệu mới (đã đảo)
           return {
             ...prev,
-            logs: [...prev.logs, ...sugg.logs],
+            logs: [...prev.logs, ...reversedLogs],
             totalCount: sugg.totalCount,
           };
         } else {
-          // Nếu page = 1 (tìm kiếm mới), thay thế toàn bộ dữ liệu
-          return sugg;
+          // Nếu page = 1, thay thế toàn bộ dữ liệu với logs đã đảo
+          return {
+            ...sugg,
+            logs: reversedLogs,
+          };
         }
       });
+
     } catch (error) {
       console.error("Error fetching suggestions:", error);
     }
@@ -64,17 +85,32 @@ const handleSearchChange = (e) => {
     console.log("Đã chọn hàng:", order);
   };
 
-  useEffect(() => {
-    // if(user.role==="Admin"){
-    // if(loading)return
-    // debouncedFetchSuggestions(searchTerm.trim(), "http://localhost:5000/import/loggingOrder/listAllOrder", page, 10);
-    // }
-    // else {
-      if(loading)return
-      debouncedFetchSuggestions(searchTerm.trim(), "http://localhost:5000/import/loggingOrder/listOrder", page, 10);
-    // }
-  }, [searchTerm, page,loading,loadLog,user]);  
+  // useEffect(() => {
+  //   // if(user.role==="Admin"){
+  //   // if(loading)return
+  //   // debouncedFetchSuggestions(searchTerm.trim(), "http://localhost:5000/import/loggingOrder/listAllOrder", page, 10);
+  //   // }
+  //   // else {
+  //     if(loading)return
+  //     debouncedFetchSuggestions(searchTerm.trim(), "http://localhost:5000/import/loggingOrder/listOrder", page, 10);
+  //   // }
+  // }, [searchTerm, page,loading,loadLog,user]);  
   
+  useEffect(() => {
+  if (loading) return;
+
+  const trimmedTerm = searchTerm.trim();
+  const url =
+    user.role === "Admin"
+      ? "http://localhost:5000/import/loggingOrder/listAllOrder"
+      : "http://localhost:5000/import/loggingOrder/listOrder";
+
+  debouncedFetchSuggestions(trimmedTerm, url, page, 10);
+  console.log("listorder",listOrder)
+}, [searchTerm, page, loading, loadLog, user]);
+
+
+
   const handlePage = () => {
     // Tăng page khi nhấn "Load More" để tải thêm dữ liệu
     setPage((prevPage) => prevPage + 1);
@@ -102,7 +138,7 @@ const handleSearchChange = (e) => {
         <div className="search-container">
           <div className="supplier2">
             <div style={{ alignItems: "flex-start", padding: "12px" }}>
-             Tìm kiếm
+             Tìm 
             </div>
             <div>
               <input
@@ -138,6 +174,7 @@ const handleSearchChange = (e) => {
           </thead>
           <tbody>
             {listOrder.logs.map((order, index) => (
+          
               <tr key={order._id} onClick={() => handleRowClick(order)}>
                 <td>{index + 1}</td>
                 <td>{order.userName}</td>

@@ -682,10 +682,24 @@ const handleAddAdmin = async (e) => {
                           />
                         </div>
                         <div className="flex-1 pt-1 ms-2">
+                          Tên: 
                           <h6 className="fw-bold mb-1">{a.name}</h6>
+                          Sku: 
+                          <h6 className="fw-bold mb-1">{a.sku}</h6>
                         </div>
                         <div className="d-flex ms-auto align-items-center">
-                          <h4 className="text-info fw-bold">{a.rate}</h4>
+                         <div>
+                          <div>
+                            Nhập: <span className="text-info">{a.purchasePrice} VND</span>
+                          </div>
+                          <div>
+                            Bán: <span className="text-info">{a.price} VND</span>
+                          </div>
+                          <div>
+                            Hàng trong kho: <span className="text-info">{a.stock_in_Warehouse}</span>
+                          </div>
+                        </div>
+
                         </div>
                       </div>
                     </div>

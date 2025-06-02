@@ -44,7 +44,7 @@ function LoginModal({ off, isSignup }) {
           confirm:confirm,
           code:formData.code
         };
-        console.log(body);
+        console.log("body",body);
         startLoading();
         fetch("http://localhost:5000/login/sign_up", {
           method: "POST",
@@ -61,8 +61,8 @@ function LoginModal({ off, isSignup }) {
               if(confirm){
               Cookies.set("user", JSON.stringify(data.user), { expires: 7, secure: true, sameSite: 'Strict' });
               login(data.user)
-              navigate('/home');
-              // notify(1,"đăng nhập thành công","Thành công")
+              navigate('/shop');
+              notify(1,"đăng nhập thành công","Thành công")
               }else{
                 setConfirm(true)
               }
@@ -73,6 +73,7 @@ function LoginModal({ off, isSignup }) {
           })
           .catch((error) => {
             console.error('Lỗi:', error);
+            console.log('Lỗi:', error);
           });
       }
     } else {

@@ -3,6 +3,7 @@
 import LoginModal from './intro'
 import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import ProductGrid from "../../components/Manage_product/item.js";
 import { notify } from '../../components/Notification/notification';
 import help from "./img/help.png"
 import logo from "./img/logo2-removebg-preview.png"
@@ -366,7 +367,8 @@ return (<>
                         quantity: quantity
                       };
                       console.log('Đặt hàng:', orderData);
-                      alert('Đã thêm vào giỏ hàng!');
+                      // alert('Đã thêm vào giỏ hàng!');
+                       notify(3,"bạn phải đăng nhập","Cảnh báo !")
                     }}
                     disabled={
                       (selectedProduct.sizes && selectedProduct.sizes.length > 0 && !selectedSize) ||
@@ -386,7 +388,8 @@ return (<>
                         quantity: quantity
                       };
                       console.log('Mua ngay:', orderData);
-                      alert('Chuyển đến trang thanh toán!');
+                      // alert('Chuyển đến trang thanh toán!');
+                      notify(3,"bạn phải đăng nhập","Cảnh báo !")
                     }}
                     disabled={
                       (selectedProduct.sizes && selectedProduct.sizes.length > 0 && !selectedSize) ||
@@ -554,6 +557,7 @@ return (<>
           ))}
         </div>
       </div>
+      
 
       {/* Load More */}
       {visibleProducts < filteredProducts.length && (
