@@ -68,8 +68,15 @@ const login_google = async (req, res) => {
 
 const sign_up = async (req, res) => {
     const { name, email, password,confirm,code} = req.body;
-console.log(name, email,password,confirm,code);
+console.log("body",name, email,password,confirm,code);
     try {
+    const existingName = await User.findOne({ name });
+    // const existingNameTemp = await User_temporary.findOne({ name });
+
+    // if (existingName || existingNameTemp) {
+     if (existingName ){
+        return res.status(400).json({ message: 'Tên người dùng đã tồn tại!' });
+    }
         let user = await User_temporary.findOne({ email });
         if(confirm){
             console.log(user)
