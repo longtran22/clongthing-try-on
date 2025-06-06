@@ -5,8 +5,7 @@ import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import ProductGrid from "../../components/Manage_product/item.js";
 import { notify } from '../../components/Notification/notification';
-import help from "./img/help.png"
-import logo from "./img/logo2-removebg-preview.png"
+
 
 // import './main.css'
 // function Main(){

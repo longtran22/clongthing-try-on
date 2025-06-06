@@ -33,7 +33,7 @@ function Sales_daily() {
         const fetchData = async () => {
 if(loading) return ;
 try {
-    const response = await fetch('http://localhost:8080/home/generatedailySale', {
+    const response = await fetch('http://localhost:5000/home/generatedailySale', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

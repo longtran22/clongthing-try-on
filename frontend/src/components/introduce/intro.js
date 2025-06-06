@@ -11,7 +11,7 @@ import Forgot_password from "./forgot_password"
 import Change_password from "./resetpassword"
 import {useLoading} from "./Loading"
 import { notify } from '../../components/Notification/notification';
-import top from './img/top.png'
+
 function LoginModal({ off, isSignup }) {
   // Sử dụng state để điều khiển hiển thị modal và form
   const { startLoading, stopLoading } = useLoading();

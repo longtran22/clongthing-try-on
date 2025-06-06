@@ -30,7 +30,7 @@ function UsersOnlineCard() {
         const fetchData = async () => {
 if(loading) return ;
 try {
-    const response = await fetch('http://localhost:8080/home/generatedailyCustomer', {
+    const response = await fetch('http://localhost:5000/home/generatedailyCustomer', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

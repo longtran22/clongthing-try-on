@@ -157,31 +157,31 @@ const [x,SetX]=useState(false);
             console.log("Lỗi:", error);
           });
   };
-  const handleEditAccount = (index) => {
-    const accountToEdit = bankAccounts[index];
-    setNewBankAccount(accountToEdit);
-    setShowBankForm(true);
-    SetImage(bankAccounts[index].image.secure_url)
-  };
-  const handleDeleteAccount = async (index) => {
-    if(data.role!="Admin"){
-      notify(2,"chỉ có chủ mới có quyền xoá tài khoản","Thất bại");
-      return;
-    }
-    const accountToDelete = bankAccounts[index];
-    const response = await fetch("http://localhost:5000/bank/delete_bank", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user:user, accountNumber:accountToDelete.accountNumber,bankName:accountToDelete.bankName }),
-    });
-    console.log(response)
-    if (response.ok) {
-      setBankAccounts((prev) => prev.filter((_, i) => i !== index));
-      notify(1, "Xóa tài khoản thành công", "Thành công");
-    } else {
-      notify(2, "Xóa tài khoản thất bại", "Thất bại");
-    }
-  };
+  // const handleEditAccount = (index) => {
+  //   const accountToEdit = bankAccounts[index];
+  //   setNewBankAccount(accountToEdit);
+  //   setShowBankForm(true);
+  //   SetImage(bankAccounts[index].image.secure_url)
+  // };
+  // const handleDeleteAccount = async (index) => {
+  //   if(data.role!="Admin"){
+  //     notify(2,"chỉ có chủ mới có quyền xoá tài khoản","Thất bại");
+  //     return;
+  //   }
+  //   const accountToDelete = bankAccounts[index];
+  //   const response = await fetch("http://localhost:5000/bank/delete_bank", {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ user:user, accountNumber:accountToDelete.accountNumber,bankName:accountToDelete.bankName }),
+  //   });
+  //   console.log(response)
+  //   if (response.ok) {
+  //     setBankAccounts((prev) => prev.filter((_, i) => i !== index));
+  //     notify(1, "Xóa tài khoản thành công", "Thành công");
+  //   } else {
+  //     notify(2, "Xóa tài khoản thất bại", "Thất bại");
+  //   }
+  // };
     
   return (
     <div className="profile-container">
@@ -242,81 +242,7 @@ const [x,SetX]=useState(false);
         </ul>
       </div>
 
-      {/* <div className="bank-section">
-  <div>Thông tin tài khoản ngân hàng</div>
-  <button className="message-btn" onClick={() => {setShowBankForm((prev) => !prev);setNewBankAccount({
-    accountNumber: '',
-    bankName: '',
-    name: '',
-    image: '',
-  });
-  SetImage(false);
 
-}
-  }>
-    {showBankForm ? "Đóng form" : "Thêm tài khoản ngân hàng"}
-  </button>
-  {showBankForm && (
-    <div className="bank-form">
-      <form onSubmit={addBankAccount}>
-        <input
-          type="text"
-          name="accountNumber"
-          placeholder="Số tài khoản"
-          value={newBankAccount.accountNumber}
-          onChange={handleBankInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="bankName"
-          placeholder="Ngân hàng"
-          value={newBankAccount.bankName}
-          onChange={handleBankInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="name"
-          placeholder="Tên"
-          value={newBankAccount.name}
-          onChange={handleBankInputChange}
-          required
-        />
-        <label>mã QR</label>
-        <input type="file" name="image" onChange={handleChangeimage} required />
-        {image && (
-          <div>
-            <h3>Ảnh :</h3>
-            <img src={image} alt="Captured" style={{ width: '300px' }} />
-          </div>
-        )}
-        <button className="message-btn">Lưu tài khoản</button>
-      </form>
-    </div>
-  )}
-  <ul>
-    {bankAccounts.map((account, index) => (
-      <li key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-        <span>{account.name} - {account.bankName} ({account.accountNumber})</span>
-        <button
-          style={{ marginLeft: '10px', cursor: 'pointer' }}
-          onClick={() => handleEditAccount(index)}
-          className="edit_account"
-        >
-          view
-        </button>
-        <button
-          style={{ marginLeft: '10px', cursor: 'pointer' }}
-          onClick={() => handleDeleteAccount(index)}
-           className="delete_account"
-        >
-          Delete
-        </button>
-      </li>
-    ))}
-  </ul>
-</div> */}
 
 
       <div className="profile-logout">
