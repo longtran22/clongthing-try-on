@@ -178,3 +178,4 @@ const server =app.listen(5000, () => {
     console.log('Server đang chạy tại http://localhost:5000');
 });
 const io =setupSocket(server);
+require('./controllers/chat')(io)
