@@ -148,8 +148,8 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
     // const tryonId = submitRes.data;
     // console.log("Try-on ID:", tryonId);
 
-    // Đợi 35s cho hệ thống xử lý
-    await new Promise((resolve) => setTimeout(resolve, 35000));
+    // Đợi 150s cho hệ thống xử lý
+    await new Promise((resolve) => setTimeout(resolve, 150000));
 
     // Gọi API lấy kết quả
     const resultRes = await axios.post(
@@ -157,8 +157,12 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
       new URLSearchParams({
         email: TRYON_EMAIL,
         password: TRYON_PASSWORD,
-        id: '1748747648046x391320756246291700',
+        // id: '1748747648046x391320756246291700',
+        // id: '1748747648046x391320756246291700',
         //  id: tryonId ,
+         // id: cho tài khoa lia tran
+         id: '1749223435054x766414709092345200',
+
       }),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
