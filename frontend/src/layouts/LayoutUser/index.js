@@ -6,7 +6,8 @@ import help from "../../../src/components/introduce/img/chat.png"
 import Chat from "../../../src/pages/Home/chat"
 import "../LayoutUser/index.css"
 function LayoutUser(){
-const [size,formSize]=useState(80)
+// const [size,formSize]=useState(80)
+const [size,formSize]=useState(100)
 const [chat,setChat]=useState(false)
 const [ring2,setRing2]=useState(false)
 const change=()=>{
@@ -20,7 +21,7 @@ setRing2(true);
     <>
      
       <main>
-        <Sidebar change={change}/>
+        {/* <Sidebar change={change}/> */}
         <div style={{width:`${size}%`,marginLeft:`${100-size}%`,marginTop:"0px"}}>
            <Header size={size}/>
             <Outlet className="main__content"/>
