@@ -132,21 +132,21 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
         console.log("clothing:",clothingType);
         console.log("garmentImageUrl:",garmentImageUrl);
         //  console.log("clothingType:",clothingType);
-    // const submitRes = await axios.post(
-    //   'https://thenewblack.ai/api/1.1/wf/vto',
-    //   new URLSearchParams({
-    //       email: TRYON_EMAIL,
-    //     password: TRYON_PASSWORD,
-    //     model_photo: modelImageUrl,
-    //     clothing_photo: garmentImageUrl,
-    //     clothing_type: clothingType,
+    const submitRes = await axios.post(
+      'https://thenewblack.ai/api/1.1/wf/vto',
+      new URLSearchParams({
+          email: TRYON_EMAIL,
+        password: TRYON_PASSWORD,
+        model_photo: modelImageUrl,
+        clothing_photo: garmentImageUrl,
+        clothing_type: clothingType,
        
-    //   }),
-    //   { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-    // );
+      }),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
 
-    // const tryonId = submitRes.data;
-    // console.log("Try-on ID:", tryonId);
+    const tryonId = submitRes.data;
+    console.log("Try-on ID:", tryonId);
 
     // Đợi 150s cho hệ thống xử lý
     await new Promise((resolve) => setTimeout(resolve, 150000));
@@ -159,9 +159,9 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
         password: TRYON_PASSWORD,
         // id: '1748747648046x391320756246291700',
         // id: '1748747648046x391320756246291700',
-        //  id: tryonId ,
+         id: tryonId ,
          // id: cho tài khoa lia tran
-         id: '1749223435054x766414709092345200',
+        //  id: '1749223435054x766414709092345200',
 
       }),
       { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }

@@ -8,6 +8,7 @@ const home=require('./home.js')
 const payment=require('./paymentRoutes.js')
 const profile=require('./profile.js')
 const chat=require('./chat.js')
+const calendar=require('./calendar.js')
 const Import = require("./import.js");
 const Bank = require("./bank.js");
 function routes(app){
@@ -19,6 +20,7 @@ function routes(app){
     app.use('/products',products)
     app.use('/sell',sell)
     app.use('/home',home)
+    app.use('/calendar',calendar)
     app.use('/payment',payment);
     app.use('/profile',profile)
     app.use('/chat',chat)
