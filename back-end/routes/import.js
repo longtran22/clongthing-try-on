@@ -10,9 +10,9 @@ const router = express.Router();
 router.get('/loggingOrder/listOrder',loggingOrder.getLogging)
 router.get('/loggingOrder/listAllOrder',loggingOrder.getAllLogging)
 router.get('/orderDetail/listorder', orderDetailHistory.listOrderDetail);
-router.post('/orderDetail/updateDetail',orderDetailHistory.updateDetail);
+router.post('/orderDetail/updateDetail',Author.authorize("edit_order"),orderDetailHistory.updateDetail);
 router.delete('/orderHistory/deleteOrderhistory/:id',orderHistory.deleteOrderhistory);
-router.post('/orderHistory/save', orderHistory.saveOrderHistory);
+router.post('/orderHistory/save', Author.authorize("create_order"),orderHistory.saveOrderHistory);
 router.get('/orderHistory/getOrder', orderHistory.getOrder);
 router.get('/orderHistory/getAllOrder', orderHistory.getAllOrders);
 router.put('/orderHistory/updateOrderhistory',Author.authorize("edit_order"),orderHistory.updateOrderHistory);
