@@ -6,6 +6,7 @@ import React, { useState, useRef,useEffect } from "react";
 import Modal from "../Modal/index.js";
 import { useNavigate } from 'react-router-dom';
 import Notification from "./noti.js"
+import Cookies from "js-cookie";
 function Header({size}) {
 
     const [activeCategory, setActiveCategory] = useState('TRANG CHỦ');
@@ -14,16 +15,32 @@ function Header({size}) {
   const navigate = useNavigate();
 
   const handleNavClick = (item) => {
-    setActiveCategory(item);
-    setitemnavbar(item);
+  setActiveCategory(item);
+  setitemnavbar(item);
 
-    if (item === 'ĐƠN HÀNG') {
-      navigate('/shop/import');
-    };
-       if (item === 'TRANG CHỦ') {
-      navigate('/shop');
-    }
-  };
+  const userCookie = Cookies.get("user");
+  console.log("userCookie (raw):", userCookie);
+
+  if (!userCookie) {
+    console.warn("Chưa có cookie user, chuyển về trang chủ");
+    navigate("/");
+    return;
+  }
+
+  const user = JSON.parse(userCookie); // ✅ parse ra object
+  console.log("user object:", user);   // 👉 In ra để xem trong F12
+
+  if (item === "TRANG CHỦ") {
+    if (user.role === "User") navigate("/shop");
+    else navigate("/home");
+  }
+
+  if (item === "ĐƠN HÀNG") {
+    if (user.role === "User") navigate("/shop/import");
+    else navigate("/home/import");
+  }
+};
+
   return(<>
   
     {/* <div className="header" style={{width:`${size}%`,marginLeft:`${100-size}%`}}> */}

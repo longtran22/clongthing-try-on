@@ -9,52 +9,75 @@
 }
 
 .item {
-  max-width: 100%; /* Đảm bảo mỗi sản phẩm không vượt quá chiều rộng của cột */
+  flex: 1 1 200px;
+  max-width: 250px;
+  margin: 10px;
 }
 
 .product-card {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-  text-align: center;
-  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  height: 320px; /* Giữ tất cả card cao bằng nhau */
 }
 
-.product-card:hover {
-  transform: translateY(-5px);
+.image-wrapper {
+  width: 100%;
+  height: 70%; /* 70% chiều cao card */
+  overflow: hidden;
 }
 
 .product-image {
   width: 100%;
-  height: 200px; /* Bạn có thể tùy chỉnh chiều cao theo nhu cầu */
-  border-radius: 10px;
-  object-fit: contain; /* Giữ tỉ lệ ảnh, cắt phần thừa để ảnh vừa khung */
+  height: 100%;
+  object-fit: cover; /* Cắt ảnh vừa khung, không méo */
+}
+
+.product-info {
+  height: 30%; /* 30% còn lại cho tên và giá */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  text-align: center;
 }
 
 .product-name {
-  margin: 16px 0;
-  font-size: 18px;
-  font-weight: bold;
-  white-space: nowrap;    /* Không cho phép xuống dòng */
-  overflow: hidden;       /* Ẩn phần nội dung tràn ra ngoài */
-  text-overflow: ellipsis; /* Hiển thị dấu "..." khi nội dung quá dài */
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 4px 0;
+  color: #333;
+}
+
+.product-price {
+  font-size: 0.9rem;
+  color: #888;
 }
 
 .actions {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
+  margin-top: auto;
+  padding-bottom: 10px;
 }
 
-.action-button {
-  padding: 8px 12px;
+.tryon-button {
+  background: #ff7f50;
+  color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 8px;
+  padding: 6px 12px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: 0.2s;
 }
+
+.tryon-button:hover {
+  background: #ff6333;
+}
+
 
 /* Nút chi tiết */
 .edit-button {

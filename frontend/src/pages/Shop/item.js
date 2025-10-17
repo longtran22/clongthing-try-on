@@ -204,27 +204,33 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
         {filteredProducts.map((product,index) => (
           <div className="item" key={index}>
             <div className="product-card">
-              <a onClick={()=>show(product._id)}>
-              <img src={product.image?product.image.secure_url:"https://www.shutterstock.com/shutterstock/photos/600304136/display_1500/stock-vector-full-basket-of-food-grocery-shopping-special-offer-vector-line-icon-design-600304136.jpg"} alt="Product Image" className="product-image" />
-              <h3 className="product-name">{product.name}</h3>
+              <a onClick={() => show(product._id)}>
+                <div className="image-wrapper">
+                  <img
+                    src={product.image ? product.image.secure_url : "https://www.shutterstock.com/shutterstock/photos/600304136/display_1500/stock-vector-full-basket-of-food-grocery-shopping-special-offer-vector-line-icon-design-600304136.jpg"}
+                    alt="Product Image"
+                    className="product-image"
+                  />
+                </div>
+                <div className="product-info">
+                  <h3 className="product-name">{product.name}</h3>
+                  <h6 className="product-price">{product.price} $</h6>
+                </div>
               </a>
-              <h6>{product.price} $</h6>
               <div className="actions">
-                {/* <button className="action-button edit-button" onClick={()=>show(product._id)}>chi tiết</button> */}
-                {/* <button className="action-button delete-button" onClick={()=>SetFdelete(product)}>Xóa</button> */}
                 <button
-                className="action-button delete-button tryon-button"
-                onClick={() =>{ setTryOnImage(product.image.secure_url)
-                                setClothing_type(getClothingTypeFromSKU(product.sku))
-                              }
-                }
-              >
+                  className="action-button tryon-button"
+                  onClick={() => {
+                    setTryOnImage(product.image.secure_url);
+                    setClothing_type(getClothingTypeFromSKU(product.sku));
+                  }}
+                >
                   📷
-              </button>
-
+                </button>
               </div>
             </div>
           </div>
+
         ))}
         
       </div>

@@ -210,12 +210,23 @@ function Chat({chats,ring}) {
               justifyContent: msg.isUser ? "flex-end" : "flex-start",
             }}
           >
-            {!msg.isUser && (
+            {/* {!msg.isUser && (
               <div style={styles.senderInfo}>
                 <img src={msg.sender.avatar} alt="Avatar" style={styles.avatar} />
                 <span> {msg.sender.name} </span>
               </div>
+            )} */}
+            {!msg.isUser && msg.sender && (
+              <div style={styles.senderInfo}>
+                <img
+                  src={msg.sender?.avatar || "/default-avatar.png"}
+                  alt="Avatar"
+                  style={styles.avatar}
+                />
+                <span>{msg.sender?.name || "Unknown"}</span>
+              </div>
             )}
+
             <div style={styles.messageWrapper}>
               <div
                 style={{

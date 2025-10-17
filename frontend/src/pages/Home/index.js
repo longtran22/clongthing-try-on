@@ -7,6 +7,9 @@ import notify from '../../components/Notification/notification.js'
 // import OrderInfoCard from "./OrderInfoCard.js"
 import OrderInfoCard from "./OrderInfoCard";
 
+import Cookies from "js-cookie";
+import CalendarComponent from "../Calendar/index.js"
+
 import {
   AreaChart,
   Area,
@@ -292,9 +295,29 @@ const fetchUserIdByEmail = async () => {
   }
 };
 
+
+
+
 const handleAddAdmin = async (e) => {
   e.preventDefault();
+
   try {
+    // ✅ Lấy thông tin người dùng hiện tại
+    const userCookie = Cookies.get("user");
+    if (!userCookie) {
+      notify(3, "Bạn chưa đăng nhập!", "Error");
+      return;
+    }
+
+    const currentUser = JSON.parse(userCookie);
+
+    // ✅ Chỉ cho phép admin
+    if (currentUser.role !== "Admin") {
+      notify(2, "Bạn không có quyền thực hiện hành động này!", "Error");
+      return;
+    }
+
+    // ✅ Thực hiện cập nhật nếu là admin
     const userId = await fetchUserIdByEmail();
     if (!userId) return;
 
@@ -303,20 +326,22 @@ const handleAddAdmin = async (e) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, role }),
     });
+
     const data = await res.json();
+
     if (res.ok) {
-      // alert("Cập nhật thành công!");
-      notify(1,"Cập nhật thành công!","Sucess" )
+      notify(1, "Cập nhật thành công!", "Success");
       setEmail("");
       setShowForm(false);
     } else {
-      alert(data.message || "Cập nhật thất bại!");
+      notify(2, data.message || "Cập nhật thất bại!", "Error");
     }
   } catch (err) {
     console.error(err);
-    alert("Có lỗi xảy ra!");
+    notify(3, "Có lỗi xảy ra!", "Error");
   }
 };
+
 
   return (<>
     <div class="container">
@@ -329,59 +354,59 @@ const handleAddAdmin = async (e) => {
           <div class="dashboard-actions">
             <a href="#">Manage</a>
             <div class="dashboard-actions">
-                  <a href="#" onClick={() => setShowForm(!showForm)}>Thêm Admin</a>
+                  {/* <a href="#" onClick={() => setShowForm(!showForm)}>Thêm Admin</a> */}
                   
-                  {showForm && (
-  <div style={{
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 9999,
-    backdropFilter: "blur(2px)",
-    transition: "all 0.3s ease"
-  }}>
-    <div style={{
-      backgroundColor: "#fff",
-      padding: "30px",
-      borderRadius: "12px",
-      width: "100%",
-      maxWidth: "450px",
-      boxShadow: "0 5px 20px rgba(0,0,0,0.2)",
-      position: "relative",
-      animation: "fadeIn 0.3s ease-out"
-    }}>
-      <button 
-        onClick={() => setShowForm(false)} 
-        style={{
-          position: "absolute",
-          top: "15px",
-          right: "15px",
-          background: "transparent",
-          border: "none",
-          fontSize: "24px",
-          cursor: "pointer",
-          color: "#666",
-          transition: "color 0.2s",
-          padding: "5px",
-          lineHeight: 1
-        }}
-        onMouseOver={(e) => e.currentTarget.style.color = "#333"}
-        onMouseOut={(e) => e.currentTarget.style.color = "#666"}
-      >
-        &times;
-      </button>
-      
-      <h3 style={{
-        margin: "0 0 25px 0",
-        color: "#2c3e50",
-        fontSize: "1.5rem",
-        fontWeight: 600
+                  {/* {showForm && (
+              <div style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 9999,
+                backdropFilter: "blur(2px)",
+                transition: "all 0.3s ease"
+              }}>
+                <div style={{
+                  backgroundColor: "#fff",
+                  padding: "30px",
+                  borderRadius: "12px",
+                  width: "100%",
+                  maxWidth: "450px",
+                  boxShadow: "0 5px 20px rgba(0,0,0,0.2)",
+                  position: "relative",
+                  animation: "fadeIn 0.3s ease-out"
+                }}>
+                  <button 
+                    onClick={() => setShowForm(false)} 
+                    style={{
+                      position: "absolute",
+                      top: "15px",
+                      right: "15px",
+                      background: "transparent",
+                      border: "none",
+                      fontSize: "24px",
+                      cursor: "pointer",
+                      color: "#666",
+                      transition: "color 0.2s",
+                      padding: "5px",
+                      lineHeight: 1
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.color = "#333"}
+                    onMouseOut={(e) => e.currentTarget.style.color = "#666"}
+                  >
+                    &times;
+                  </button>
+                  
+                  <h3 style={{
+                    margin: "0 0 25px 0",
+                    color: "#2c3e50",
+                    fontSize: "1.5rem",
+                    fontWeight: 600
       }}>
         Thêm Admin
       </h3>
@@ -473,7 +498,7 @@ const handleAddAdmin = async (e) => {
       </form>
     </div>
   </div>
-)}
+)} */}
 
           </div>
           </div>

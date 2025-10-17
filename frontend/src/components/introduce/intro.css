@@ -182,6 +182,7 @@ header {
 
 .form-group {
     margin: 10px 0;
+    background-color: #ffffffff;
 }
 
 .login-modal input {
@@ -189,8 +190,8 @@ header {
     padding: 10px;
     border: none;
     border-radius: 4px;
-    background-color: #2a2a2b;
-    color: #ffffff;
+    background-color: #ffffffff;
+    color: #000000ff;
     font-size: 16px;
 }
 
@@ -241,7 +242,7 @@ header {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #ffffff; /* Màu xanh của Facebook */
+    background-color: #ffffffff; /* Màu xanh của Facebook */
     color: rgb(0, 0, 0); /* Màu chữ */
     border: none;
     border-radius: 5px;

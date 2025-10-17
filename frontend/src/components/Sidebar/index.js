@@ -90,6 +90,36 @@ function Sidebar({ change }) {
           {isExpanded && "Quản lý hoá đơn"}
         </Link>
       </li>
+         <li className="sidebar__add">
+        <div
+          className={`sidebar__link ${selected === 5 ? 'active' : ''} ${!isExpanded ? "add_jus" : ""}`} 
+          onClick={toggleAddDropdown}
+          style={!isExpanded?{padding:"15px 0px",cursor:"pointer"}:{cursor:"pointer"}}
+        >
+          <div className="sidebar__icon" onClick={toggleAddDropdown}  style={!isExpanded?{marginRight:"0px"}:{marginRight:"10px"}}><IoAddCircleOutline /></div>
+          {isExpanded && "Quản lí quyền nhân viên"}
+        </div>
+
+        {isAddOpen  && (
+          <ul className="sidebar__submenu">
+            <li>
+              <Link className={`sidebar__link ${!isExpanded ? "add_jus" : ""}`} style={!isExpanded?{padding:"15px 0px"}:{}} to='/home/manage-account'>
+              <div className="sidebar__icon" style={!isExpanded?{marginRight:"0px"}:{marginRight:"10px"}}><MdManageAccounts /></div>{isExpanded && "Quản lí tài khoản"}
+              </Link>
+            </li>
+            <li>
+              <Link className={`sidebar__link  ${!isExpanded ? "add_jus" : ""}`} style={!isExpanded?{padding:"15px 0px"}:{}} to='/home/permissions'>
+              <div className="sidebar__icon" style={!isExpanded?{marginRight:"0px"}:{marginRight:"10px"}}><FaKeycdn /></div> {isExpanded &&"Phân quyền"}
+              </Link>
+            </li>
+            <li>
+              <Link className={`sidebar__link  ${!isExpanded ? "add_jus" : ""}`} style={!isExpanded?{padding:"15px 0px"}:{}} to='/home/roles-group'>
+              <div className="sidebar__icon" style={!isExpanded?{marginRight:"0px"}:{marginRight:"10px"}}><GrGroup /></div> {isExpanded &&"Nhóm quyền"}
+              </Link>
+            </li>
+          </ul>
+        )}
+      </li>
     
     </ul>
   );

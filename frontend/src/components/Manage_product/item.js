@@ -156,13 +156,22 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
       {fdelete&& <DeleteProductModal product={fdelete} onClose2={onClose2} onDelete={(a,b)=>onDelete(a,b)}/>}
       <div className="product-grid" style={{marginBottom:"200px"}}>
         {filteredProducts.map((product,index) => (
-          <div className="item" key={index}>
+             <div className="item" key={index}>
             <div className="product-card">
-              <a onClick={()=>show(product._id)}>
-              <img src={product.image?product.image.secure_url:"https://www.shutterstock.com/shutterstock/photos/600304136/display_1500/stock-vector-full-basket-of-food-grocery-shopping-special-offer-vector-line-icon-design-600304136.jpg"} alt="Product Image" className="product-image" />
-              <h3 className="product-name">{product.name}</h3>
+              <a onClick={() => show(product._id)}>
+                <div className="image-wrapper">
+                  <img
+                    src={product.image ? product.image.secure_url : "https://www.shutterstock.com/shutterstock/photos/600304136/display_1500/stock-vector-full-basket-of-food-grocery-shopping-special-offer-vector-line-icon-design-600304136.jpg"}
+                    alt="Product Image"
+                    className="product-image"
+                  />
+                </div>
+                <div className="product-info">
+                  <h3 className="product-name">{product.name}</h3>
+                  <h6 className="product-price">{product.price} $</h6>
+                </div>
               </a>
-              <div className="actions">
+                <div className="actions">
                 {/* <button className="action-button edit-button" onClick={()=>show(product._id)}>chi tiết</button> */}
                 {/* <button className="action-button delete-button" onClick={()=>SetFdelete(product)}>Xóa</button> */}
                 <button
@@ -171,7 +180,6 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
               >
                 🗑️
               </button>
-
               </div>
             </div>
           </div>
