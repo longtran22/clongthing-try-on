@@ -1,11 +1,12 @@
 // config/db.js
 
 const mongoose = require('mongoose');
+require('dotenv').config(); // đọc biến môi trường từ .env
 
 const connectDB = async () => {
   try {
-    // await mongoose.connect('mongodb+srv://tranledung:1234@cluster0.j8r21fd.mongodb.net/myapp?retryWrites=true&w=majority', {
-      await mongoose.connect('mongodb+srv://baolong081104:ptRhW5gIJlYrPehI@cluster0.vlymxq3.mongodb.net/test', {  
+    
+      await mongoose.connect(process.env.MONGO_URI, {  
     // await mongoose.connect('mongodb://localhost:27017/clothing-store', {
       useNewUrlParser: true,
       useUnifiedTopology: true

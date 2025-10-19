@@ -9,12 +9,13 @@ a=function(){
     e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    //const RETURN_URL = process.env.REACT_APP_RETURN_URL;
     // Xử lý đăng nhập bình thường với email/password
     body={
         email,
         password
     }
-    fetch("http://localhost:3000/login/login_raw", {
+    fetch(`http://localhost:3000/login/login_raw`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,8 +75,9 @@ function handleCredentialResponse(response) {
     given_name:decoded.given_name,
     GoogleID:decoded.sub
     }
+    //const RETURN_URL = process.env.REACT_APP_RETURN_URL;
     console.log(JSON.stringify(body))
-    fetch("http://localhost:3000/login/login_google", {
+    fetch(`http://localhost:3000/login/login_google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
