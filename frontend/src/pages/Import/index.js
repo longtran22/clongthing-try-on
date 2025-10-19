@@ -42,13 +42,13 @@ function Import() {
   const closeModalHistory = () => setOpenHistory(false);
   const closeModalDetail = () => setOpenDetail(false);
   const openModalDetail = () => setOpenDetail(true);
-  
+  const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const fetchData = async () => {
       try {
         if(loading)return;
         const res = await fetch(
-          `http://localhost:5000/import/orderHistory/lastProductTop100?ownerId=${user.id_owner}`
+          `${API_URL}/import/orderHistory/lastProductTop100?ownerId=${user.id_owner}`
         );
         startLoading();
         const dataRes = await res.json();
@@ -116,7 +116,7 @@ function Import() {
       if (keyword.length > 0) {
         debouncedFetchSuggestions(
           keyword,
-          `http://localhost:5000/import/supplier/search`
+          `${API_URL}/import/supplier/search`
         );
       } else {
         setSuggestions([]); 
@@ -129,7 +129,7 @@ function Import() {
         if (!dataTop.some(d => d.name.toLowerCase().includes(keyword.toLowerCase()))) {
           debouncedFetchSuggestions(
             keyword,
-            `http://localhost:5000/import/products/exhibitProN`
+            `${API_URL}/import/products/exhibitProN`
           );
         }
         
@@ -352,7 +352,7 @@ function Import() {
       // Nếu là sản phẩm từ @All (supplier)
       else {
         const response = await fetch(
-          `http://localhost:5000/import/products/exhibitPro?productId=${matchedProduct._id}&ownerId=${user.id_owner}`,
+          `${API_URL}/import/products/exhibitPro?productId=${matchedProduct._id}&ownerId=${user.id_owner}`,
           {
             method: "GET",
             headers: {
@@ -690,8 +690,8 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       role:user.role
     };
     groupBySupplier.tax = myTax
-   
-    const url = "http://localhost:5000/import/orderHistory/save";
+     const API_URL = process.env.REACT_APP_API_URL;
+    const url = `${API_URL}/import/orderHistory/save`;
     
    
     try {

@@ -40,10 +40,11 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
       return updatedProducts;
     });
   };
+    const API_URL = process.env.REACT_APP_API_URL;
   const getSupplierByOrderId = async (orderId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/import/orderHistory/supplierName?orderId=${idOrder}&ownerId=${user.id_owner}`,
+        `${API_URL}/import/orderHistory/supplierName?orderId=${idOrder}&ownerId=${user.id_owner}`,
         {
           method: "GET",
           headers: {
@@ -67,7 +68,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
   const getData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/import/orderDetail/listorder?idOrder=${idOrder}`
+        `${API_URL}/import/orderDetail/listorder?idOrder=${idOrder}`
       );
       const data = await response.json();
 
@@ -131,7 +132,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
     return sum;
   };
   const handleSubmit = async () => {
-    const url = "http://localhost:5000/import/orderDetail/updateDetail";
+    const url = `${API_URL}/import/orderDetail/updateDetail`;
     const state = products.some((pro) => pro.status === "pending");
 
     const data = { formData: products };

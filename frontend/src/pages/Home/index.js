@@ -60,12 +60,13 @@ const [act,setAct]=useState([])
   // if (!user) {
   //   return <div>Không có người dùng nào đăng nhập.</div>;
   // }
+  const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const fetchData = async () => {
       if (loading) return;
       const get_revenue = async () => {
         try {
-          const response = await fetch('http://localhost:5000/home/total_revenue', {
+          const response = await fetch(`${API_URL}/home/total_revenue`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -88,7 +89,7 @@ const [act,setAct]=useState([])
       };
       const get_vnpay_list = async () => {
       try {
-        const response = await fetch('http://localhost:5000/payment/getAllvnpay');
+        const response = await fetch(`${API_URL}/payment/getAllvnpay`);
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         console.log("VNPAY List:", data.totalAmount);
@@ -110,7 +111,7 @@ const [act,setAct]=useState([])
       };
             const get_user_list = async () => {
       try {
-        const response = await fetch('http://localhost:5000/accounts/show');
+        const response = await fetch(`${API_URL}/accounts/show`);
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
         console.log("user:", data);
@@ -125,7 +126,7 @@ const [act,setAct]=useState([])
       };
       const get_income = async () => {
         try {
-          const response = await fetch('http://localhost:5000/home/today_income', {
+          const response = await fetch(`${API_URL}/home/today_income`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -148,7 +149,7 @@ const [act,setAct]=useState([])
       };
       const get_customer = async () => {
         try {
-          const response = await fetch('http://localhost:5000/home/new_customer', {
+          const response = await fetch(`${API_URL}/home/new_customer`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -171,7 +172,7 @@ const [act,setAct]=useState([])
       };
       const get_report_customer=async()=>{
         try {
-          const response = await fetch('http://localhost:5000/home/generateCustomerReport', {
+          const response = await fetch(`${API_URL}/home/generateCustomerReport`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -194,7 +195,7 @@ const [act,setAct]=useState([])
       }
       const get_top_product=async()=>{
         try {
-          const response = await fetch('http://localhost:5000/home/generate_top_product', {
+          const response = await fetch(`${API_URL}/home/generate_top_product`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -217,7 +218,7 @@ const [act,setAct]=useState([])
       }
       const get_pending=async()=>{
         try {
-          const response = await fetch('http://localhost:5000/home/total_pending', {
+          const response = await fetch(`${API_URL}/home/total_pending`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -239,7 +240,7 @@ const [act,setAct]=useState([])
       }
       const get_activity=async () => {
       try{
-        const activity = await fetch('http://localhost:5000/home/recent_activity',{
+        const activity = await fetch(`${API_URL}/home/recent_activity`,{
           method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -279,7 +280,7 @@ const [role, setRole] = useState("Admin"); // mặc định là admin
 
 const fetchUserIdByEmail = async () => {
   try {
-    const res = await fetch(`http://localhost:5000/accounts/find-by-email?email=${email}`);
+    const res = await fetch(`${API_URL}/accounts/find-by-email?email=${email}`);
     const user = await res.json();
     if (res.ok) {
       console.log(user);
@@ -321,7 +322,7 @@ const handleAddAdmin = async (e) => {
     const userId = await fetchUserIdByEmail();
     if (!userId) return;
 
-    const res = await fetch(`http://localhost:5000/accounts/edit/${userId}`, {
+    const res = await fetch(`${API_URL}/accounts/edit/${userId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, role }),

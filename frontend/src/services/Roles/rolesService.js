@@ -1,8 +1,8 @@
 import { notify } from '../../components/Notification/notification';
-
+  const API_URL = process.env.REACT_APP_API_URL;
 export const getRoles = async (userId) => {
   try {
-    const response = await fetch(`http://localhost:5000/roles/show?userId=${userId}`, {
+    const response = await fetch(`${API_URL}/roles/show?userId=${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -23,7 +23,7 @@ export const getRoles = async (userId) => {
 
 export const createRole = async (newRoleData,user) => {
   try {
-    const response = await fetch("http://localhost:5000/roles/create", {
+    const response = await fetch(`${API_URL}/roles/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export const createRole = async (newRoleData,user) => {
 
 export const deleteRole = async (roleId, user) => {
   try {
-    const response = await fetch(`http://localhost:5000/roles/delete/${roleId}`, {
+    const response = await fetch(`${API_URL}/roles/delete/${roleId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

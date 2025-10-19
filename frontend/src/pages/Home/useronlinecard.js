@@ -26,11 +26,12 @@ function UsersOnlineCard() {
         responsive: true,
         maintainAspectRatio: false,
     };
+      const API_URL = process.env.REACT_APP_API_URL;
     useEffect(()=>{
         const fetchData = async () => {
 if(loading) return ;
 try {
-    const response = await fetch('http://localhost:5000/home/generatedailyCustomer', {
+    const response = await fetch(`${API_URL}/home/generatedailyCustomer`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

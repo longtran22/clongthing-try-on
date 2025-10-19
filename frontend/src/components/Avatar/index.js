@@ -2,12 +2,19 @@ import React from 'react';
 import './Avatar.css';
 
 function Avatar({ name, imageUrl}) {
-  function getRandomColor() {
-    const hue = Math.floor(name.charCodeAt(0) / 256 * 360);
-    const saturation = Math.floor(name.charCodeAt(0) / 256 * 360);
-    const lightness = 50; 
-    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  function getRandomColor(name) {
+  if (!name || name.length === 0) {
+    name = "A"; // giá trị mặc định nếu name rỗng hoặc undefined
   }
+
+  const firstChar = name.charAt(0); // lấy ký tự đầu tiên
+  const hue = Math.floor(firstChar.charCodeAt(0) / 256 * 360);
+  const saturation = 70; // bạn có thể đặt giá trị cố định hoặc tính khác
+  const lightness = 50;
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
   const initial = name ? name.charAt(0).toUpperCase() : '?';
   const randomColor = getRandomColor();
 

@@ -20,6 +20,7 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
 
 
   const [fdelete,SetFdelete]=useState(false)
+    const API_URL = process.env.REACT_APP_API_URL;
     useEffect(() => {
       const fetchProducts = async () => {
         if (loading) { 
@@ -27,7 +28,7 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
         }
         try {
           startLoading();
-          const response = await fetch('http://localhost:5000/products/show', {
+          const response = await fetch(`${API_URL}/products/show`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -59,7 +60,7 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
   
     const show=async (a)=>{
       startLoading();
-      const response = await fetch('http://localhost:5000/products/show/'+a, {
+      const response = await fetch(`${API_URL}/products/show/`+a, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
     }
     const onDelete=async (a,b)=>{
       startLoading();
-        const response = await fetch('http://localhost:5000/products/deletes', {
+        const response = await fetch(`${API_URL}/products/deletes`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -140,7 +141,7 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
       check:c
     }
     startLoading()
-    const response = await fetch('http://localhost:5000/products/edit', {
+    const response = await fetch(`${API_URL}/products/edit`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

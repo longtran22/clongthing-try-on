@@ -43,11 +43,11 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
   };
 
   // có thể gây lôzi 
-
+    const API_URL = process.env.REACT_APP_API_URL;
   const getSupplierByOrderId = async (orderId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/import/orderHistory/supplierName?orderId=${idOrder}&ownerId=${user.id_owner}`,
+        `${API_URL}/import/orderHistory/supplierName?orderId=${idOrder}&ownerId=${user.id_owner}`,
         {
           method: "GET",
           headers: {
@@ -71,7 +71,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
   const getData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/import/orderDetail/listorder?idOrder=${idOrder}`
+        `${API_URL}/import/orderDetail/listorder?idOrder=${idOrder}`
       );
       const data = await response.json();
       // const responseuser = await fetch(
@@ -141,7 +141,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
     return sum;
   };
   const handleSubmit = async () => {
-    const url = "http://localhost:5000/import/orderDetail/updateDetail";
+    const url = `${API_URL}/import/orderDetail/updateDetail`;
     const state = products.some((pro) => pro.status === "pending");
 
     const data = { formData: products };
@@ -212,12 +212,14 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
 
 const handlePayment = async () => {
   try {
-    const amount = Math.floor(amountBill() * 1.1)/100; // +10% VAT chia cho 100 để vnpay nhân 100;
-    const vnp_Amount = (amount * 100).toString();  // VNPay expects amount * 100
-    const orderId = products[0]?.orderId;          // Lấy orderId từ sản phẩm đầu
+    // ✅ 1. Lấy tổng tiền và cộng 10% VAT
+    const amount = Math.round(amountBill() * 1.1); // giữ nguyên VND, KHÔNG chia 100
 
-    const res = await axios.post("http://localhost:5000/payment/vnpay", {
-      amount: vnp_Amount,
+    const orderId = products[0]?.orderId;
+
+    // ✅ 2. Gửi trực tiếp số VND thật lên backend (không cần nhân/ chia 100)
+    const res = await axios.post(`${API_URL}/payment/vnpay`, {
+      amount,   // ví dụ: 550000 (VNĐ)
       orderId,
     });
 
@@ -226,12 +228,13 @@ const handlePayment = async () => {
     } else {
       alert("Không tạo được URL thanh toán");
     }
-    console.log("payment data",res.data);
+    console.log("payment data", res.data);
   } catch (err) {
     console.error("Lỗi khi tạo URL thanh toán:", err);
     alert("Thanh toán thất bại");
   }
 };
+
 
 
   return (

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./x1.css";
 
+
+
 const OrderInfoCard = () => {
   const [orders, setOrders] = useState([]);
-
+  const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     axios
-      .get("http://localhost:5000/import/orderHistory/getAllOrder")
+      .get(`${API_URL}/import/orderHistory/getAllOrder`)
       .then((res) => {
         setOrders(res.data);
       })

@@ -28,7 +28,7 @@ function AccountTable() {
     id_owner: user? user.id_owner:"",
     code:"",
   });
-
+    const API_URL = process.env.REACT_APP_API_URL;
   const getAccounts = async (userId) => {
     if (!userId) {
       console.error("Lỗi: userId không hợp lệ!");
@@ -36,7 +36,7 @@ function AccountTable() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/accounts/show?userId=${userId}`, {
+      const response = await fetch(`${API_URL}/accounts/show?userId=${userId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -120,7 +120,7 @@ function AccountTable() {
         code:formData.code
       };
       startLoading();
-      const response = await fetch("http://localhost:5000/accounts/create", {
+      const response = await fetch(`${API_URL}/accounts/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -192,7 +192,7 @@ function AccountTable() {
         code:formData.code
       };
       startLoading();
-      const response = await fetch("http://localhost:5000/accounts/send_again", {
+      const response = await fetch(`${API_URL}/accounts/send_again`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -219,7 +219,7 @@ function AccountTable() {
     if (window.confirm("Are you sure you want to delete this account?")) {
       try {
         startLoading();
-        const response = await fetch(`http://localhost:5000/accounts/delete/${accountId}`, {
+        const response = await fetch(`${API_URL}/accounts/delete/${accountId}`, {
           method: "DELETE",
           headers: {
           "Content-Type": "application/json",
@@ -261,7 +261,7 @@ function AccountTable() {
     e.preventDefault();
     try {
       startLoading();
-      const response = await fetch(`http://localhost:5000/accounts/edit/${formData.id}`, {
+      const response = await fetch(`${API_URL}/accounts/edit/${formData.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

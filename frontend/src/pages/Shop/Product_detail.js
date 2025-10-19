@@ -184,10 +184,10 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
       },
       tax: 10,
     };
-  
+      const API_URL = process.env.REACT_APP_API_URL;
     try {
       startLoading();
-      const response = await fetch("http://localhost:5000/import/orderHistory/save", {
+      const response = await fetch(`${API_URL}/import/orderHistory/save`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(groupBySupplier),

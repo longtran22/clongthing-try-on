@@ -95,15 +95,15 @@ const handleSearchChange = (e) => {
   //     debouncedFetchSuggestions(searchTerm.trim(), "http://localhost:5000/import/loggingOrder/listOrder", page, 10);
   //   // }
   // }, [searchTerm, page,loading,loadLog,user]);  
-  
+    const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
   if (loading) return;
 
   const trimmedTerm = searchTerm.trim();
   const url =
     user.role === "Admin"
-      ? "http://localhost:5000/import/loggingOrder/listAllOrder"
-      : "http://localhost:5000/import/loggingOrder/listOrder";
+      ? `${API_URL}/import/loggingOrder/listAllOrder`
+      : `${API_URL}/import/loggingOrder/listOrder`;
 
   debouncedFetchSuggestions(trimmedTerm, url, page, 10);
   console.log("listorder",listOrder)

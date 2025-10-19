@@ -31,16 +31,17 @@ function Profile() {
   });
 const [image,SetImage]=useState(null)
 const [x,SetX]=useState(false);
+const API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const fetchProfile = async () => {
       if (loading) return;
       startLoading();
-      const response = await fetch("http://localhost:5000/profile/get_profile", {
+      const response = await fetch(`${API_URL}/profile/get_profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user }),
       });
-      const response2 = await fetch("http://localhost:5000/bank/get_bank", {
+      const response2 = await fetch(`${API_URL}/bank/get_bank`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user }),
@@ -66,7 +67,7 @@ const [x,SetX]=useState(false);
 
   const saveChanges = async () => {
     startLoading();
-    const response = await fetch("http://localhost:5000/profile/change_profile", {
+    const response = await fetch(`${API_URL}/profile/change_profile`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user: newData }),
@@ -135,7 +136,7 @@ const [x,SetX]=useState(false);
             console.error("Error uploading image:", error);
             notify(2,"Đã xảy ra lỗi khi tải lên hình ảnh.","Thất bại")
           }
-        fetch("http://localhost:5000/bank/add_bank", {
+        fetch(`${API_URL}/bank/add_bank`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -226,7 +227,12 @@ const [x,SetX]=useState(false);
       <div className="connect-section">
         <div>Thông tin cá nhân</div>
         <ul>
-          <li><a href="#"><FaRegUser />  Tài khoản của : {data ? data.id_owner.name : ""}</a></li>
+          <li>
+            <a href="#">
+              <FaRegUser />  Tài khoản của : {data?.id_owner?.name || ""}
+            </a>
+          </li>
+
           <li><a href="#"><FaChild /> vị trí : {data ? data.role : ""}</a></li>
           <li><a href="#"><FaCheckSquare /> Quyền : {data ? (data.right ? data.right.permissions.map((p) => p).join(", ") : data.role=="Admin"?"tất cả các quyền":"quyền theo vai trò") : ""}</a></li>
           <li><a href="#"><MdEmail /> Email : {data ? data.email : ""}</a></li>
