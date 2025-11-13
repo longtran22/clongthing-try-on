@@ -1,9 +1,9 @@
 const { VNPay, ignoreLogger } = require('vnpay');
 
 const vnpay = new VNPay({
-  tmnCode: 'BZQK8RQE',
-  secureSecret: 'I7T98ZY7NGS0FU5N4ET36LGA9Z3V2UUD',
-  paymentGateway: 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html', // ✅ Đúng key
+  tmnCode: 'B98SWR0M',
+  secureSecret: 'GFTQ559BMD9XM1C8M3CXGG9Q8QQH8T92',
+  paymentGateway: 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html/vpcpay.html', // ✅ Đúng key
   testMode: true,
   enableLog: true,
   loggerFn: ignoreLogger,

@@ -108,6 +108,8 @@ const getAllPayments = async (req, res) => {
 //     res.status(500).json({ error: 'Lỗi tạo thanh toán VNPay' });
 //   }
 // };
+  const API_URL = process.env.FRONTEND_URL;
+;
 const createVNPayPayment = async (req, res) => {
   try {
     const { amount, orderId } = req.body;
@@ -116,7 +118,9 @@ const createVNPayPayment = async (req, res) => {
     }
 
     const safeAmount = Math.round(Number(amount)); // Đảm bảo là số nguyên
-    const returnUrl = `http://localhost:3000/shop/import`;
+    // const returnUrl = `http://localhost:3000/shop/import`;
+    const returnUrl = `${process.env.FRONTEND_URL}/shop/import`;
+
     const clientIp =
       req.headers["x-forwarded-for"] || req.socket.remoteAddress || "127.0.0.1";
 
@@ -124,7 +128,7 @@ const createVNPayPayment = async (req, res) => {
     const paymentParams = {
       vnp_Version: "2.1.0",
       vnp_Command: "pay",
-      vnp_TmnCode: "BZQK8RQE",
+      vnp_TmnCode: "B98SWR0M",
       vnp_Amount: safeAmount * 100, // vì VNPay yêu cầu nhân 100      
       vnp_CurrCode: "VND",
       vnp_TxnRef: orderId,

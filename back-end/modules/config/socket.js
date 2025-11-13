@@ -4,7 +4,8 @@ function setupSocket(server) {
   //const RETURN_URL = process.env.REACT_APP_RETURN_URL;
   const io = new Server(server, {
     cors: {
-      origin: `http://localhost:3000`,
+      // origin: `http://localhost:3000`,
+      origin: `${process.env.FRONTEND_URL}`,
       methods: ["GET", "POST"],
     },
   });

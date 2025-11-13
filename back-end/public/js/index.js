@@ -15,7 +15,8 @@ a=function(){
         email,
         password
     }
-    fetch(`http://localhost:3000/login/login_raw`, {
+    // fetch(`http://localhost:3000/login/login_raw`, {
+    fetch(`${process.env.FRONTEND_URL}/login/login_raw`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +78,8 @@ function handleCredentialResponse(response) {
     }
     //const RETURN_URL = process.env.REACT_APP_RETURN_URL;
     console.log(JSON.stringify(body))
-    fetch(`http://localhost:3000/login/login_google`, {
+    // fetch(`http://localhost:3000/login/login_google`, {
+    fetch(`${process.env.FRONTEND_URL}/login/login_google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
