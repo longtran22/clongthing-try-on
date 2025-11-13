@@ -228,7 +228,12 @@ const handlePayment = async () => {
     } else {
       alert("Không tạo được URL thanh toán");
     }
+    
+    
     console.log("payment data", res.data);
+    // notify(1,"you've paymented","Successfully!")    
+    
+
   } catch (err) {
     console.error("Lỗi khi tạo URL thanh toán:", err);
     alert("Thanh toán thất bại");

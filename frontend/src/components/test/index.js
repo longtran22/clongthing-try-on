@@ -116,10 +116,11 @@ const OrderManagement = forwardRef(({ onCreateOrder, onHistory,openModalDetail,s
       if (!user) return;
 
       let apiUrl = '';
-      if (user.role === "Admin") {
-        apiUrl = `http://localhost:5000/import/orderHistory/getAllOrder`;
-      } else {
+      if (user.role === "User") {
         apiUrl = `http://localhost:5000/import/orderHistory/getOrder?search=${keyword}&ownerId=${user.id_owner}&userId=${user._id}`;
+
+      } else {
+                apiUrl = `http://localhost:5000/import/orderHistory/getAllOrder`;
       }
       
       const response = await fetch(apiUrl);
