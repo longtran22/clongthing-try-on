@@ -123,7 +123,7 @@ const bannerImages = [
     }
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/products/show', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/products/show`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

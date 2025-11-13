@@ -33,7 +33,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
       };
       try {
         let response = await fetch(
-          "http://localhost:5000/products/get_supplier",
+          `${process.env.REACT_APP_API_URL}/products/get_supplier`,
           {
             method: "POST",
             headers: {

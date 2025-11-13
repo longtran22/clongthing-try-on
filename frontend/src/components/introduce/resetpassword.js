@@ -11,7 +11,7 @@ const Change_password=({email,off})=>{
         email:email,
         password:password
       };
-      fetch("http://localhost:5000/login/change_password2", {
+      fetch(`${process.env.REACT_APP_API_URL}/login/change_password2`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

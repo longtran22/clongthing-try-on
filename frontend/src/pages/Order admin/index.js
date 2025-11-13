@@ -129,7 +129,7 @@ function Import() {
         if (!dataTop.some(d => d.name.toLowerCase().includes(keyword.toLowerCase()))) {
           debouncedFetchSuggestions(
             keyword,
-            `http://localhost:5000/import/products/exhibitProN`
+           `${process.env.REACT_APP_API_URL}/import/products/exhibitProN`
           );
         }
         
@@ -683,7 +683,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       role:user.role
     };
     groupBySupplier.tax = myTax
-    const url = "http://localhost:5000/import/orderHistory/save";
+    const url = `${process.env.REACT_APP_API_URL}/import/orderHistory/save`;
     
    
     try {

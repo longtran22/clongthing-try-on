@@ -320,7 +320,7 @@ body {
 .product-image-container {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: calc(3 / 4);
   margin-bottom: 16px;
 }
 
@@ -576,8 +576,6 @@ body {
   color: #6B7280;
 }
 
-//////
-
   
   
 
@@ -616,7 +614,6 @@ body {
 
 
 
-/* /prodectdetial show/ */
 /* Product Detail Modal Styles */
 .product-detail-overlay {
   position: fixed;

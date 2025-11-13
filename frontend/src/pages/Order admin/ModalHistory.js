@@ -67,11 +67,11 @@ const handleSearchChange = (e) => {
   useEffect(() => {
     if(user.role==="Admin"){
     if(loading)return
-    debouncedFetchSuggestions(searchTerm.trim(), "http://localhost:5000/import/loggingOrder/listAllOrder", page, 10);
+    debouncedFetchSuggestions(searchTerm.trim(), `${process.env.REACT_APP_API_URL}/import/loggingOrder/listAllOrder`, page, 10);
     }
     else {
       if(loading)return
-      debouncedFetchSuggestions(searchTerm.trim(), "http://localhost:5000/import/loggingOrder/listOrder", page, 10);
+      debouncedFetchSuggestions(searchTerm.trim(),`${process.env.REACT_APP_API_URL}/import/loggingOrder/listOrder`, page, 10);
     }
   }, [searchTerm, page,loading,loadLog,user]);  
   

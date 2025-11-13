@@ -10,15 +10,15 @@ function Chat({chats,ring}) {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
   const messageHandled = useRef(false);
-    const socket = io("http://localhost:5000");
+    const socket = io(`${process.env.REACT_APP_API_URL}`);
   useEffect(() => {
 
 
     const fetchMessages = async () => {
       if (loading) return;
       try {
-        console.log("body ueer",JSON.stringify({user}))
-        const response = await fetch("http://localhost:5000/chat/getMessages", {
+        // console.log("body ueer",JSON.stringify({user}))
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/chat/getMessages`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

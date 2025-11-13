@@ -15,7 +15,7 @@ const Forgot_password=({off,turnon})=>{
         email:email,
       };
       startLoading();
-      fetch("http://localhost:5000/login/forgot_password", {
+      fetch(`${process.env.REACT_APP_API_URL}/login/forgot_password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,7 +42,7 @@ const Forgot_password=({off,turnon})=>{
         ma:ma
       };
       startLoading()
-      fetch("http://localhost:5000/login/change_password", {
+      fetch(`${process.env.REACT_APP_API_URL}host:5000/login/change_password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,7 +66,7 @@ if(data.message==='Success'){off();turnon(email)}else{
         email:email,
       };
       startLoading();
-      fetch("http://localhost:5000/login/forgot_password", {
+      fetch(`${process.env.REACT_APP_API_URL}/login/forgot_password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

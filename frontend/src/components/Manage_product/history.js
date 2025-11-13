@@ -9,11 +9,11 @@ const History = ({turnoff,customer,supplier}) => {
 useEffect(()=>{
     const response =async ()=>{
         try{startLoading();
-          let url='http://localhost:5000/products/history'
+          let url=`${process.env.REACT_APP_API_URL}/products/history`
           if(customer){
-            url='http://localhost:5000/sell/get_history_customer'
+            url=`${process.env.REACT_APP_API_URL}/sell/get_history_customer`
           }else if(supplier){
-            url='http://localhost:5000/products/get_history_supplier'
+            url=`${process.env.REACT_APP_API_URL}/products/get_history_supplier`
           }
           
            const response= await fetch(url, {

@@ -35,7 +35,7 @@ const ProductForm = ({turnoff,refresh,profile}) => {
           user: user
               }
         try {
-          let response = await fetch('http://localhost:5000/products/get_supplier', {
+          let response = await fetch(`${process.env.REACT_APP_API_URL}/products/get_supplier`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -370,8 +370,8 @@ const handleSubmit = async (e) => {
   console.log('Dữ liệu gửi:', body);
 
   const url = profile
-    ? 'http://localhost:5000/profile/update_avatar'
-    : 'http://localhost:5000/products/create';
+    ? `${process.env.REACT_APP_API_URL}/profile/update_avatar`
+    : `${process.env.REACT_APP_API_URL}/products/create`;
 
   try {
     const res = await fetch(url, {

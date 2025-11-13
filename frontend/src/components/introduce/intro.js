@@ -46,7 +46,7 @@ function LoginModal({ off, isSignup }) {
         };
         console.log("body",body);
         startLoading();
-        fetch("http://localhost:5000/login/sign_up", {
+        fetch(`${process.env.REACT_APP_API_URL}/login/sign_up`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -83,7 +83,7 @@ function LoginModal({ off, isSignup }) {
       };
       console.log(formData);
       startLoading();
-      fetch("http://localhost:5000/login/login_raw", {
+      fetch(`${process.env.REACT_APP_API_URL}/login/login_raw`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,7 +141,7 @@ function LoginModal({ off, isSignup }) {
     };
     console.log(JSON.stringify(body));
     startLoading();
-    fetch("http://localhost:5000/login/login_google", {
+    fetch(`${process.env.REACT_APP_API_URL}/login/login_google`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -207,7 +207,7 @@ setIsforgot(true);
     };
     console.log(body);
     startLoading();
-    fetch("http://localhost:5000/login/sign_up", {
+    fetch(`${process.env.REACT_APP_API_URL}/login/sign_up`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

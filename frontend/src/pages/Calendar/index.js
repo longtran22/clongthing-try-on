@@ -28,7 +28,7 @@ const CalendarComponent = ({defaultView}) => {
 
     const fetchEvents = async (userId) => {
       try {
-        const response = await fetch(`http://localhost:5000/calendar/show?userId=${userId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/calendar/show?userId=${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -105,7 +105,7 @@ const CalendarComponent = ({defaultView}) => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/calendar/create", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/calendar/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -153,7 +153,7 @@ const CalendarComponent = ({defaultView}) => {
     console.log(updatedEvent, selectedEvent.id);
     
     try {
-      const response = await fetch(`http://localhost:5000/calendar/update/${selectedEvent.id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/calendar/update/${selectedEvent.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -188,7 +188,7 @@ const CalendarComponent = ({defaultView}) => {
     e.preventDefault();
     startLoading();
     try {
-      const response = await fetch(`http://localhost:5000/calendar/delete/${selectedEvent.id}?id_owner=${user.id_owner}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/calendar/delete/${selectedEvent.id}?id_owner=${user.id_owner}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

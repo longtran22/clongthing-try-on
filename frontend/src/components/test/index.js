@@ -117,10 +117,10 @@ const OrderManagement = forwardRef(({ onCreateOrder, onHistory,openModalDetail,s
 
       let apiUrl = '';
       if (user.role === "User") {
-        apiUrl = `http://localhost:5000/import/orderHistory/getOrder?search=${keyword}&ownerId=${user.id_owner}&userId=${user._id}`;
+        apiUrl = `${process.env.REACT_APP_API_URL}/import/orderHistory/getOrder?search=${keyword}&ownerId=${user.id_owner}&userId=${user._id}`;
 
       } else {
-                apiUrl = `http://localhost:5000/import/orderHistory/getAllOrder`;
+                apiUrl = `${process.env.REACT_APP_API_URL}/import/orderHistory/getAllOrder`;
       }
       
       const response = await fetch(apiUrl);
@@ -155,7 +155,7 @@ setFilteredOrders(regurlizationData); // ban đầu hiển thị toàn bộ dùn
   //.xóa đơn hànghàng
   const deleteData = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:5000/import/orderHistory/deleteOrderhistory/${orderId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/import/orderHistory/deleteOrderhistory/${orderId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ setFilteredOrders(regurlizationData); // ban đầu hiển thị toàn bộ dùn
     try {
       newData.ownerId= user.id_owner;
       newData.user=user;
-      const response = await fetch(`http://localhost:5000/import/orderHistory/updateOrderhistory`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/import/orderHistory/updateOrderhistory`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json', 
