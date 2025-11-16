@@ -172,8 +172,8 @@ function Import() {
           // ownerId: user.id_owner,
         },
       });
-      // console.log("advise data",response);
-      // console.log("hreflink",hrefLink);
+      // //console.log("advise data",response);
+      // //console.log("hreflink",hrefLink);
       
       // const sugg = response.data.map((s) => s.name);
       // setDataTop((prev) => {
@@ -204,7 +204,7 @@ function Import() {
         email: product.supplierDetails.email
       } : null
     }));
-    console.log("normalizedProducts",normalizedProducts);
+    //console.log("normalizedProducts",normalizedProducts);
     setDataTop((prev) => {
       const existingIds = new Set(prev.map((item) => item._id));
       const newData = normalizedProducts.filter((item) => !existingIds.has(item._id));
@@ -531,7 +531,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
   useEffect(() => {
     if (dataHis && dataHis.length > 0) {
       const newItems = dataHis.map(initItem);
-      console.log(dataHis, listProductWereAdded);
+      //console.log(dataHis, listProductWereAdded);
       if (
         !listProductWereAdded.some((item) =>
           dataHis.some((it) => it._id === item.productId)
@@ -666,7 +666,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
   };
 
   const handleSubmit = async () => {
-    // console.log("baby take my hand")
+    // //console.log("baby take my hand")
     const groupBySupplier = listProductWereAdded.reduce(
       (acc, item) => {
         // Kiểm tra xem đã có supplier này trong nhóm chưa
@@ -678,7 +678,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       },
       { user: {}, dataForm: {} }
     );
-     console.log("tt produtc",listProductWereAdded );
+     //console.log("tt produtc",listProductWereAdded );
     //  groupBySupplier.size=listProductWereAdded.selectedSize;
 
     groupBySupplier.user = {
@@ -724,15 +724,15 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
         body: JSON.stringify(payload),
       });
 
-      console.log("dataorder", payload);
+      //console.log("dataorder", payload);
 
-      console.log("dataordeer",groupBySupplier);
+      //console.log("dataordeer",groupBySupplier);
       stopLoading();
       if (response.ok) {
         
         notify(1,"Bạn đã tạo đơn hàng thành công","Successfully!")
         const responseData = await response.json();
-        console.log("Dữ liệu đã được gửi thành công", responseData);
+        //console.log("Dữ liệu đã được gửi thành công", responseData);
         //await apiFetchOrderHistory.current.fetchOrder(" ")
         //await apiGetHistory.current.debouncedFetchSuggestions(" ", "http://localhost:8080/import/loggingOrder/listOrder", 1, 10);
         setLoadOrder((prev)=>!prev)
@@ -742,7 +742,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       } else {
         notify(2,"Tạo đơn hàng không thành công","Fail!")
         // Nếu có lỗi từ server
-        console.log(" dữ liệu:", response.body);
+        //console.log(" dữ liệu:", response.body);
         console.error("Lỗi khi gửi dữ liệu:", response.statusText);
       }
     } catch (error) {

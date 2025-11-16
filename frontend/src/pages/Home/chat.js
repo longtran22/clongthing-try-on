@@ -17,7 +17,7 @@ function Chat({chats,ring}) {
     const fetchMessages = async () => {
       if (loading) return;
       try {
-        // console.log("body ueer",JSON.stringify({user}))
+        // //console.log("body ueer",JSON.stringify({user}))
         const response = await fetch(`${process.env.REACT_APP_API_URL}/chat/getMessages`, {
           method: "POST",
           headers: {
@@ -26,7 +26,7 @@ function Chat({chats,ring}) {
           body: JSON.stringify({user}),
         });
         const data = await response.json();
-        console.log("data",data)
+        //console.log("data",data)
         if (Array.isArray(data)) {
           const formattedData = data.map((msg) => ({
             ...msg,
@@ -42,8 +42,8 @@ function Chat({chats,ring}) {
     fetchMessages();
       
     // socket.on("receive_message", (data) => {
-    //   console.log(!messageHandled.current)
-    //   console.log(data.sender._id !== user._id)
+    //   //console.log(!messageHandled.current)
+    //   //console.log(data.sender._id !== user._id)
     //   if(!messageHandled.current&&data.sender._id !== user._id){
     //     messageHandled.current = true;
         
@@ -51,7 +51,7 @@ function Chat({chats,ring}) {
     //     ...data,
     //     isUser: data.sender._id === user._id,
     //   };
-    //   console.log("day la chat ",chats)
+    //   //console.log("day la chat ",chats)
     //   if(!chats){ring()}
     //   setChat((prev) => [...prev, newMessage]);
     //   setTimeout(() => {
@@ -69,8 +69,8 @@ function Chat({chats,ring}) {
   }, [loading, user]);
   useEffect(()=>{
     socket.on("receive_message", (data) => {
-      console.log(!messageHandled.current)
-      console.log(data.sender._id !== user._id)
+      //console.log(!messageHandled.current)
+      //console.log(data.sender._id !== user._id)
       if(!messageHandled.current&&data.sender._id !== user._id){
         messageHandled.current = true;
         
@@ -78,7 +78,7 @@ function Chat({chats,ring}) {
         ...data,
         isUser: data.sender._id === user._id,
       };
-      console.log("day la chat ",chats)
+      //console.log("day la chat ",chats)
       if(!chats){ring()}
       setChat((prev) => [...prev, newMessage]);
       setTimeout(() => {

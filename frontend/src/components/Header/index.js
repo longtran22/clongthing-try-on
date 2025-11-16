@@ -19,7 +19,7 @@ function Header({size}) {
   setitemnavbar(item);
 
   const userCookie = Cookies.get("user");
-  console.log("userCookie (raw):", userCookie);
+  //console.log("userCookie (raw):", userCookie);
 
   if (!userCookie) {
     console.warn("Chưa có cookie user, chuyển về trang chủ");
@@ -28,7 +28,7 @@ function Header({size}) {
   }
 
   const user = JSON.parse(userCookie); // ✅ parse ra object
-  console.log("user object:", user);   // 👉 In ra để xem trong F12
+  //console.log("user object:", user);   // 👉 In ra để xem trong F12
 
   if (item === "TRANG CHỦ") {
     if (user.role === "User") navigate("/shop");

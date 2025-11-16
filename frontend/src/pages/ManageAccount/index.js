@@ -44,7 +44,7 @@ function AccountTable() {
       });
 
       if (!response.ok) {
-        console.log("Response status:", response.status);
+        //console.log("Response status:", response.status);
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
@@ -130,7 +130,7 @@ function AccountTable() {
 
       const data = await response.json();
       stopLoading();
-      console.log(data);
+      //console.log(data);
       
       if (confirmOtp) {
         if (data.message === "Staff is created successfully") {
@@ -270,7 +270,7 @@ function AccountTable() {
       });
 
       const data = await response.json();
-      console.log("Success:", data);
+      //console.log("Success:", data);
       stopLoading();
       notify(1,"Chỉnh sửa tài khoản thành công","Thành công");
       await getAccounts(user.id_owner); // Use await here as handleCreateAccount is async

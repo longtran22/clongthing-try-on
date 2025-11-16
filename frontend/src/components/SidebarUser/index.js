@@ -21,7 +21,7 @@ function Sidebar({ change }) {
   const { user } = useContext(AuthContext);
   const avar = user?.avatar ;
   const toggleAddDropdown = () => {
-    console.log(isAddOpen)
+    //console.log(isAddOpen)
     setIsAddOpen(!isAddOpen);
   };
   // Cập nhật trạng thái `selected` dựa trên đường dẫn hiện tại

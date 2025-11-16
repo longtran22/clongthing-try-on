@@ -82,7 +82,7 @@ const handleSearchChange = (e) => {
     openModalDetail();
     onClose()
     setIdOrder(order.orderId)
-    console.log("Đã chọn hàng:", order);
+    //console.log("Đã chọn hàng:", order);
   };
 
   // useEffect(() => {
@@ -106,7 +106,7 @@ const handleSearchChange = (e) => {
       : `${API_URL}/import/loggingOrder/listOrder`;
 
   debouncedFetchSuggestions(trimmedTerm, url, page, 10);
-  console.log("listorder",listOrder)
+  //console.log("listorder",listOrder)
 }, [searchTerm, page, loading, loadLog, user]);
 
 

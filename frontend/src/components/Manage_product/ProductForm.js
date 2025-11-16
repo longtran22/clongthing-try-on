@@ -43,7 +43,7 @@ const ProductForm = ({turnoff,refresh,profile}) => {
             body: JSON.stringify(body),
           });
           const data = await response.json();
-          console.log(data.suppliers)
+          //console.log(data.suppliers)
           setSuppliers(data.suppliers);
         } catch (error) {
           
@@ -77,7 +77,7 @@ const ProductForm = ({turnoff,refresh,profile}) => {
           const dataTransfer = new DataTransfer();
           dataTransfer.items.add(file);
           fileInputRef.current.files = dataTransfer.files;
-          console.log(file)
+          //console.log(file)
           setFormData(prevData => ({
             ...prevData,
             image: file // Lưu trữ file vào state
@@ -239,13 +239,13 @@ const handleChange = (e) => {
 //                 },
 //                 detail: details
 //             };
-//             console.log(secure_url)
+//             //console.log(secure_url)
 //     }catch (error) {
 //         console.error("Error uploading image:", error);
 //         notify(2,"Đã xảy ra lỗi khi tải lên hình ảnh.","Thất bại")
 //       }
 // }
-//     console.log(JSON.stringify(body));
+//     //console.log(JSON.stringify(body));
 //     if(!profile){fetch("http://localhost:5000/products/create", {
 //       method: "POST",
 //       headers: {
@@ -255,7 +255,7 @@ const handleChange = (e) => {
 //     })
 //       .then((response) => response.json())
 //       .then((data) => {stopLoading()
-//         console.log(data.message)
+//         //console.log(data.message)
 //       if(data.message==="Success"){turnoff();  notify(1,"thêm sản phẩm thành công","Thành công");refresh();}
 //       else{
 //         notify(2,data.message,'Thất bại');
@@ -263,7 +263,7 @@ const handleChange = (e) => {
 //       })
 //       .catch((error) => {
 //         notify(2,"thêm sản phẩm thất bại","Thất bại")
-//         console.log("Lỗi:", error);
+//         //console.log("Lỗi:", error);
 //       });}else{
 //         fetch("http://localhost:5000/profile/update_avatar", {
 //           method: "POST",
@@ -274,9 +274,9 @@ const handleChange = (e) => {
 //         })
 //           .then((response) => response.json())
 //           .then((data) => {stopLoading()
-//             console.log(data.respond)
+//             //console.log(data.respond)
 //           if(data.respond==="success"){turnoff();  notify(1,"thay đổi ảnh đại diện thành công","Thành công");
-//             console.log(refresh);
+//             //console.log(refresh);
 //             refresh();}
 //           else{
 //             notify(2,'một lỗi nào đó đã xảy ra','Thất bại');
@@ -284,7 +284,7 @@ const handleChange = (e) => {
 //           })
 //           .catch((error) => {
 //             notify(2,"thêm sản phẩm thất bại","Thất bại")
-//             console.log("Lỗi:", error);
+//             //console.log("Lỗi:", error);
 //           });
 //       }
 //   };
@@ -367,7 +367,7 @@ const handleSubmit = async (e) => {
   };
   
 
-  console.log('Dữ liệu gửi:', body);
+  //console.log('Dữ liệu gửi:', body);
 
   const url = profile
     ? `${process.env.REACT_APP_API_URL}/profile/update_avatar`
@@ -399,7 +399,7 @@ const handleSubmit = async (e) => {
   } catch (error) {
     stopLoading();
     notify(2, 'Kết nối server thất bại', 'Lỗi');
-    console.log('Lỗi:', error);
+    //console.log('Lỗi:', error);
   }
 };
 

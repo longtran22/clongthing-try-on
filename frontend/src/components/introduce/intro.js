@@ -44,7 +44,7 @@ function LoginModal({ off, isSignup }) {
           confirm:confirm,
           code:formData.code
         };
-        console.log("body",body);
+        //console.log("body",body);
         startLoading();
         fetch(`${process.env.REACT_APP_API_URL}/login/sign_up`, {
           method: "POST",
@@ -73,7 +73,7 @@ function LoginModal({ off, isSignup }) {
           })
           .catch((error) => {
             console.error('Lỗi:', error);
-            console.log('Lỗi:', error);
+            //console.log('Lỗi:', error);
           });
       }
     } else {
@@ -81,7 +81,7 @@ function LoginModal({ off, isSignup }) {
         email: formData.email,
         password: formData.password,
       };
-      console.log(formData);
+      //console.log(formData);
       startLoading();
       fetch(`${process.env.REACT_APP_API_URL}/login/login_raw`, {
         method: "POST",
@@ -93,9 +93,9 @@ function LoginModal({ off, isSignup }) {
         .then((response) => response.json())
         .then((data) => {
           stopLoading();
-          console.log(data.user);
-          console.log(data.token);
-          console.log(data.message)
+          //console.log(data.user);
+          //console.log(data.token);
+          //console.log(data.message)
           // if (data.message === "Login successful") {
           //   // Lưu dữ liệu user vào Cookies
           //   localStorage.setItem("token", data.token);
@@ -132,14 +132,14 @@ function LoginModal({ off, isSignup }) {
   const responseMessage = (response) => {
     const credential = response.credential;
     const decoded = jwtDecode(credential);
-    console.log(decoded)
+    //console.log(decoded)
     const body = {
       family_name: decoded.family_name,
       given_name: decoded.given_name,
       GoogleID: decoded.sub,
       email: decoded.email,
     };
-    console.log(JSON.stringify(body));
+    //console.log(JSON.stringify(body));
     startLoading();
     fetch(`${process.env.REACT_APP_API_URL}/login/login_google`, {
       method: "POST",
@@ -151,7 +151,7 @@ function LoginModal({ off, isSignup }) {
       .then((response) => response.json())
       .then((data) => {
         stopLoading()
-        console.log(data);
+        //console.log(data);
         // if (data.message === "Login successful"||data.message === "User created successfully") {
         //   // Lưu dữ liệu user vào Cookies
         //   localStorage.setItem("token", data.token);
@@ -177,17 +177,17 @@ function LoginModal({ off, isSignup }) {
         }
       })
       .catch((error) => {
-        console.log("Lỗi:", error);
+        //console.log("Lỗi:", error);
       });
   };
   
 
   const errorMessage = (error) => {
-    console.log(error);
+    //console.log(error);
   };
   //facebook
   const handleResponse = (data) => {
-    console.log(data); 
+    //console.log(data); 
   };
 
   const handleError = (error) => {
@@ -205,7 +205,7 @@ setIsforgot(true);
       confirm:false,
       code:formData.code,
     };
-    console.log(body);
+    //console.log(body);
     startLoading();
     fetch(`${process.env.REACT_APP_API_URL}/login/sign_up`, {
       method: "POST",

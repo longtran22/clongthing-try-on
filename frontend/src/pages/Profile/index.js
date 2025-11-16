@@ -50,7 +50,7 @@ const API_URL = process.env.REACT_APP_API_URL;
         notify(2,"network is not okay!","Thất bại");}
       const profileData = await response.json();
       const acc=await response2.json();
-      console.log(profileData)
+      //console.log(profileData)
       stopLoading();
       setData(profileData);
       setNewData(profileData);
@@ -131,7 +131,7 @@ const API_URL = process.env.REACT_APP_API_URL;
                         image: {secure_url, public_id } // Thêm thông tin hình ảnh
                     },
                 };
-                console.log(secure_url)
+                //console.log(secure_url)
         }catch (error) {
             console.error("Error uploading image:", error);
             notify(2,"Đã xảy ra lỗi khi tải lên hình ảnh.","Thất bại")
@@ -145,7 +145,7 @@ const API_URL = process.env.REACT_APP_API_URL;
         })
           .then((response) => response.json())
           .then((data) => {stopLoading()
-            console.log(data.message)
+            //console.log(data.message)
           if(data.message==="Success"){ notify(1,"thêm tài khoản thành công","Thành công");
             SetX((a)=>!a)
 
@@ -155,7 +155,7 @@ const API_URL = process.env.REACT_APP_API_URL;
           })
           .catch((error) => {
             notify(2,"thêm sản phẩm thất bại","Thất bại")
-            console.log("Lỗi:", error);
+            //console.log("Lỗi:", error);
           });
   };
   // const handleEditAccount = (index) => {
@@ -175,7 +175,7 @@ const API_URL = process.env.REACT_APP_API_URL;
   //     headers: { 'Content-Type': 'application/json' },
   //     body: JSON.stringify({ user:user, accountNumber:accountToDelete.accountNumber,bankName:accountToDelete.bankName }),
   //   });
-  //   console.log(response)
+  //   //console.log(response)
   //   if (response.ok) {
   //     setBankAccounts((prev) => prev.filter((_, i) => i !== index));
   //     notify(1, "Xóa tài khoản thành công", "Thành công");

@@ -56,7 +56,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
       if (response.ok) {
         const data = await response.json(); // Phân tích dữ liệu JSON từ response
         if(data.tax)setMyTax(Number(data.tax))
-        console.log(data);
+        //console.log(data);
         setSupplierName(data);
       } else {
         console.error("Error:", response.status, response.statusText);
@@ -156,7 +156,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
     data.userId = user._id;
     data.ownerId = user.id_owner;
     data.user=user;
-    console.log("Submitting data:", data);
+    //console.log("Submitting data:", data);
 
     try {
       const response = await fetch(url, {
@@ -179,7 +179,7 @@ const ModalDetail = ({ isOpen, onClose, idOrder, view ,setLoadLog,setLoadOrder})
       const responseData = await response.json();
       setLoadLog((prev)=>!prev)
       setLoadOrder((prev)=>!prev)
-      console.log("Success:", responseData);
+      //console.log("Success:", responseData);
 
       // Clear products only after successful submission
       // setProducts([]);

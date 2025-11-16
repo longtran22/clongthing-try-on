@@ -29,7 +29,7 @@ import { notify } from '../../components/Notification/notification';
 //       }
 //     }
 //     if (user) {
-//         console.log(user)
+//         //console.log(user)
 //       // Nếu người dùng chưa đăng nhập, chuyển hướng đến trang đăng nhập
 //       return <Navigate to="/home" replace />;
 //     }
@@ -135,7 +135,7 @@ const bannerImages = [
           throw new Error('Failed to fetch products');
         }
         const data = await response.json();
-        console.log("dtata",data)
+        //console.log("dtata",data)
         const formattedProducts = data.map((product) => ({
           id: product._id,
           name: product.name,
@@ -182,7 +182,7 @@ const bannerImages = [
       }
     }
     if (user) {
-        console.log(user)
+        //console.log(user)
       // Nếu người dùng chưa đăng nhập, chuyển hướng đến trang đăng nhập
       return <Navigate to="/home" replace />;
     }
@@ -365,7 +365,7 @@ return (<>
                         color: selectedColor,
                         quantity: quantity
                       };
-                      console.log('Đặt hàng:', orderData);
+                      //console.log('Đặt hàng:', orderData);
                       // alert('Đã thêm vào giỏ hàng!');
                        notify(3,"bạn phải đăng nhập","Cảnh báo !")
                     }}
@@ -386,7 +386,7 @@ return (<>
                         color: selectedColor,
                         quantity: quantity
                       };
-                      console.log('Mua ngay:', orderData);
+                      //console.log('Mua ngay:', orderData);
                       // alert('Chuyển đến trang thanh toán!');
                       notify(3,"bạn phải đăng nhập","Cảnh báo !")
                     }}

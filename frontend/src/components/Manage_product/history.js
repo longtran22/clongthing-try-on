@@ -33,7 +33,7 @@ useEffect(()=>{
       setInitialOrders(data);
       stopLoading()
       ;}catch(error){
-console.log(error)
+//console.log(error)
       } 
       
 }

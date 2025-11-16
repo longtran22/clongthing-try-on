@@ -527,7 +527,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
   useEffect(() => {
     if (dataHis && dataHis.length > 0) {
       const newItems = dataHis.map(initItem);
-      console.log(dataHis, listProductWereAdded);
+      //console.log(dataHis, listProductWereAdded);
       if (
         !listProductWereAdded.some((item) =>
           dataHis.some((it) => it._id === item.productId)
@@ -662,7 +662,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
   };
 
   const handleSubmit = async () => {
-    // console.log("baby take my hand")
+    // //console.log("baby take my hand")
     const groupBySupplier = listProductWereAdded.reduce(
       (acc, item) => {
         // Kiểm tra xem đã có supplier này trong nhóm chưa
@@ -700,7 +700,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
         
         notify(1,"you've completed importing goods","Successfully!")
         const responseData = await response.json();
-        console.log("Dữ liệu đã được gửi thành công", responseData);
+        //console.log("Dữ liệu đã được gửi thành công", responseData);
         //await apiFetchOrderHistory.current.fetchOrder(" ")
         //await apiGetHistory.current.debouncedFetchSuggestions(" ", "http://localhost:8080/import/loggingOrder/listOrder", 1, 10);
         setLoadOrder((prev)=>!prev)
@@ -710,7 +710,7 @@ const ContentOrder = ({ dataHis, setIdProductAdded,apiFetchOrderHistory,apiGetHi
       } else {
         notify(2,"you don't have the role to do this","Fail!")
         // Nếu có lỗi từ server
-        console.log(" dữ liệu:", response.body);
+        //console.log(" dữ liệu:", response.body);
         console.error("Lỗi khi gửi dữ liệu:", response.statusText);
       }
     } catch (error) {

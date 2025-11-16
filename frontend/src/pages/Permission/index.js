@@ -19,8 +19,8 @@ const Permissions = () => {
         startLoading();
         const roles = await getRoles(user.id_owner);
         setRolesData(roles);
-        console.log(document.cookie);
-        console.log("OK");
+        //console.log(document.cookie);
+        //console.log("OK");
         
         const initialPermissions = {};
         roles.forEach((role) => {
@@ -74,10 +74,10 @@ const Permissions = () => {
           rolesWithPermissions,
           user:user}),
       });
-      console.log(rolesWithPermissions);
+      //console.log(rolesWithPermissions);
       
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       if(data.message=="Không có quyền truy cập"||data.message=="Vai trò không tồn tại"||data.message=="Lỗi máy chủ nội bộ"){
         notify(2,"Lỗi khi cập nhật phân quyền","Lỗi rồi ba");
       }else{

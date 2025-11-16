@@ -49,7 +49,7 @@ function Sales_daily() {
     }
 
     const data = await response.json();
-    console.log("generatedailySale:", data);
+    //console.log("generatedailySale:", data);
     Setdt(data);
   } catch (error) {
     console.error("Error fetching revenue:", error);

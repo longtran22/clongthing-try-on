@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       try {
         const decodedString = decodeURIComponent(storedUser);
         const userData = JSON.parse(decodedString);
-        // console.log("User data from cookie:", userData);
+        // //console.log("User data from cookie:", userData);
         setUser( userData);
       } catch (error) {
         console.error("Không thể giải mã hoặc phân tích dữ liệu người dùng:", error);

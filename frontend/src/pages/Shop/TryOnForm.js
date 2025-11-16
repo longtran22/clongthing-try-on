@@ -64,13 +64,13 @@ const handleSubmit = async (e) => {
     }
 
     const data = await response.json();
-    console.log("formData:", formData.clothing_type );
-    console.log("result URL:", data.resultImageUrl);
+    //console.log("formData:", formData.clothing_type );
+    //console.log("result URL:", data.resultImageUrl);
 
     // Set URL ảnh trả về vào state để hiển thị
     setResultImage(data.resultImageUrl); // Lưu URL ảnh kết quả
     // setResultImage("https://40e507dd0272b7bb46d376a326e6cb3c.cdn.bubble.io/f1747218301818x148214271773240640/upscale")
-    console.log("resultImage ",resultImage)
+    //console.log("resultImage ",resultImage)
   } catch (err) {
     console.error("Try-on error:", err.message);
     alert("Thử đồ thất bại. Vui lòng thử lại.");

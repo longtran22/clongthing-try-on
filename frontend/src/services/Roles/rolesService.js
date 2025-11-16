@@ -56,7 +56,7 @@ export const deleteRole = async (roleId, user) => {
       }),
     });
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
     if(data.message == "Không có quyền truy cập" || data.message === "Vai trò không tồn tại" || data === "Role không được cung cấp"){
       notify(2,data.message,"Thất bại");
     }else{

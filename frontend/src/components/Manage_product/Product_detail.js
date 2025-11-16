@@ -43,7 +43,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
           }
         );
         const data = await response.json();
-        console.log(data.suppliers);
+        //console.log(data.suppliers);
         setSuppliers(data.suppliers);
       } catch (error) {
         console.error("Error fetching suppliers:", error);
@@ -170,7 +170,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
       image: e.target.files[0],
     });
     const imageUrl = URL.createObjectURL(e.target.files[0]);
-    console.log("Link ảnh đã được cập nhật:", imageUrl);
+    //console.log("Link ảnh đã được cập nhật:", imageUrl);
     SetLink(imageUrl); // Cập nhật link với URL ngắn hơn
   };
   const stopCamera = () => {

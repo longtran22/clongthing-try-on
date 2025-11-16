@@ -16,7 +16,7 @@ const ImageUpload = () => {
       alert("Vui lòng chọn một hình ảnh để tải lên.");
       return;
     }
-console.log(image);
+//console.log(image);
     const formData = new FormData();
     formData.append("file", image);
     formData.append("upload_preset", UPLOAD_PRESET);
@@ -36,7 +36,7 @@ console.log(image);
 
       const data = await response.json(); // Chuyển đổi phản hồi thành JSON
       setUrl(data.secure_url);
-      console.log("Uploaded Image URL:", data.secure_url);
+      //console.log("Uploaded Image URL:", data.secure_url);
     } catch (error) {
       console.error("Error uploading image:", error);
       alert("Đã xảy ra lỗi khi tải lên hình ảnh.");

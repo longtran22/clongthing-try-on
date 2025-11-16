@@ -150,7 +150,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
   };
 
   const handleSubmit = async (product, quantity,size) => {
-    console.log("slectproduct",product);
+    //console.log("slectproduct",product);
     const supplierName = "Không xác định";
     const supplierId = product.supplier?.id || "";
   
@@ -193,11 +193,11 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
         body: JSON.stringify(groupBySupplier),
       });
       stopLoading();
-      console.log("dat hang",groupBySupplier);
+      //console.log("dat hang",groupBySupplier);
       if (response.ok) {
         const data = await response.json();
         notify(1, "Bạn đã tạo đơn hàng thành công", "Successfully!");
-        console.log("Dữ liệu đã được gửi thành công", data);
+        //console.log("Dữ liệu đã được gửi thành công", data);
       } else {
         const error = await response.json();
         notify(2, error.message || "Tạo đơn hàng không thành công", "Fail!");
@@ -575,7 +575,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
   //                       color: selectedColor,
   //                       quantity: quantity
   //                     };
-  //                     console.log('Đặt hàng:', orderData);
+  //                     //console.log('Đặt hàng:', orderData);
   //                     alert('Đã thêm vào giỏ hàng!');
   //                   }}
   //                   disabled={
@@ -595,7 +595,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
   //                       color: selectedColor,
   //                       quantity: quantity
   //                     };
-  //                     console.log('Mua ngay:', orderData);
+  //                     //console.log('Mua ngay:', orderData);
   //                     alert('Chuyển đến trang thanh toán!');
   //                   }}
   //                   disabled={
@@ -831,7 +831,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
                     color: selectedColor,
                     quantity: quantity
                   };
-                  console.log('Đặt hàng:', orderData);
+                  //console.log('Đặt hàng:', orderData);
                   alert('Đã thêm vào giỏ hàng!');
                 }}
                 disabled={
@@ -862,7 +862,7 @@ const ProductDetail = ({ product, onClose, onUpdate }) => {
                   };
                   handleSubmit(product, quantity, selectedSize);
                   
-                  console.log('Mua ngay:', orderData);
+                  //console.log('Mua ngay:', orderData);
                   // alert('Chuyển đến trang thanh toán!');
                 }}
                 // onClick={() => handleSubmit(selectedProduct, quantity)}

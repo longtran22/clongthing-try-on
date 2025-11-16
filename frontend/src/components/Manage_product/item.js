@@ -60,7 +60,7 @@ const ProductGrid = ({ selectedCategory ,reload, searchTerm,sortByA,sortByB}) =>
       });
       const data = await response.json();
       stopLoading();
-      console.log(data);
+      //console.log(data);
       setProduct({...data})
     }
     const onDelete=async (a,b)=>{

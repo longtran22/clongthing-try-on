@@ -61,7 +61,7 @@ const handleSearchChange = (e) => {
     openModalDetail();
     onClose()
     setIdOrder(order.orderId)
-    console.log("Đã chọn hàng:", order);
+    //console.log("Đã chọn hàng:", order);
   };
 
   useEffect(() => {

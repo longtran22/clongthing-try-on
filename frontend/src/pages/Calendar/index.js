@@ -150,7 +150,7 @@ const CalendarComponent = ({defaultView}) => {
         minute: parseInt(formData.end_time.split(":")[1]),
       }).toDate(),
     };
-    console.log(updatedEvent, selectedEvent.id);
+    //console.log(updatedEvent, selectedEvent.id);
     
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/calendar/update/${selectedEvent.id}`, {
@@ -194,7 +194,7 @@ const CalendarComponent = ({defaultView}) => {
           "Content-Type": "application/json",
         },
       });      
-      console.log(response);
+      //console.log(response);
       if(response.ok){
         notify(1,"Xóa lịch làm việc thành công","Thành công");
       }

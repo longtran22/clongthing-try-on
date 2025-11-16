@@ -81,7 +81,7 @@ const [act,setAct]=useState([])
           }
   
           const data = await response.json();
-          console.log("Revenue:", data);
+          //console.log("Revenue:", data);
           // setTotalrevenue(data);
         } catch (error) {
           console.error("Error fetching revenue:", error);
@@ -92,7 +92,7 @@ const [act,setAct]=useState([])
         const response = await fetch(`${API_URL}/payment/getAllvnpay`);
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        console.log("VNPAY List:", data.totalAmount);
+        //console.log("VNPAY List:", data.totalAmount);
         setVnpayList(data.payments.reverse()); // 2. Gán dữ liệu vào state
         setTotalrevenue(prev => ({
           percentChange: "80%",
@@ -114,9 +114,9 @@ const [act,setAct]=useState([])
         const response = await fetch(`${API_URL}/accounts/show`);
         if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        console.log("user:", data);
+        //console.log("user:", data);
         setUserList(data.reverse()); // 2. Gán dữ liệu vào state
-        console.log("userList:", userList);
+        //console.log("userList:", userList);
       
 
 
@@ -141,7 +141,7 @@ const [act,setAct]=useState([])
           }
   
           const data = await response.json();
-          console.log("Income:", data);
+          //console.log("Income:", data);
           setTotalincome(data);
         } catch (error) {
           console.error("Error fetching income:", error);
@@ -164,7 +164,7 @@ const [act,setAct]=useState([])
           }
   
           const data = await response.json();
-          console.log("customer:", data);
+          //console.log("customer:", data);
           setNewcustomer(data);
         } catch (error) {
           console.error("Error fetching income:", error);
@@ -187,7 +187,7 @@ const [act,setAct]=useState([])
           }
   
           const data = await response.json();
-          console.log("customer:", data);
+          //console.log("customer:", data);
           setData(data)
         } catch (error) {
           console.error("Error fetching income:", error);
@@ -210,7 +210,7 @@ const [act,setAct]=useState([])
           }
   
           const data = await response.json();
-          console.log("products:", data);
+          //console.log("products:", data);
           setTopproduct(data)
         } catch (error) {
           console.error("Error fetching income:", error);
@@ -232,7 +232,7 @@ const [act,setAct]=useState([])
             throw new Error("Network response was not ok");
           }
           const data = await response.json();
-          console.log("pending:", data);
+          //console.log("pending:", data);
           setPending(data)
         } catch (error) {
           console.error("Error fetching income:", error);
@@ -283,7 +283,7 @@ const fetchUserIdByEmail = async () => {
     const res = await fetch(`${API_URL}/accounts/find-by-email?email=${email}`);
     const user = await res.json();
     if (res.ok) {
-      console.log(user);
+      //console.log(user);
       return user._id;
     } else {
       alert(user.message || "Không tìm thấy user!");

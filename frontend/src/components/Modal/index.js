@@ -7,7 +7,7 @@ import Avatar from '../Avatar';
 const Modal = () => {
   const {user,logout} =useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  console.log(user)
+  //console.log(user)
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };

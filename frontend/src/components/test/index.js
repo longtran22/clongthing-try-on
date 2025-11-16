@@ -59,7 +59,7 @@ const OrderManagement = forwardRef(({ onCreateOrder, onHistory,openModalDetail,s
   
 
   const createorder = (order) => {
-    // console.log(order);
+    // //console.log(order);
     let emails="";
     if (user.role === "Admin") {
       emails=order.ownerEmail;
@@ -131,8 +131,8 @@ const OrderManagement = forwardRef(({ onCreateOrder, onHistory,openModalDetail,s
 
       const data = await response.json();
       // const data = await response.json();
-console.log('API response order:', data);
-      // console.log(data,"new data")
+//console.log('API response order:', data);
+      // //console.log(data,"new data")
       // const regurlizationData = data.map(item => createorder(item));
       // setOrders((prev)=>{
       //   const newData = [...regurlizationData]
@@ -167,7 +167,7 @@ setFilteredOrders(regurlizationData); // ban đầu hiển thị toàn bộ dùn
       }
   
       const data = await response.json(); // Nếu server trả về dữ liệu sau khi xóa
-      console.log('Delete successful:', data);
+      //console.log('Delete successful:', data);
       return 1;
     } catch (error) {
       console.error('Error during delete:', error);
@@ -193,7 +193,7 @@ setFilteredOrders(regurlizationData); // ban đầu hiển thị toàn bộ dùn
       }
 
       const data = await response.json(); // Đọc phản hồi trả về
-      console.log('Update successful:', data);
+      //console.log('Update successful:', data);
       return 1;
     } catch (error) {
       console.error('Error during update:', error);
@@ -209,7 +209,7 @@ setFilteredOrders(regurlizationData); // ban đầu hiển thị toàn bộ dùn
   );
   // useEffect(() => {
   //   if(loading)return
-  //     console.log("debub")
+  //     //console.log("debub")
   //     debouncedFetchSuggestions(searchTerm.trim());
   //   }, [loading,loadOrder,user]);
   useEffect(() => {
@@ -229,8 +229,8 @@ setFilteredOrders(regurlizationData); // ban đầu hiển thị toàn bộ dùn
       const newOrder = { ...editedOrder, userid: user._id, userName: user.name };
       newOrder.date = new Date().toISOString();
   
-      console.log(loadOrder);
-      console.log("Đơn hàng mới:", newOrder);
+      //console.log(loadOrder);
+      //console.log("Đơn hàng mới:", newOrder);
   
     let i= await updateData(newOrder);
   
