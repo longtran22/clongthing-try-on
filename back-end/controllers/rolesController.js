@@ -2,7 +2,7 @@ const Roles = require('../modules/roles');
 const Users = require('../modules/user');
 
 const createRole = async (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     const {newRoleData, user} = req.body;
     const { role, description, permissions, id_owner } = newRoleData; 
     try {
@@ -18,7 +18,7 @@ const createRole = async (req, res) => {
             id_owner,
         });
         await newRole.save();
-        console.log(newRole);
+        //console.log(newRole);
         res.status(201).json({ message: 'Role created successfully', role: newRole });
     } catch (error) {
         console.error('Error creating role:', error); 

@@ -8,7 +8,7 @@ const findcode = async (req, res) => {
     // Tìm user theo email
     const products = await Products.find({ owner: user.id_owner });
     if (products) {
-      console.log(products);
+      //console.log(products);
       const send = { product: [...products], message: "success" };
       res.json(send);
     } else {
@@ -148,7 +148,7 @@ const history = async (req, res) => {
 const get_history = async (req, res) => {
   const { user } = req.body;
   try {
-    console.log(user);
+    //console.log(user);
     const activities = await Bills.find({ owner: user.id_owner }) // Lấy lịch sử hoạt động của người chủ
       .populate("owner") // Lấy tất cả thông tin của chủ sở hữu
       .populate("creater") // Lấy tất cả thông tin của chủ sở hữu
@@ -223,7 +223,7 @@ const edit_customer=async (req,res)=>{
                   return oldProduct[field] !== customer_edit[field]
               });
                   
-              console.log(filteredFields)
+              //console.log(filteredFields)
               if (filteredFields.length > 0) {
                   // Lấy các thay đổi chi tiết (so sánh cũ và mới)
                   const changes = filteredFields.map(field => {

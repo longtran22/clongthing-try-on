@@ -60,7 +60,7 @@ const updateDetail = async (req, res) => {
     userId,
     ownerId,
   }
-  console.log(data)
+  //console.log(data)
   try {
     const orderHis = await OrderHistory.findOne({
       _id: new mongoose.Types.ObjectId(data.formData[0].orderId),

@@ -19,7 +19,7 @@ catch(err){res.status(500).json({ message: 'Server error2', err });}
 const delete_bank = async (req, res) => {
     try {
         const { user, accountNumber, bankName } = req.body;
-console.log(user,accountNumber,bankName)
+// //console.log(user,accountNumber,bankName)
         // Kiểm tra dữ liệu đầu vào
         if (!user  || !accountNumber || !bankName) {
             return res.status(400).json({ message: 'Invalid input data' });

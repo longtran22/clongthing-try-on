@@ -12,7 +12,7 @@ const get_profile=async (req, res) => {
             return res.status(400).json({ message: 'Invalid' });
         }else{
         const role=await Roles.findOne({id_owner: user2.id_owner._id,role: user2.role})
-        console.log({ ...user2,right:role })
+        //console.log({ ...user2,right:role })
             res.status(200).json({ ...user2,right:role });
         }
         
@@ -39,12 +39,12 @@ res.status(200).json({respond:"success"})
 }
 const update_avatar= async (req,res) => {
     const {user,newPr}=req.body;
-    console.log(user,newPr)
+    //console.log(user,newPr)
     try{const updated_user=await User.findByIdAndUpdate(
         {_id:user._id},
     {$set:{avatar:newPr.image.secure_url}},
     { new: true })
-    console.log(updated_user)
+    //console.log(updated_user)
 res.status(200).json({respond:"success"})
 }catch (err) {
         console.error(err)

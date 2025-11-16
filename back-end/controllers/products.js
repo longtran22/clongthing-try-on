@@ -35,7 +35,7 @@ const edit = async (req, res) => {
             if (result.error) {
                 console.error('Error deleting image from Cloudinary:', result.error);
             }
-            console.log('Cloudinary delete result:', result);
+            //console.log('Cloudinary delete result:', result);
         }
 
         // Lưu giá trị cũ của sản phẩm trước khi cập nhật
@@ -68,7 +68,7 @@ const edit = async (req, res) => {
                     return oldProduct[field] !== product_edit[field]
                 });
                     
-                console.log(filteredFields)
+                //console.log(filteredFields)
                 if (filteredFields.length > 0) {
                     // Lấy các thay đổi chi tiết (so sánh cũ và mới)
                     const changes = filteredFields.map(field => {
@@ -123,7 +123,7 @@ const deletes = async (req, res) => {
         await history.save();
         if (product.image && product.image.public_id) {
             const publicId = product.image.public_id;
-            console.log(publicId)
+            //console.log(publicId)
             // Xóa ảnh trên Cloudinary
             const result = await cloudinary.uploader.destroy(publicId);
       
@@ -132,7 +132,7 @@ const deletes = async (req, res) => {
             //   return res.status(500).json({ message: 'Error deleting image from Cloudinary' });
             }
       
-            console.log('Cloudinary delete result:', result);
+            //console.log('Cloudinary delete result:', result);
           }
         res.status(200).json({ message: 'Product deleted successfully' });
     } catch (error) {
@@ -155,7 +155,7 @@ const show_detail = async (req, res) => {
 }
 const create=async (req, res) => {
     const { user,newPr,detail } = req.body;
-    console.log({
+    //console.log({
         ...newPr,
     });
     const Check=await Products.find({owner:user.id_owner,sku:newPr.sku})
@@ -199,7 +199,7 @@ const get_history = async (req, res) => {
 
 const get_supplier=async(req, res)=>{
     const { user } = req.body;
-    console.log(user)
+    //console.log(user)
     try {
       // Tìm user theo email
       const suppliers = await Suppliers.find({ owner: user.id_owner })
@@ -276,7 +276,7 @@ const edit_supplier=async(req,res)=>{
                     return oldProduct[field] !== supplier_edit[field]
                 });
                     
-                console.log(filteredFields)
+                //console.log(filteredFields)
                 if (filteredFields.length > 0) {
                     // Lấy các thay đổi chi tiết (so sánh cũ và mới)
                     const changes = filteredFields.map(field => {
@@ -348,7 +348,7 @@ const delete_supplier=async(req,res)=>{
 }
 const getProductsBySupplier = async (req, res) => {
     const { productId,ownerId } = req.query;
-    console.log(productId,ownerId)
+    //console.log(productId,ownerId)
     const objectIdSupplierId = new mongoose.Types.ObjectId(productId);
     // Kiểm tra xem productId có tồn tại trong query params không
     if (!productId) {
@@ -403,7 +403,7 @@ const getProductsBySupplier = async (req, res) => {
   // const getProductsByProductName = async (req, res) => {
   //   const { query,ownerId } = req.query;
   //   const objectProductId = query;
-  //   console.log(query,ownerId)
+  //   //console.log(query,ownerId)
   //   // Kiểm tra xem productId có tồn tại trong query params không
   //   if (!objectProductId) {
   //     return res.status(400).json({ error: "Product ID is required" });

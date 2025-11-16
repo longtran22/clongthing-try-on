@@ -32,7 +32,7 @@ a=function(){
         // }
     })
     .then(data => {
-        console.log(data);
+        //console.log(data);
         // Nếu cần chuyển hướng, bạn có thể thực hiện ở đây
         // window.location.href = '/success';
     })
@@ -70,14 +70,14 @@ main_signup.addEventListener('click',()=>{
 function handleCredentialResponse(response) {
     const jwtToken = response.credential;
     const decoded = jwt_decode(jwtToken);  // Giải mã JWT token
-    console.log('Thông tin người dùng:', decoded);
+    //console.log('Thông tin người dùng:', decoded);
     body={
     family_name:decoded.family_name,
     given_name:decoded.given_name,
     GoogleID:decoded.sub
     }
     //const RETURN_URL = process.env.REACT_APP_RETURN_URL;
-    console.log(JSON.stringify(body))
+    //console.log(JSON.stringify(body))
     // fetch(`http://localhost:3000/login/login_google`, {
     fetch(`${process.env.FRONTEND_URL}/login/login_google`, {
         method: "POST",
@@ -96,7 +96,7 @@ function handleCredentialResponse(response) {
     //   }
     )
     .then((a)=>{
-        console.log(a)
+        //console.log(a)
     })
       .catch(error => {
           console.error('Lỗi:', error);

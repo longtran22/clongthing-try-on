@@ -27,7 +27,7 @@ const transporter = nodemailer.createTransport({
 
 //     // Gửi email
 //     await transporter.sendMail(mailOptions);
-//     console.log("Email sent successfully!");
+//     //console.log("Email sent successfully!");
 //   } catch (error) {
 //     console.error("Error sending email:", error);
 //   }
@@ -277,7 +277,7 @@ const template = (listOrder) => {
 //       });
 
 //       const savedOrder = await order.save();
-//       console.log(order);
+//       //console.log(order);
 //       const orderDetails = suppOrders.map((item) => ({
 //         orderId: savedOrder._id,
 //         productId: new mongoose.Types.ObjectId(item.productId),
@@ -469,7 +469,7 @@ const saveOrderHistory = async (req, res) => {
 //         };
 //       }
 //     }
-//     console.log(matchConditions);
+//     //console.log(matchConditions);
 //     const result = await OrderHistory.aggregate([
 //       {
 //         $lookup: {
@@ -806,7 +806,7 @@ const updateOrderHistory = async (req, res) => {
               ownerId: newOrder.ownerId,
               tax: newOrder.tax,
             });
-            console.log(newLogging);
+            //console.log(newLogging);
             await newLogging.save();
           } catch (error) {
             console.error(
@@ -833,7 +833,7 @@ const updateOrderHistory = async (req, res) => {
               details: newOrder.notes,
               tax:newOrder.tax,
             });
-            console.log(newLogging)
+            //console.log(newLogging)
             await newLogging.save();
 
           } catch (error) {
@@ -863,7 +863,7 @@ const updateOrderHistory = async (req, res) => {
 };
 const getSupplierByOrderId = async (req, res) => {
   const { orderId, ownerId } = req.query;
-  console.log(ownerId);
+  //console.log(ownerId);
   if (!orderId) {
     return res.status(400).json({ error: "Order ID is required" });
   }
@@ -898,7 +898,7 @@ const getSupplierByOrderId = async (req, res) => {
     if (orders.length === 0) {
       return res.status(404).json({ error: "Order not found" });
     }
-    console.log(orders[0])
+    //console.log(orders[0])
     res.json(orders[0]);
   } catch (err) {
     console.error("Error:", err);

@@ -55,12 +55,12 @@
         // Xử lý trạng thái đăng nhập
         function statusChangeCallback(response) {
             if (response.status === 'connected') {
-                console.log('Logged in successfully!', response);
+                //console.log('Logged in successfully!', response);
                 FB.api('/me', { fields: 'name, email' }, function(userData) {
-                    console.log('User data:', userData);
+                    //console.log('User data:', userData);
                 });
             } else {
-                console.log('User is not logged in or did not authorize the app.');
+                //console.log('User is not logged in or did not authorize the app.');
             }
         }
     </script>

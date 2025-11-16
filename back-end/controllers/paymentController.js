@@ -143,7 +143,7 @@ const createVNPayPayment = async (req, res) => {
     // ✅ Build URL (thư viện tự ký hash đúng cách)
     const url = await vnpay.buildPaymentUrl(paymentParams);
 
-    console.log("✅ VNPay URL:", url); // in ra để kiểm tra hash
+    //console.log("✅ VNPay URL:", url); // in ra để kiểm tra hash
     res.json({ paymentUrl: url });
   } catch (error) {
     console.error("❌ Lỗi tạo thanh toán VNPay:", error);

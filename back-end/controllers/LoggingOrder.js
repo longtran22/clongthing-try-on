@@ -23,7 +23,7 @@ const getLogging = async(req,res)=>{
               }
             }
             query.ownerId = new mongoose.Types.ObjectId(ownerId);
-            console.log("query :", query)   
+            //console.log("query :", query)   
             const skip = (pageNum - 1) * limitNum;
         
             const logs = await LoggingOrder.aggregate([
@@ -222,7 +222,7 @@ module.exports = {
 
 //     // Thêm ownerId vào query
 //     query.ownerId = new mongoose.Types.ObjectId(ownerId);
-//     console.log("query :", query)   
+//     //console.log("query :", query)   
 //     const skip = (pageNum - 1) * limitNum;
 
 //     const logs = await LoggingOrder.aggregate([

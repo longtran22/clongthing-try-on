@@ -3,7 +3,7 @@ const Suppliers =require('../modules/supplier')
 
 const getSupplierSuggestion=async(req,res) =>{
     const { query,ownerId } = req.query;  // Lấy query từ tham số URL
-    console.log(query,ownerId)
+    //console.log(query,ownerId)
     if (!query) {
       return res.status(400).json({ message: 'Query parameter is required' });
     }

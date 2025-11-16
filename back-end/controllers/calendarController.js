@@ -2,7 +2,7 @@ const Events = require('../modules/event');
 
 // API POST - Tạo sự kiện mới
 const createEvent = async (req, res) => {
-  console.log(req.body);
+  // //console.log(req.body);
 
   const { task, employee, start_time, end_time, id_owner } = req.body;
 
@@ -75,7 +75,7 @@ const deleteEvents = async (req, res) => {
 //API PUT - Chỉnh sửa sự kiện
 const updateEvent = async (req, res) => {
   try {
-    console.log(req.body);
+    // //console.log(req.body);
     const { id } = req.params; // Lấy ID từ URL
     const { task, employee, start_time, end_time, id_owner } = req.body; // Lấy dữ liệu từ yêu cầu
 

@@ -4,7 +4,7 @@ const User =require('../modules/user')
 const User_temporary =require('../modules/Temporary_user')
 const login_raw=async (req, res) => {
     const { email, password } = req.body;
-console.log(email, password)
+//console.log(email, password)
     try {
         // Tìm user theo email
         const user = await User.findOne({ email });
@@ -29,7 +29,7 @@ if (user.password!==password) {
 const login_google = async (req, res) => {
     const { GoogleID, family_name, given_name, email } = req.body;
     let name = `${family_name} ${given_name}`;
-    console.log(name, GoogleID);
+    //console.log(name, GoogleID);
 
     try {
         let user = await User.findOne({ GoogleID });
@@ -68,7 +68,7 @@ const login_google = async (req, res) => {
 
 const sign_up = async (req, res) => {
     const { name, email, password,confirm,code} = req.body;
-console.log("body",name, email,password,confirm,code);
+//console.log("body",name, email,password,confirm,code);
     try {
     const existingName = await User.findOne({ name });
     // const existingNameTemp = await User_temporary.findOne({ name });
@@ -79,7 +79,7 @@ console.log("body",name, email,password,confirm,code);
     }
         let user = await User_temporary.findOne({ email });
         if(confirm){
-            console.log(user)
+            //console.log(user)
             if (user.code !== code || user.resetCodeExpire < Date.now()) {
                 return res.status(400).json({ message: 'Mã xác nhận không hợp lệ hoặc đã hết hạn!' });
             }else{
@@ -91,7 +91,7 @@ console.log("body",name, email,password,confirm,code);
         }
          user = await User.findOne({ email });
         if (user) {
-            console.log(user)
+            //console.log(user)
             return res.status(400).json({ message: 'email đã tồn tại' });}
             user = await User_temporary.find({ email });
             if (user.length > 0) {
@@ -137,7 +137,7 @@ console.log("body",name, email,password,confirm,code);
 }
 const forgot_password=async (req, res)=>{
     const { email } = req.body;
-    console.log(email);
+    //console.log(email);
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -191,7 +191,7 @@ const change_password=async (req,res)=>{
 const change_password2= async (req,res)=>{
     const { email,password } = req.body;
     try{const user = await User.findOne({ email });
-    console.log(user);
+    //console.log(user);
 user.password = password;
 await user.save();
 return res.status(200).json({ message: 'Success' });

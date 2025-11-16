@@ -128,10 +128,10 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
     }
 
     // Gửi request lấy ID thử đồ
-      console.log("model",modelImageUrl);
-        console.log("clothing:",clothingType);
-        console.log("garmentImageUrl:",garmentImageUrl);
-        //  console.log("clothingType:",clothingType);
+      //console.log("model",modelImageUrl);
+        //console.log("clothing:",clothingType);
+        //console.log("garmentImageUrl:",garmentImageUrl);
+        //  //console.log("clothingType:",clothingType);
     const submitRes = await axios.post(
       'https://thenewblack.ai/api/1.1/wf/vto',
       new URLSearchParams({
@@ -146,7 +146,7 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
     );
 
     const tryonId = submitRes.data;
-    console.log("Try-on ID:", tryonId);
+    //console.log("Try-on ID:", tryonId);
 
     // Đợi 150s cho hệ thống xử lý
     await new Promise((resolve) => setTimeout(resolve, 150000));
@@ -168,7 +168,7 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
     );
 
     const resultImageUrl = resultRes.data;
-    console.log("result",resultImageUrl);
+    //console.log("result",resultImageUrl);
     res.json({ resultImageUrl });
 
   } catch (error) {
@@ -179,7 +179,7 @@ app.post('/tryon', upload.single('model_image'), async (req, res) => {
 
 routes(app)
 const server =app.listen(5000, () => {
-    console.log('Server đang chạy tại http://localhost:5000');
+    //console.log('Server đang chạy tại http://localhost:5000');
 });
 const io =setupSocket(server);
 require('./controllers/chat')(io)

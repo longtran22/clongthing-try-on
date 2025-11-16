@@ -9,7 +9,7 @@ const saveMessageToDB = async (data) => {
 
   try {
     await newMessage.save();
-    console.log("Message saved to MongoDB");
+    // //console.log("Message saved to MongoDB");
   } catch (err) {
     console.error("Error saving message to MongoDB:", err);
   }
@@ -17,7 +17,7 @@ const saveMessageToDB = async (data) => {
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
-    console.log("User connected in chat controller:", socket.id);
+    // //console.log("User connected in chat controller:", socket.id);
 
     socket.on("send_message", async (data) => {
       await saveMessageToDB(data);
@@ -31,7 +31,7 @@ module.exports = (io) => {
     });
 
     socket.on("disconnect", () => {
-      console.log("User disconnected from chat controller:", socket.id);
+      // //console.log("User disconnected from chat controller:", socket.id);
     });
   });
 };

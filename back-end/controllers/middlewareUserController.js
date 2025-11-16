@@ -2,11 +2,11 @@ const Role = require('../modules/roles'); // Model kết nối với collection 
 
 const authorize = (permission) => {
     return async (req, res, next) => {
-        console.log(req.body);
+        //console.log(req.body);
         try {
             const userRole = req.body.user.role;  
             const userId = req.body.user.id_owner;
-            console.log(userRole);
+            //console.log(userRole);
             if(userRole==="Admin"){
                 return next();
             }
@@ -14,7 +14,7 @@ const authorize = (permission) => {
                 return res.status(400).json({ message: "Role không được cung cấp" });
             }
 
-            console.log(`Đang kiểm tra quyền của vai trò: ${userRole}`);
+            //console.log(`Đang kiểm tra quyền của vai trò: ${userRole}`);
 
             // Truy vấn quyền của vai trò từ database
             const roleData = await Role.findOne({ role: userRole, id_owner:userId });

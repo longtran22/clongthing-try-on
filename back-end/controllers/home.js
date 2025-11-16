@@ -62,10 +62,10 @@ const total_revenue = async (req, res) => {
     } else {
       message = 'notchange';
     }
-    console.log("Total Revenue Today:", totalRevenueToday);
-    console.log("Total Revenue Yesterday:", totalRevenueYesterday);
-    console.log("Percent Change:", percentChange.toFixed(2) + "%");
-    console.log("state:", message);
+    //console.log("Total Revenue Today:", totalRevenueToday);
+    //console.log("Total Revenue Yesterday:", totalRevenueYesterday);
+    //console.log("Percent Change:", percentChange.toFixed(2) + "%");
+    //console.log("state:", message);
     // Trả về doanh thu hôm nay và phần trăm thay đổi
     return res.status(200).json({
       totalRevenueToday:totalRevenueToday.toLocaleString('vi-VN', { style: "currency", currency: "VND" }),
@@ -263,7 +263,7 @@ const generateCustomerReport = async (req,res) => {
   }
 res.json(report)
 }catch(e){
-    console.log(e.message);
+    //console.log(e.message);
   }
 
 };

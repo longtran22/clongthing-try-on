@@ -6,7 +6,7 @@ const { console } = require('inspector');
 const nodemailer = require('nodemailer');
 
 const createUser = async (req, res) => {
-    console.log("req.body:", req.body);
+    //console.log("req.body:", req.body);
     const {
         name,
         email,
@@ -119,7 +119,7 @@ const createUser = async (req, res) => {
 };
 
 const sendAgain =  async (req, res) => {
-    console.log("req.body:", req.body);
+    //console.log("req.body:", req.body);
     const {
         name,
         email,
@@ -276,7 +276,7 @@ const editUser = async (req, res) => {
         password,
         role
     } = req.body; 
-    console.log(req.body);
+    //console.log(req.body);
     
     try {
         // Update user data
